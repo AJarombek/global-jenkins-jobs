@@ -17,6 +17,16 @@ node("master") {
                 # set +e
                 terraform init
             """
+
+            try {
+                sh """
+                    terraform plan
+                    terraform apply
+                """
+            } catch (Exception ex) {
+                echo "Terraform Plan/Apply Failed"
+                currentBuild.result = "UNSTABLE"
+            }
         }
     }
 }
