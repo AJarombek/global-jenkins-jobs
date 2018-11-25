@@ -17,6 +17,7 @@ job("Seed_Job") {
             remote {
                 name("origin")
                 url("\$job_dsl_repo")
+                credentials("andy")
             }
         }
     }
