@@ -17,8 +17,11 @@ node("master") {
     // Generate a new public/private key for connecting to GitHub via SSH
     sh 'ssh-keygen -t rsa -N "" -f ../../.ssh/id_rsa'
 
-    // Print out the public key to the screen.  The public key is used by GitHub
-    sh 'cat ../../.ssh/id_rsa.pub'
+    // Print out the public and private keys to the screen.  The public key is used by GitHub
+    sh """
+        cat ../../.ssh/id_rsa.pub
+        cat ../../.ssh/id_rsa
+    """
 
     // Make sure that the public/private keys exist
     sh "ls -la ../../.ssh/"
