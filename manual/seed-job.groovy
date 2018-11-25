@@ -7,16 +7,16 @@
 
 job("Seed_Job") {
     parameters {
-        stringParam("job_dsl_repo", "", "Job DSL Repo")
-        stringParam("job_dsl_branch", "", "Job DSL Branch")
-        stringParam("job_dsl_path", "", "Location of Job DSL Groovy Script")
+        stringParam("job_dsl_repo", "", "Repository containing the Job DSL script")
+        stringParam("job_dsl_branch", "", "Repo branch containing the Job DSL script")
+        stringParam("job_dsl_path", "", "Location of Job DSL script")
     }
     scm {
         git {
             branch("\$job_dsl_branch")
             remote {
-                name("origin")
-                url("\$job_dsl_repo")
+                github("AJarombek/\$job_dsl_repo", "ssh")
+                credentials("ajarombek-github-ssh")
             }
         }
     }
