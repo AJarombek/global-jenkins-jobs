@@ -16,8 +16,13 @@ Walk through how to create both these jobs using the Jenkins GUI
 
 **seed-job**
 
-1)
+1) From the main Jenkins UI page, click on *New Item*.
+2) Name the new item `seed` and select *Freestyle project*.  Click *OK*.
+3) Navigate to *Build* and select *Add build step* > *Process Job DSLs*.  Click *Use the provided DSL script* to add the 
+Groovy file manually.  Copy and paste the `seed-job.groovy` script into the textarea.  Click *Save*.
 
 **ssh-key**
 
-1)
+1) From the main Jenkins UI page, click on *New Item*.
+2) Name the new item `ssh-key` and select *Pipeline*.  Click *OK*.
+3) Navigate to *Pipeline*.  Copy and paste the `ssh-key.groovy` script into the *Script* textarea.  Click *Save*.

@@ -9,18 +9,18 @@ pipelineJob("terraform-destroy") {
         stringParam("repository_url", "", "Repository URL")
         stringParam("terraform_directory", "", "Terraform Directory")
     }
-    scm {
-        git {
-            branch("master")
-            remote {
-                name("origin")
-                url("https://github.com/AJarombek/global-jenkins-jobs.git")
+    definition {
+        cpsScm {
+            scm {
+                git {
+                    branch("master")
+                    remote {
+                        credentials("ajarombek-github-ssh")
+                        github("AJarombek/global-jenkins-jobs.git")
+                    }
+                }
             }
-        }
-    }
-    steps {
-        dsl {
-            external("/terraform-destroy/jenkinsfile.groovy")
+            scriptPath("terraform-destroy/jenkinsfile.groovy")
         }
     }
 }
