@@ -16,7 +16,7 @@ pipelineJob("terraform-apply") {
                     branch("master")
                     remote {
                         credentials("ajarombek-github-ssh")
-                        github("AJarombek/global-jenkins-jobs.git")
+                        github("AJarombek/global-jenkins-jobs")
                     }
                 }
             }
