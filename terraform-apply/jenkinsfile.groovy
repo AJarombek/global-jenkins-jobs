@@ -6,7 +6,10 @@
 
 node("master") {
     stage("checkout-terraform-scripts") {
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+        cleanWs()
+        checkout([$class: 'GitSCM',
+                  branches: [[name: '*/master']],
+                  credentialsId: "865da7f9-6fc8-49f3-aa56-8febd149e72b",
                   userRemoteConfigs: [[url: "$repository_url"]]])
     }
     stage("apply-terraform") {

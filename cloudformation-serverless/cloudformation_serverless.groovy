@@ -1,14 +1,11 @@
 /**
- * Create a Pipeline Job for applying changes to AWS infrastructure using Terraform
+ * Create a Pipeline Job for creating and deploying a CloudFormation template
+ * for a Python serverless backend prototype
  * @author Andrew Jarombek
  * @since 11/21/2018
  */
 
-pipelineJob("terraform-apply") {
-    parameters {
-        stringParam("repository_url", "", "Repository URL")
-        stringParam("terraform_directory", "", "Terraform Directory")
-    }
+pipelineJob("cloudformation-serverless") {
     definition {
         cpsScm {
             scm {
@@ -20,7 +17,7 @@ pipelineJob("terraform-apply") {
                     }
                 }
             }
-            scriptPath("terraform-apply/jenkinsfile.groovy")
+            scriptPath("cloudformation-serverless/jenkinsfile.groovy")
         }
     }
 }
