@@ -13,9 +13,7 @@ node("master") {
                   userRemoteConfigs: [[url: "$repository_url"]]])
     }
     stage("apply-terraform") {
-        sh "ls -la"
         dir("$terraform_directory") {
-            sh "ls -la"
             sh "terraform --version"
 
             sh """
