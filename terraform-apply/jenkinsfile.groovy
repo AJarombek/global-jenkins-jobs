@@ -14,12 +14,14 @@ node("master") {
     }
     stage("apply-terraform") {
         dir("$terraform_directory") {
-            sh "terraform --version"
+            ansiColor('xterm') {
+                sh "terraform --version"
 
-            sh """
-                # set +e
-                terraform init
-            """
+                sh """
+                    # set +e
+                    terraform init
+                """
+            }
 
             try {
                 ansiColor('xterm') {
