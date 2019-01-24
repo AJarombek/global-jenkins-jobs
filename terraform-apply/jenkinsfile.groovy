@@ -14,7 +14,7 @@ node("master") {
     }
     stage("apply-terraform") {
         dir("$terraform_directory") {
-            ansiColor('xterm') {
+            ansiColor('css') {
                 sh "terraform --version"
 
                 sh """
@@ -24,7 +24,7 @@ node("master") {
             }
 
             try {
-                ansiColor('xterm') {
+                ansiColor('css') {
                     sh """
                         terraform plan
                         terraform apply -auto-approve
