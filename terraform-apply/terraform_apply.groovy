@@ -23,7 +23,4 @@ pipelineJob("terraform-apply") {
             scriptPath("terraform-apply/jenkinsfile.groovy")
         }
     }
-    wrappers {
-        colorizeOutput()
-    }
 }

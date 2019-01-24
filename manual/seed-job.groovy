@@ -25,4 +25,7 @@ job("Seed_Job") {
             external("\$job_dsl_path")
         }
     }
+    wrappers {
+        colorizeOutput()
+    }
 }

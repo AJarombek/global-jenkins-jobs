@@ -22,10 +22,12 @@ node("master") {
             """
 
             try {
-                sh """
-                    terraform plan
-                    terraform apply -auto-approve
-                """
+                ansiColor('xterm') {
+                    sh """
+                        terraform plan
+                        terraform apply -auto-approve
+                    """
+                }
             } catch (Exception ex) {
                 echo "Terraform Plan/Apply Failed"
                 currentBuild.result = "UNSTABLE"
