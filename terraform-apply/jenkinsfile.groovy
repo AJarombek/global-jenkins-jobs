@@ -14,18 +14,22 @@ node("master") {
     }
     stage("apply-terraform") {
         dir("$terraform_directory") {
-            sh "terraform --version"
+            ansiColor('css') {
+                sh "terraform --version"
 
-            sh """
-                # set +e
-                terraform init
-            """
+                sh """
+                    # set +e
+                    terraform init
+                """
+            }
 
             try {
-                sh """
-                    terraform plan
-                    terraform apply
-                """
+                ansiColor('css') {
+                    sh """
+                        terraform plan
+                        terraform apply -auto-approve
+                    """
+                }
             } catch (Exception ex) {
                 echo "Terraform Plan/Apply Failed"
                 currentBuild.result = "UNSTABLE"

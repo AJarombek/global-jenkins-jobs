@@ -10,8 +10,10 @@ underscores.
 
 ### Directories
 
-| Directory Name      | Description                                                                 |
-|---------------------|-----------------------------------------------------------------------------|
-| `manual`            | Jenkins jobs that are manually created instead of through a seed job.       |
-| `terraform-apply`   | Jenkins job to apply generic infrastructure changes using Terraform.        |
-| `terraform-destroy` | Jenkins job to destroy generic infrastructure using Terraform.              |
+| Directory Name              | Description                                                                 |
+|-----------------------------|-----------------------------------------------------------------------------|
+| `cloudformation-serverless` | Jenkins job to build the serverless prototype.                              |
+| `global-aws-infrastructure` | Jenkins job to run tests on the global AWS infrastructure.                  |
+| `manual`                    | Jenkins jobs that are manually created instead of through a seed job.       |
+| `terraform-apply`           | Jenkins job to apply generic infrastructure changes using Terraform.        |
+| `terraform-destroy`         | Jenkins job to destroy generic infrastructure using Terraform.              |
