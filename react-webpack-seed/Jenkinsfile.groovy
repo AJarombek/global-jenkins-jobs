@@ -5,37 +5,53 @@
  */
 
 pipeline {
-    agent any
+    agent master
     stages {
-        stage('Build') {
+        stage('Checkout Repository') {
+            cleanWs()
+            checkout([$class: 'GitSCM',
+                      branches: [[name: '*/master']],
+                      credentialsId: "865da7f9-6fc8-49f3-aa56-8febd149e72b",
+                      userRemoteConfigs: [[url: "git@github.com:AJarombek/react-webpack-seed.git"]]])
+        }
+        stage('Install Dependencies') {
             steps {
-                sh "echo In Build Stage for build ${env.BUILD_ID}"
-                sh '''
-                    set -x
-                    npm install yarn -g
-                    yarn
-                    set +x
-                '''
+                dir('react-webpack-seed') {
+                    sh "echo In Install Dependencies Stage for build ${env.BUILD_ID}"
+                    sh '''
+                        set -x
+                        npm install yarn -g
+                        yarn
+                        set +x
+                    '''
+                }
             }
         }
         stage('Test') {
             steps {
-                sh '''
-                    echo In Test Stage
-                    set -x
-                    yarn run test
-                    set +x
-                '''
+                dir('react-webpack-seed') {
+                    sh '''
+                        echo In Test Stage
+                        set -x
+                        yarn run test
+                        set +x
+                    '''
+                }
             }
         }
-        stage('Deploy') {
+        stage('Compile and Zip') {
             steps {
-                sh '''
-                    echo In Deploy Stage
-                    set -x
-                    yarn run start
-                    set +x
-                '''
+                dir('react-webpack-seed') {
+                    sh '''
+                        echo In Compile and Zip Stage
+                        set -x
+                        yarn run build
+                        set +x
+                    '''
+                }
+                dir('react-webpack-seed/dist') {
+                    sh 'zip -r react_webpack.zip assets'
+                }
             }
         }
     }

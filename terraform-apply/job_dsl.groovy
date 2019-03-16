@@ -10,17 +10,12 @@ pipelineJob("terraform-apply") {
         stringParam("terraform_directory", "", "Terraform Directory")
     }
     definition {
-        cpsScm {
-            scm {
-                git {
-                    branch("master")
-                    remote {
-                        credentials("865da7f9-6fc8-49f3-aa56-8febd149e72b")
-                        github("AJarombek/global-jenkins-jobs", "ssh", "github.com")
-                    }
-                }
-            }
-            scriptPath("terraform-apply/Jenkinsfile.groovy")
+        cps {
+            sandbox()
+            script(readFileFromWorkspace("terraform-apply/Jenkinsfile.groovy"))
         }
+    }
+    wrappers {
+        colorizeOutput()
     }
 }

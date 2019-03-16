@@ -10,17 +10,12 @@ pipelineJob("terraform-destroy") {
         stringParam("terraform_directory", "", "Terraform Directory")
     }
     definition {
-        cpsScm {
-            scm {
-                git {
-                    branch("master")
-                    remote {
-                        credentials("ajarombek-github-ssh")
-                        github("AJarombek/global-jenkins-jobs", "ssh", "github.com")
-                    }
-                }
-            }
-            scriptPath("terraform-destroy/Jenkinsfile.groovy")
+        cps {
+            sandbox()
+            script(readFileFromWorkspace("terraform-destroy/Jenkinsfile.groovy"))
         }
+    }
+    wrappers {
+        colorizeOutput()
     }
 }
