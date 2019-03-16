@@ -16,7 +16,7 @@ pipelineJob("jenkins-bake-ami") {
                     }
                 }
             }
-            scriptPath("jenkins-bake-ami/jenkinsfile.groovy")
+            scriptPath("jenkins-bake-ami/Jenkinsfile.groovy")
         }
     }
 }

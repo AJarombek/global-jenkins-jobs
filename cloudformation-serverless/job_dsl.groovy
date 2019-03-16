@@ -17,7 +17,7 @@ pipelineJob("cloudformation-serverless") {
                     }
                 }
             }
-            scriptPath("cloudformation-serverless/jenkinsfile.groovy")
+            scriptPath("cloudformation-serverless/Jenkinsfile.groovy")
         }
     }
 }

@@ -1,10 +1,10 @@
 /**
- * Create a Pipeline Job for applying changes to AWS infrastructure using Terraform
+ * Create a Pipeline Job for destroying AWS infrastructure using Terraform
  * @author Andrew Jarombek
  * @since 11/21/2018
  */
 
-pipelineJob("terraform-apply") {
+pipelineJob("terraform-destroy") {
     parameters {
         stringParam("repository_url", "", "Repository URL")
         stringParam("terraform_directory", "", "Terraform Directory")
@@ -15,12 +15,12 @@ pipelineJob("terraform-apply") {
                 git {
                     branch("master")
                     remote {
-                        credentials("865da7f9-6fc8-49f3-aa56-8febd149e72b")
+                        credentials("ajarombek-github-ssh")
                         github("AJarombek/global-jenkins-jobs", "ssh", "github.com")
                     }
                 }
             }
-            scriptPath("terraform-apply/jenkinsfile.groovy")
+            scriptPath("terraform-destroy/Jenkinsfile.groovy")
         }
     }
 }

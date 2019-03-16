@@ -5,24 +5,23 @@
  * @since 11/21/2018
  */
 
-job("Seed_Job") {
+job("seed-job") {
     parameters {
-        stringParam("job_dsl_repo", "", "Repository containing the Job DSL script")
-        stringParam("job_dsl_branch", "", "Repo branch containing the Job DSL script")
-        stringParam("job_dsl_path", "", "Location of Job DSL script")
+        stringParam("repository", "", "Repository containing the Job DSL scripts")
+        stringParam("branch", "", "Repo branch containing the Job DSL scripts")
     }
     scm {
         git {
-            branch("\$job_dsl_branch")
+            branch("\$branch")
             remote {
                 credentials("865da7f9-6fc8-49f3-aa56-8febd149e72b")
-                github("AJarombek/\$job_dsl_repo", "ssh", "github.com")
+                github("AJarombek/\$repository", "ssh", "github.com")
             }
         }
     }
     steps {
         dsl {
-            external("\$job_dsl_path")
+            external("**/job_dsl.groovy")
         }
     }
     wrappers {
