@@ -12,7 +12,7 @@ modules.each { module ->
         definition {
             cps {
                 sandbox()
-                script("global-aws-infrastructure/Jenkinsfile.groovy")
+                script(readFileFromWorkspace("global-aws-infrastructure/Jenkinsfile.groovy"))
             }
         }
         triggers {

@@ -8,7 +8,7 @@ pipelineJob("react-webpack-seed") {
     definition {
         cps {
             sandbox()
-            script("react-webpack-seed/Jenkinsfile.groovy")
+            script(readFileFromWorkspace("react-webpack-seed/Jenkinsfile.groovy"))
         }
     }
 }

@@ -12,7 +12,7 @@ environments.each { env ->
         definition {
             cps {
                 sandbox()
-                script("saints-xctf-infrastructure/Jenkinsfile.groovy")
+                script(readFileFromWorkspace("saints-xctf-infrastructure/Jenkinsfile.groovy"))
             }
         }
         triggers {
