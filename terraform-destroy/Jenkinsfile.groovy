@@ -26,7 +26,7 @@ node("master") {
             try {
                 ansiColor('xterm') {
                     sh """
-                        terraform destroy
+                        terraform destroy -auto-approve
                     """
                 }
             } catch (Exception ex) {

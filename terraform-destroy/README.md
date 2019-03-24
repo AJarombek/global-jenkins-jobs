@@ -6,5 +6,5 @@ This directory contains the Jenkins pipeline job for destroying cloud infrastruc
 
 | Filename                    | Description                                                                                      |
 |-----------------------------|--------------------------------------------------------------------------------------------------|
-| `jenkinsfile.groovy`        | Jenkinsfile which is executed when the `terraform-destroy` pipeline job is run.                  |
-| `terraform_destroy.groovy`  | *Job DSL Plugin* script which creates the `terraform-destroy` Jenkins job.                       |
+| `Jenkinsfile.groovy`        | Jenkinsfile which is executed when the `terraform-destroy` pipeline job is run.                  |
+| `job_dsl.groovy`            | *Job DSL Plugin* script which creates the `terraform-destroy` Jenkins job.                       |

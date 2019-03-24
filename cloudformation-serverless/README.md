@@ -9,4 +9,4 @@ with CloudFormation.
 | Filename                            | Description                                                                                      |
 |-------------------------------------|--------------------------------------------------------------------------------------------------|
 | `jenkinsfile.groovy`                | Jenkinsfile which is executed when the `cloudformation-serverless` pipeline job is run.          |
-| `cloudformation-serverless.groovy`  | *Job DSL Plugin* script which creates the `cloudformation-serverless` Jenkins job.               |
+| `job_dsl.groovy`                    | *Job DSL Plugin* script which creates the `cloudformation-serverless` Jenkins job.               |
