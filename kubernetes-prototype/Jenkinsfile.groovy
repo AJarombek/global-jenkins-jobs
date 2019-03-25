@@ -65,6 +65,9 @@ def terraform(boolean create) {
             terraform apply -auto-approve
         """
     } else {
-        sh "terraform destroy -auto-approve"
+        sh """
+            terraform init
+            terraform destroy -auto-approve
+        """
     }
 }
