@@ -4,11 +4,11 @@
  * @since 1/24/2019
  */
 
-pipelineJob("jenkins-bake-ami") {
+pipelineJob("bake-ami") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("jenkins-bake-ami/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("bake-ami/Jenkinsfile.groovy"))
         }
     }
     wrappers {

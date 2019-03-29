@@ -16,16 +16,18 @@ node("master") {
                   userRemoteConfigs: [[url: "git@github.com:AJarombek/kubernetes-prototype.git"]]])
     }
     stage("eks-cluster") {
-        dir("eks/cluster") {
+        dir("infra/eks/cluster") {
             ansiColor('css') {
                 terraform(create)
             }
         }
     }
     stage("bastion-key") {
-        dir("bastion/key") {
+        dir("infra/bastion/key") {
             def result = sh(
-                script: "aws ec2 describe-key-pairs --key-name eks-sandbox-bastion-key --query \"KeyPairs\" | jq length",
+                script: """
+                    aws ec2 describe-key-pairs --key-name eks-sandbox-bastion-key --query "KeyPairs" | jq length
+                """,
                 returnStdout: true
             )
             if (result == "0") {
@@ -38,14 +40,14 @@ node("master") {
         }
     }
     stage("eks-nodes") {
-        dir("eks/nodes") {
+        dir("infra/eks/nodes") {
             ansiColor('css') {
                 terraform(create)
             }
         }
     }
     stage("bastion-host") {
-        dir("bastion/host") {
+        dir("infra/bastion/host") {
             ansiColor('css') {
                 terraform(create)
             }
@@ -67,6 +69,7 @@ def terraform(boolean create) {
     } else {
         sh """
             terraform init
+            terraform plan
             terraform destroy -auto-approve
         """
     }
