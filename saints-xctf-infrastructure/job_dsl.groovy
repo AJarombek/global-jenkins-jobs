@@ -16,7 +16,7 @@ environments.each { env ->
             }
         }
         triggers {
-            cron('@daily')
+            cron('30 7 * * *')
         }
         wrappers {
             colorizeOutput()

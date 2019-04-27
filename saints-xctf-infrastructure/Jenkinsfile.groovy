@@ -13,10 +13,18 @@ node("master") {
                   userRemoteConfigs: [[url: "git@github.com:AJarombek/saints-xctf-infrastructure.git"]]])
     }
     stage("run-tests") {
+
+        // Get the environment from the job name
+        def matches = JOB_NAME =~ /saints-xctf-infrastructure-(\w+)/
+        def env = matches[0][1]
+
         dir("test") {
             try {
                 ansiColor('xterm') {
-                    sh "python3 masterTestSuite.py"
+                    sh """
+                        export TEST_ENV="$env"
+                        python3 masterTestSuite.py
+                    """
                 }
             } catch (Exception ex) {
                 echo "Infrastructure Testing Failed"

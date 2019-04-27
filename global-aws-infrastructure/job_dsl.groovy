@@ -16,7 +16,7 @@ modules.each { module ->
             }
         }
         triggers {
-            cron('@daily')
+            cron('30 7 * * *')
         }
         wrappers {
             colorizeOutput()
