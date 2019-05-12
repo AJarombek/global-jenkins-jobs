@@ -23,3 +23,4 @@ underscores.
 | `single-seed-job`            | Jenkins job creating a seed job that generates a single job.                  |
 | `terraform-apply`            | Jenkins job to apply generic infrastructure changes using Terraform.          |
 | `terraform-destroy`          | Jenkins job to destroy generic infrastructure using Terraform.                |
+| `trigger-seed-job`           | Seed Jenkins job for creating CI trigger jobs.                                |

@@ -5,21 +5,20 @@
  * @since 3/16/2019
  */
 
-def modules = ["global", "jenkins", "sandbox"]
-
-modules.each { module ->
-    pipelineJob("global-aws-infrastructure-$module") {
-        definition {
-            cps {
-                sandbox()
-                script(readFileFromWorkspace("global-aws-infrastructure/Jenkinsfile.groovy"))
-            }
+pipelineJob("global-aws-infrastructure") {
+    parameters {
+        stringParam('branch', 'master', 'Branch in the global-aws-infrastructure repository to test')
+    }
+    definition {
+        cps {
+            sandbox()
+            script(readFileFromWorkspace("global-aws-infrastructure/Jenkinsfile.groovy"))
         }
-        triggers {
-            cron('30 7 * * *')
-        }
-        wrappers {
-            colorizeOutput()
-        }
+    }
+    triggers {
+        cron('30 7 * * *')
+    }
+    wrappers {
+        colorizeOutput()
     }
 }

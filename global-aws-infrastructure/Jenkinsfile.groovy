@@ -5,7 +5,7 @@
  */
 
 node("master") {
-    stage("checkout-test-suite") {
+    stage("checkout") {
         cleanWs()
         checkout([$class: 'GitSCM',
                   branches: [[name: '*/master']],
@@ -13,16 +13,10 @@ node("master") {
                   userRemoteConfigs: [[url: "git@github.com:AJarombek/global-aws-infrastructure.git"]]])
     }
     stage("run-tests") {
-
-        // Get the environment from the job name
-        def matches = JOB_NAME =~ /global-aws-infrastructure-(\w+)/
-        def env = matches[0][1]
-
         dir("test") {
             try {
                 ansiColor('xterm') {
                     sh """
-                        export TEST_ENV="$env"
                         python3 masterTestSuite.py
                     """
                 }
