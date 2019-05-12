@@ -1,3 +1,7 @@
+#!/usr/bin/groovy
+
+@Library(['global-jenkins-library@master']) _
+
 /**
  * Jenkins script for baking AMIs for the Jenkins server EC2 instance
  * @author Andrew Jarombek

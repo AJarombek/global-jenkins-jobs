@@ -4,8 +4,8 @@
  * @since 11/21/2018
  */
 
-PARAM_OPERATION = Operation
-def create = PARAM_OPERATION == 'create'
+final String PARAM_OPERATION = Operation
+final boolean is_create = PARAM_OPERATION == 'create'
 
 node("master") {
     stage("checkout") {
@@ -16,10 +16,8 @@ node("master") {
                   userRemoteConfigs: [[url: "git@github.com:AJarombek/kubernetes-prototype.git"]]])
     }
     stage("eks-cluster") {
-        dir("infra/eks/cluster") {
-            ansiColor('css') {
-                terraform(create)
-            }
+        ansiColor('css') {
+            tf(is_create, "infra/eks/cluster")
         }
     }
     stage("bastion-key") {
@@ -32,7 +30,7 @@ node("master") {
             )
             if (result == "0") {
                 ansiColor('css') {
-                    terraform(create)
+                    tf(is_create, "infra/bastion/key")
                 }
             } else {
                 println "eks-sandbox-bastion-key already created."
@@ -40,37 +38,27 @@ node("master") {
         }
     }
     stage("eks-nodes") {
-        dir("infra/eks/nodes") {
-            ansiColor('css') {
-                terraform(create)
-            }
+        ansiColor('css') {
+            tf(is_create, "infra/eks/nodes")
         }
     }
     stage("bastion-host") {
-        dir("infra/bastion/host") {
-            ansiColor('css') {
-                terraform(create)
-            }
+        ansiColor('css') {
+            tf(is_create, "infra/bastion/host")
         }
     }
 }
 
 /**
  * Function to execute a Terraform apply or destroy
- * @param create - If True, create the infrastructure.  If False, destroy the infrastructure.
+ * @param create If True, create the infrastructure.  If False, destroy the infrastructure.
+ * @param path The directory path to the Terraform infrastructure which needs to be either created or deleted
+ * @param repository Repo that the Terraform infrastructure exists in
  */
-def terraform(boolean create) {
+def tf(boolean create, String path, String repository = 'git@github.com:AJarombek/kubernetes-prototype.git') {
     if (create) {
-        sh """
-            terraform init
-            terraform plan
-            terraform apply -auto-approve
-        """
+        terraform.terraformApply(path, repository, true)
     } else {
-        sh """
-            terraform init
-            terraform plan
-            terraform destroy -auto-approve
-        """
+        terraform.terraformDestroy(path, repository)
     }
 }
