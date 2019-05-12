@@ -1,3 +1,7 @@
+#!/usr/bin/groovy
+
+@Library(['global-jenkins-library@master']) _
+
 /**
  * Jenkins script for applying changes to AWS infrastructure using Terraform
  * @author Andrew Jarombek

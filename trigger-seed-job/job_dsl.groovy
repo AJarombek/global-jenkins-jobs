@@ -14,9 +14,8 @@ job('trigger-seed-job') {
         git {
             branch("\$branch")
             remote {
-                name('origin')
-                url('git@github.com:AJarombek/\${repository}.git')
-                credentials('865da7f9-6fc8-49f3-aa56-8febd149e72b')
+                credentials("865da7f9-6fc8-49f3-aa56-8febd149e72b")
+                github("AJarombek/\$repository", "ssh", "github.com")
             }
         }
     }

@@ -4,7 +4,7 @@
  * @since 3/24/2019
  */
 
-pipelineJob("kubernetes-prototype") {
+pipelineJob("kubernetes-prototype-infra") {
     parameters {
         choiceParam(
             "Operation",
