@@ -24,7 +24,4 @@ job("seed-job") {
             external("**/job_dsl.groovy")
         }
     }
-    wrappers {
-        colorizeOutput()
-    }
 }

@@ -18,7 +18,4 @@ pipelineJob("kubernetes-prototype-infra") {
             script(readFileFromWorkspace("kubernetes-prototype/Jenkinsfile.groovy"))
         }
     }
-    wrappers {
-        colorizeOutput()
-    }
 }

@@ -15,7 +15,4 @@ pipelineJob("terraform-apply") {
             script(readFileFromWorkspace("terraform-apply/Jenkinsfile.groovy"))
         }
     }
-    wrappers {
-        colorizeOutput()
-    }
 }

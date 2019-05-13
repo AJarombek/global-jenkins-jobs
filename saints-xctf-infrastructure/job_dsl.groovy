@@ -18,8 +18,5 @@ environments.each { env ->
         triggers {
             cron('30 7 * * *')
         }
-        wrappers {
-            colorizeOutput()
-        }
     }
 }

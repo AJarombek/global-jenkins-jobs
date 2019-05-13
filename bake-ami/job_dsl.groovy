@@ -5,13 +5,16 @@
  */
 
 pipelineJob("bake-ami") {
+    parameters {
+        stringParam('repository', '', 'Repository containing a Packer template to build an AMI')
+        stringParam('branch', 'master', 'Branch in the repository containing a Packer template to build an AMI from')
+        stringParam('path', '', 'Directory path to the Packer template')
+        stringParam('filename', '', 'Packer template filename')
+    }
     definition {
         cps {
             sandbox()
             script(readFileFromWorkspace("bake-ami/Jenkinsfile.groovy"))
         }
-    }
-    wrappers {
-        colorizeOutput()
     }
 }

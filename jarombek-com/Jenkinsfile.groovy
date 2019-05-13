@@ -12,10 +12,14 @@ node("master") {
                   credentialsId : "865da7f9-6fc8-49f3-aa56-8febd149e72b",
                   userRemoteConfigs: [[url: "git@github.com:AJarombek/jarombek-com.git"]]])
     }
-    stage("server tests") {
-        print "server"
+    stage("Init") {
+        ansiColor('xterm') {
+            sh "yarn"
+        }
     }
-    stage("client tests") {
-        print "client"
+    stage("application tests") {
+        ansiColor('xterm') {
+            sh "yarn run client:server:test"
+        }
     }
 }

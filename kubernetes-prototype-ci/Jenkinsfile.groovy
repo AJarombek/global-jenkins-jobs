@@ -13,12 +13,24 @@ node("master") {
                   userRemoteConfigs: [[url: "git@github.com:AJarombek/kubernetes-prototype.git"]]])
     }
     stage("infra tests") {
-        print "server"
+        dir("infra/test") {
+            ansiColor('xterm') {
+                sh "python3 masterTestSuite.py"
+            }
+        }
     }
     stage("server tests") {
-        print "server"
+        dir("app/client/plates") {
+            ansiColor('xterm') {
+                sh "npm run test"
+            }
+        }
     }
     stage("client tests") {
-        print "server"
+        dir("app/server") {
+            ansiColor('xterm') {
+                sh "npm run test"
+            }
+        }
     }
 }

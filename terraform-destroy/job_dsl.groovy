@@ -15,7 +15,4 @@ pipelineJob("terraform-destroy") {
             script(readFileFromWorkspace("terraform-destroy/Jenkinsfile.groovy"))
         }
     }
-    wrappers {
-        colorizeOutput()
-    }
 }

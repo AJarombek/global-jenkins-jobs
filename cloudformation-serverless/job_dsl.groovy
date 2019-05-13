@@ -12,7 +12,4 @@ pipelineJob("cloudformation-serverless") {
             script(readFileFromWorkspace("cloudformation-serverless/Jenkinsfile.groovy"))
         }
     }
-    wrappers {
-        colorizeOutput()
-    }
 }

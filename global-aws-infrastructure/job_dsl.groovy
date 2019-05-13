@@ -18,7 +18,4 @@ pipelineJob("global-aws-infrastructure") {
     triggers {
         cron('30 7 * * *')
     }
-    wrappers {
-        colorizeOutput()
-    }
 }
