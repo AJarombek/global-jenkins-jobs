@@ -6,6 +6,7 @@
  */
 
 pipelineJob("global-aws-infrastructure") {
+    description("Pipeline Job for testing the global-aws-infrastructure project")
     parameters {
         stringParam('branch', 'master', 'Branch in the global-aws-infrastructure repository to test')
     }

@@ -6,6 +6,7 @@
  */
 
 job("seed-job") {
+    description("Freestyle Job that builds other jobs")
     parameters {
         stringParam("repository", "", "Repository containing the Job DSL scripts")
         stringParam("branch", "", "Repo branch containing the Job DSL scripts")

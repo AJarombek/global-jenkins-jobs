@@ -5,6 +5,7 @@
  */
 
 pipelineJob("terraform-destroy") {
+    description("Pipeline Job for destroying AWS infrastructure using Terraform")
     parameters {
         stringParam("repository_url", "", "Repository URL")
         stringParam("terraform_directory", "", "Terraform Directory")

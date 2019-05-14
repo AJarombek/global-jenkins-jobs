@@ -5,6 +5,7 @@
  */
 
 pipelineJob("react-webpack-seed") {
+    description("Pipeline Job for deploying the react-webpack-seed project")
     definition {
         cps {
             sandbox()

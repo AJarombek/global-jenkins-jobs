@@ -5,6 +5,7 @@
  */
 
 pipelineJob("kubernetes-prototype-infra") {
+    description("Pipeline Job for building the Kubernetes Prototype base infrastructure")
     parameters {
         choiceParam(
             "Operation",

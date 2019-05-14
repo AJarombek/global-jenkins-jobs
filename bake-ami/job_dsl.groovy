@@ -1,10 +1,11 @@
 /**
- * Create a Pipeline Job for baking AMIs for the Jenkins server
+ * Create a Pipeline Job for baking AMIs
  * @author Andrew Jarombek
  * @since 1/24/2019
  */
 
 pipelineJob("bake-ami") {
+    description("Pipeline Job for baking AMIs")
     parameters {
         stringParam('repository', '', 'Repository containing a Packer template to build an AMI')
         stringParam('branch', 'master', 'Branch in the repository containing a Packer template to build an AMI from')

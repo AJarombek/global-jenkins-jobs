@@ -6,6 +6,7 @@
  */
 
 pipelineJob("jarombek-com") {
+    description("Pipeline Job for testing the jarombek-com project")
     parameters {
         stringParam('branch', 'master', 'Branch in the jarombek-com repository to test')
     }

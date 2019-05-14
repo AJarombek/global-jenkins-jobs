@@ -6,6 +6,7 @@
  */
 
 pipelineJob("kubernetes-prototype-ci") {
+    description("Pipeline Job for testing the kubernetes-prototype project")
     parameters {
         stringParam('branch', 'master', 'Branch in the kubernetes-prototype repository to test')
     }

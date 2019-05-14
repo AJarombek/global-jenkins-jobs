@@ -13,10 +13,11 @@ node("master") {
                   userRemoteConfigs: [[url: "git@github.com:AJarombek/global-aws-infrastructure.git"]]])
     }
     stage("run-tests") {
-        dir("test") {
+        dir("test/src") {
             try {
                 ansiColor('xterm') {
                     sh """
+                        python3 --version
                         python3 masterTestSuite.py
                     """
                 }
