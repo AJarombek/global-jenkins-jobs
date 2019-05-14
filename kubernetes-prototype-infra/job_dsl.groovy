@@ -15,7 +15,7 @@ pipelineJob("kubernetes-prototype-infra") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("kubernetes-prototype/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("kubernetes-prototype-infra/Jenkinsfile.groovy"))
         }
     }
 }
