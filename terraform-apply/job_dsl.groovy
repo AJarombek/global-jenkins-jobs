@@ -7,7 +7,7 @@
 pipelineJob("terraform-apply") {
     description("Pipeline Job for applying changes to AWS infrastructure using Terraform")
     parameters {
-        stringParam("repository_url", "", "Repository URL")
+        stringParam("repository_name", "", "Repository Name")
         stringParam("terraform_directory", "", "Terraform Directory")
     }
     definition {

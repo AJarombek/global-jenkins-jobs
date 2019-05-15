@@ -8,6 +8,9 @@
  * @since 11/21/2018
  */
 
+final String PARAM_REPO_NAME = repository_name
+final String PARAM_TERRAFORM_DIR = terraform_directory
+
 node("master") {
-    terraform.terraformDestroy(terraform_directory, repository_url)
+    terraform.terraformDestroy(PARAM_TERRAFORM_DIR, "git@github.com:AJarombek/$PARAM_REPO_NAME.git")
 }
