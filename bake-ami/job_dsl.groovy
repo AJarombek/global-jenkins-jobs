@@ -4,7 +4,7 @@
  * @since 1/24/2019
  */
 
-pipelineJob("bake-ami") {
+pipelineJob("devops-jobs/bake-ami") {
     description("Pipeline Job for baking AMIs")
     parameters {
         stringParam('repository', '', 'Repository containing a Packer template to build an AMI')

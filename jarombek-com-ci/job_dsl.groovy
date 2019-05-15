@@ -5,7 +5,7 @@
  * @since 5/12/2019
  */
 
-pipelineJob("jarombek-com") {
+pipelineJob("jarombek-com/jarombek-com-ci") {
     description("Pipeline Job for testing the jarombek-com project")
     parameters {
         stringParam('branch', 'master', 'Branch in the jarombek-com repository to test')
@@ -13,7 +13,7 @@ pipelineJob("jarombek-com") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("jarombek-com/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("jarombek-com-ci/Jenkinsfile.groovy"))
         }
     }
 }

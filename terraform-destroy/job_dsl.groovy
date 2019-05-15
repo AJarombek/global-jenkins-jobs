@@ -4,7 +4,7 @@
  * @since 11/21/2018
  */
 
-pipelineJob("terraform-destroy") {
+pipelineJob("devops-jobs/terraform-destroy") {
     description("Pipeline Job for destroying AWS infrastructure using Terraform")
     parameters {
         stringParam("repository_name", "", "Repository Name")

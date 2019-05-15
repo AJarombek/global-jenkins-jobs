@@ -5,7 +5,7 @@
  * @since 11/21/2018
  */
 
-job("seed-job") {
+job("seed-jobs/seed-job") {
     description("Freestyle Job that builds other jobs")
     parameters {
         stringParam("repository", "", "Repository containing the Job DSL scripts")

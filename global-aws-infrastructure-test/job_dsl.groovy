@@ -5,7 +5,7 @@
  * @since 3/16/2019
  */
 
-pipelineJob("global-aws-infrastructure-test") {
+pipelineJob("global-aws-infrastructure/global-aws-infrastructure-test") {
     description("Pipeline Job for testing the global-aws-infrastructure project")
     parameters {
         stringParam('branch', 'master', 'Branch in the global-aws-infrastructure repository to test')

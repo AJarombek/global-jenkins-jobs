@@ -4,7 +4,7 @@
  * @since 3/24/2019
  */
 
-pipelineJob("kubernetes-prototype-infra") {
+pipelineJob("kubernetes-prototype/kubernetes-prototype-infra") {
     description("Pipeline Job for building the Kubernetes Prototype base infrastructure")
     parameters {
         choiceParam(

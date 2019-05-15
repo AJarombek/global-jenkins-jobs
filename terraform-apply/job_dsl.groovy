@@ -4,7 +4,7 @@
  * @since 11/21/2018
  */
 
-pipelineJob("terraform-apply") {
+pipelineJob("devops-jobs/terraform-apply") {
     description("Pipeline Job for applying changes to AWS infrastructure using Terraform")
     parameters {
         stringParam("repository_name", "", "Repository Name")

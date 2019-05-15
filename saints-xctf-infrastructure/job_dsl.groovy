@@ -8,7 +8,7 @@
 def environments = ["prod", "dev"]
 
 environments.each { env ->
-    pipelineJob("saints-xctf-infrastructure-$env") {
+    pipelineJob("saints-xctf-infrastructure/saints-xctf-infrastructure-$env") {
         description("Pipeline Job for testing the saints-xctf-infrastructure project")
         definition {
             cps {

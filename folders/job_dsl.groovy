@@ -55,6 +55,21 @@ folder('devops-jobs') {
     }
 }
 
+// Global: Seed Jobs
+folder('seed-jobs') {
+    displayName('Seed Jobs')
+    description('Folder for Job DSL Plugin Seed Jobs')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+                'hudson.model.Item.Create',
+                'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {}
+}
+
 // Repository Specific: kubernetes-prototype
 folder('kubernetes-prototype') {
     displayName('kubernetes-prototype')
@@ -119,11 +134,77 @@ folder('global-aws-infrastructure') {
     }
     views {
         listView('Continuous Integration') {
-            description('All jobs for the Global AWS Infrastructure')
+            description('Continuous Integration jobs for the Global AWS Infrastructure')
             filterBuildQueue()
             filterExecutors()
             jobs {
                 names('global-aws-infrastructure-test')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
+// Repository Specific: jarombek-com
+folder('jarombek-com') {
+    displayName('jarombek-com')
+    description('Folder for the jarombek-com Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+                'hudson.model.Item.Create',
+                'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the jarombek.com Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('jarombek-com-ci')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
+// Repository Specific: saints-xctf-infrastructure
+folder('saints-xctf-infrastructure') {
+    displayName('saints-xctf-infrastructure')
+    description('Folder for the saints-xctf-infrastructure Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the SaintsXCTF Infrastructure')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('saints-xctf-infrastructure-dev', 'saints-xctf-infrastructure-prod')
             }
             columns() {
                 status()
