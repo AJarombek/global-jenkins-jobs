@@ -21,7 +21,7 @@ folder('devops-jobs') {
         listView('All') {
             description('All jobs for the Kubernetes Prototype')
             filterBuildQueue()
-            filterExecuters()
+            filterExecutors()
             jobs {
                 names('terraform-apply', 'terraform-destroy', 'bake-ami')
             }
@@ -54,9 +54,42 @@ folder('kubernetes-prototype') {
         listView('All') {
             description('All jobs for the Kubernetes Prototype')
             filterBuildQueue()
-            filterExecuters()
+            filterExecutors()
             jobs {
                 names('kubernetes-prototype-ci', 'kubernetes-prototype-infra')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
+// Repository Specific: global-aws-infrastructure
+folder('global-aws-infrastructure') {
+    displayName('global-aws-infrastructure')
+    description('Folder for the global-aws-infrastructure Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('All') {
+            description('All jobs for the Global AWS Infrastructure')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('global-aws-infrastructure')
             }
             columns() {
                 status()
