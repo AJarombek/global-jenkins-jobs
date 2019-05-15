@@ -10,17 +10,17 @@ underscores.
 
 ### Directories
 
-| Directory Name               | Description                                                                   |
-|------------------------------|-------------------------------------------------------------------------------|
-| `bake-ami`                   | Jenkins job to back an Amazon Machine Image with Hashicorp Packer.            |
-| `cloudformation-serverless`  | Jenkins job to build the serverless prototype.                                |
-| `global-aws-infrastructure`  | Jenkins job to run tests on the global AWS infrastructure.                    |
-| `kubernetes-prototype`       | Jenkins job to build/destroy AWS infrastructure for the kubernetes prototype. |
-| `manual`                     | Jenkins jobs that are manually created instead of through a seed job.         |
-| `modules`                    | Groovy modules for creating reusable Job DSL Plugin scripts.                  |
-| `react-webpack-seed`         | Jenkins job to build the react-webpack-seed.                                  |
-| `saints-xctf-infrastructure` | Jenkins job to run tests on the SaintsXCTF AWS infrastructure.                |
-| `single-seed-job`            | Jenkins job creating a seed job that generates a single job.                  |
-| `terraform-apply`            | Jenkins job to apply generic infrastructure changes using Terraform.          |
-| `terraform-destroy`          | Jenkins job to destroy generic infrastructure using Terraform.                |
-| `trigger-seed-job`           | Seed Jenkins job for creating CI trigger jobs.                                |
+| Directory Name                    | Description                                                                   |
+|-----------------------------------|-------------------------------------------------------------------------------|
+| `bake-ami`                        | Jenkins job to back an Amazon Machine Image with Hashicorp Packer.            |
+| `cloudformation-serverless`       | Jenkins job to build the serverless prototype.                                |
+| `global-aws-infrastructure-test`  | Jenkins job to run tests on the global AWS infrastructure.                    |
+| `kubernetes-prototype`            | Jenkins job to build/destroy AWS infrastructure for the kubernetes prototype. |
+| `manual`                          | Jenkins jobs that are manually created instead of through a seed job.         |
+| `modules`                         | Groovy modules for creating reusable Job DSL Plugin scripts.                  |
+| `react-webpack-seed`              | Jenkins job to build the react-webpack-seed.                                  |
+| `saints-xctf-infrastructure`      | Jenkins job to run tests on the SaintsXCTF AWS infrastructure.                |
+| `single-seed-job`                 | Jenkins job creating a seed job that generates a single job.                  |
+| `terraform-apply`                 | Jenkins job to apply generic infrastructure changes using Terraform.          |
+| `terraform-destroy`               | Jenkins job to destroy generic infrastructure using Terraform.                |
+| `trigger-seed-job`                | Seed Jenkins job for creating CI trigger jobs.                                |

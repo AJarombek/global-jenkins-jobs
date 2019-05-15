@@ -18,12 +18,29 @@ folder('devops-jobs') {
         permission('hudson.model.Item.Discover', 'guest')
     }
     views {
-        listView('All') {
-            description('All jobs for the Kubernetes Prototype')
+        listView('Terraform') {
+            description('Terraform jobs used globally for IaC')
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('terraform-apply', 'terraform-destroy', 'bake-ami')
+                names('terraform-apply', 'terraform-destroy')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+        listView('Packer') {
+            description('Packer jobs used globally for building AMIs for AWS')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('bake-ami')
             }
             columns() {
                 status()
@@ -51,12 +68,29 @@ folder('kubernetes-prototype') {
         permission('hudson.model.Item.Discover', 'guest')
     }
     views {
-        listView('All') {
-            description('All jobs for the Kubernetes Prototype')
+        listView('Infrastructure') {
+            description('Infrastructure jobs for the Kubernetes Prototype')
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('kubernetes-prototype-ci', 'kubernetes-prototype-infra')
+                names('kubernetes-prototype-infra')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+        listView('Continuous Integration') {
+            description('Continuous Integration (CI) jobs for the Kubernetes Prototype')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('kubernetes-prototype-ci')
             }
             columns() {
                 status()
@@ -84,12 +118,12 @@ folder('global-aws-infrastructure') {
         permission('hudson.model.Item.Discover', 'guest')
     }
     views {
-        listView('All') {
+        listView('Continuous Integration') {
             description('All jobs for the Global AWS Infrastructure')
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('global-aws-infrastructure')
+                names('global-aws-infrastructure-test')
             }
             columns() {
                 status()
