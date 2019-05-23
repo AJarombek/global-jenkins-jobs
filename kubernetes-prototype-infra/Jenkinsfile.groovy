@@ -20,16 +20,16 @@ node("master") {
                   userRemoteConfigs: [[url: "git@github.com:AJarombek/kubernetes-prototype.git"]]])
     }
     if (is_create) {
-        eksClusterStage()
-        bastionKeyStage()
-        eksNodesStage()
-        bastionHostStage()
+        eksClusterStage(is_create)
+        bastionKeyStage(is_create)
+        eksNodesStage(is_create)
+        bastionHostStage(is_create)
     } else {
         // When removing infrastructure, it should be destroyed in the reverse order of its creation
-        bastionHostStage()
-        eksNodesStage()
-        bastionKeyStage()
-        eksClusterStage()
+        bastionHostStage(is_create)
+        eksNodesStage(is_create)
+        bastionKeyStage(is_create)
+        eksClusterStage(is_create)
     }
 }
 
@@ -49,8 +49,9 @@ def tf(boolean create, String path, String repository = 'git@github.com:AJarombe
 
 /**
  * Pipeline stage that either creates or destroys the EKS Cluster
+ * @param is_create If True, create the infrastructure.  If False, destroy the infrastructure.
  */
-def eksClusterStage() {
+def eksClusterStage(boolean is_create) {
     stage("eks-cluster") {
         ansiColor('css') {
             tf(is_create, "infra/eks/cluster")
@@ -60,8 +61,9 @@ def eksClusterStage() {
 
 /**
  * Pipeline stage that either creates or destroys the SSH Key for the Bastion Host
+ * @param is_create If True, create the infrastructure.  If False, destroy the infrastructure.
  */
-def bastionKeyStage() {
+def bastionKeyStage(boolean is_create) {
     stage("bastion-key") {
         dir("infra/bastion/key") {
             def result = sh(
@@ -83,8 +85,9 @@ def bastionKeyStage() {
 
 /**
  * Pipeline stage that either creates or destroys the EKS Cluster Nodes (EC2 Instances)
+ * @param is_create If True, create the infrastructure.  If False, destroy the infrastructure.
  */
-def eksNodesStage() {
+def eksNodesStage(boolean is_create) {
     stage("eks-nodes") {
         ansiColor('css') {
             tf(is_create, "infra/eks/nodes")
@@ -94,8 +97,9 @@ def eksNodesStage() {
 
 /**
  * Pipeline stage that either creates or destroys the EKS Cluster Bastion Host (EC2 Instance)
+ * @param is_create If True, create the infrastructure.  If False, destroy the infrastructure.
  */
-def bastionHostStage() {
+def bastionHostStage(boolean is_create) {
     stage("bastion-host") {
         ansiColor('css') {
             tf(is_create, "infra/bastion/host")
