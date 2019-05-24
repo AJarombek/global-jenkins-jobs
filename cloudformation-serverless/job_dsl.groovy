@@ -7,6 +7,7 @@
 
 pipelineJob("cloudformation-serverless") {
     description("Pipeline Job for creating and deploying a CloudFormation template")
+    concurrentBuild(true)
     definition {
         cps {
             sandbox()

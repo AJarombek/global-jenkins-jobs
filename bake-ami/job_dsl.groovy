@@ -12,6 +12,7 @@ pipelineJob("devops-jobs/bake-ami") {
         stringParam('path', '', 'Directory path to the Packer template')
         stringParam('filename', '', 'Packer template filename')
     }
+    concurrentBuild(true)
     definition {
         cps {
             sandbox()

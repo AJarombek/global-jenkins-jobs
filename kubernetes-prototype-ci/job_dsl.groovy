@@ -10,6 +10,7 @@ pipelineJob("kubernetes-prototype/kubernetes-prototype-ci") {
     parameters {
         stringParam('branch', 'master', 'Branch in the kubernetes-prototype repository to test')
     }
+    concurrentBuild(true)
     definition {
         cps {
             sandbox()

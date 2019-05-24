@@ -10,6 +10,7 @@ pipelineJob("devops-jobs/terraform-destroy") {
         stringParam("repository_name", "", "Repository Name")
         stringParam("terraform_directory", "", "Terraform Directory")
     }
+    concurrentBuild(true)
     definition {
         cps {
             sandbox()

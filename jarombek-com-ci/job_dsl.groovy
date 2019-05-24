@@ -10,6 +10,7 @@ pipelineJob("jarombek-com/jarombek-com-ci") {
     parameters {
         stringParam('branch', 'master', 'Branch in the jarombek-com repository to test')
     }
+    concurrentBuild(true)
     definition {
         cps {
             sandbox()

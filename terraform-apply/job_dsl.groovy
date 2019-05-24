@@ -10,6 +10,7 @@ pipelineJob("devops-jobs/terraform-apply") {
         stringParam("repository_name", "", "Repository Name")
         stringParam("terraform_directory", "", "Terraform Directory")
     }
+    concurrentBuild(true)
     definition {
         cps {
             sandbox()

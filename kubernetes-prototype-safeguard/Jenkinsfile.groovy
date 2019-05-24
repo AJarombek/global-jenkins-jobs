@@ -8,6 +8,8 @@
 
 node("master") {
     stage("Trigger") {
-        build job: 'kubernetes-prototype-safeguard', parameters: []
+        build job: 'kubernetes-prototype-infra', parameters: [
+            [$class: 'ChoiceParameterValue', name: 'Operation', value: 'destroy']
+        ]
     }
 }

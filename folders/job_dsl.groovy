@@ -218,3 +218,36 @@ folder('saints-xctf-infrastructure') {
         }
     }
 }
+
+// Repository Specific: react-webpack-seed
+folder('react-webpack-seed') {
+    displayName('react-webpack-seed')
+    description('Folder for the react-webpack-seed Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the React.js and Webpack Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('react-webpack-seed')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
