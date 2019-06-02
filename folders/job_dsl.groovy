@@ -88,7 +88,7 @@ folder('kubernetes-prototype') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('kubernetes-prototype-infra')
+                names('kubernetes-prototype-infra', 'kubernetes-prototype-safeguard')
             }
             columns() {
                 status()
@@ -172,6 +172,39 @@ folder('jarombek-com') {
             filterExecutors()
             jobs {
                 names('jarombek-com-ci')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
+// Repository Specific: jarombek-com-infrastructure
+folder('jarombek-com-infrastructure') {
+    displayName('jarombek-com-infrastructure')
+    description('Folder for the jarombek-com-infrastructure Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+                'hudson.model.Item.Create',
+                'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the jarombek.com AWS Infrastructure')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('jarombek-com-infrastructure-test-dev', 'jarombek-com-infrastructure-test-prod')
             }
             columns() {
                 status()

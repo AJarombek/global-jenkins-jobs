@@ -10,6 +10,9 @@ def environments = ["prod", "dev"]
 environments.each { env ->
     pipelineJob("saints-xctf-infrastructure/saints-xctf-infrastructure-$env") {
         description("Pipeline Job for testing the saints-xctf-infrastructure project")
+        parameters {
+            stringParam('branch', 'master', 'Branch in the saints-xctf-infrastructure repository to test')
+        }
         concurrentBuild(true)
         definition {
             cps {
