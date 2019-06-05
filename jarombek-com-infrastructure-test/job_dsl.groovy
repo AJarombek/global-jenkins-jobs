@@ -17,7 +17,7 @@ environments.each { env ->
         definition {
             cps {
                 sandbox()
-                script(readFileFromWorkspace("jarombek-com-infrastructure/Jenkinsfile.groovy"))
+                script(readFileFromWorkspace("jarombek-com-infrastructure-test/Jenkinsfile.groovy"))
             }
         }
         triggers {
