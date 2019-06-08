@@ -19,8 +19,9 @@ node("master") {
             try {
                 ansiColor('xterm') {
                     sh """
-                        python3 --version
-                        python3 runner.py
+                        python3.7 --version
+                        export AWS_DEFAULT_REGION=us-east-1
+                        python3.7 runner.py
                     """
                 }
             } catch (Exception ex) {

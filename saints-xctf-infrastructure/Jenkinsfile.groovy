@@ -14,9 +14,7 @@ node("master") {
     }
     stage("run-tests") {
 
-        // Get the environment from the job name
-        def matches = JOB_NAME =~ /saints-xctf-infrastructure-(\w+)/
-        def env = matches[0][1]
+        def env = get_env()
 
         dir("test") {
             try {
@@ -32,4 +30,14 @@ node("master") {
             }
         }
     }
+}
+
+/**
+ * Get the environment to test from the job name
+ * @return The environment represented as a string
+ */
+@NonCPS
+def get_env() {
+    def matches = JOB_NAME =~ /saints-xctf-infrastructure-(\w+)/
+    return matches[0][1]
 }
