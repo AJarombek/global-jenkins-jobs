@@ -249,6 +249,23 @@ folder('saints-xctf-infrastructure') {
                 buildButton()
             }
         }
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the SaintsXCTF Infrastructure')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('saints-xctf-rds-snapshot-lambda')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
     }
 }
 
