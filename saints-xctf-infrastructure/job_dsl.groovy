@@ -21,7 +21,7 @@ environments.each { env ->
             }
         }
         triggers {
-            cron('0 0 * * *')
+            cron('H 0 * * *')
         }
     }
 }

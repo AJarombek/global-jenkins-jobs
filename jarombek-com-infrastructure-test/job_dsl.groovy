@@ -20,8 +20,5 @@ environments.each { env ->
                 script(readFileFromWorkspace("jarombek-com-infrastructure-test/Jenkinsfile.groovy"))
             }
         }
-        triggers {
-            cron('30 7 * * *')
-        }
     }
 }

@@ -18,7 +18,7 @@ node("master") {
         cleanWs()
         checkout([$class: 'GitSCM',
                   branches: [[name: "*/$PARAM_BRANCH"]],
-                  credentialsId: "865da7f9-6fc8-49f3-aa56-8febd149e72b",
+                  credentialsId: "ajarombek-github",
                   userRemoteConfigs: [[url: REPO]]])
     }
     stage("zip lambda") {

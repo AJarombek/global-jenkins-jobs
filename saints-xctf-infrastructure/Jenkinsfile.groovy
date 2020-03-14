@@ -4,6 +4,8 @@
  * @since 3/24/2019
  */
 
+@Library(['global-jenkins-library@master']) _
+
 final String PARAM_BRANCH = env.branch
 
 node("master") {
@@ -16,12 +18,12 @@ node("master") {
                 [$class: 'SparseCheckoutPaths', SparseCheckoutPaths: [[path: 'test']]]
             ],
             userRemoteConfigs: [[
-                credentialsId: "865da7f9-6fc8-49f3-aa56-8febd149e72b",
+                credentialsId: "ajarombek-github",
                 url: "git@github.com:AJarombek/saints-xctf-infrastructure.git"
             ]]
         ])
     }
-    stage("Execute Unit Tests") {
+    stage("Execute Tests") {
 
         def env = get_env()
 
@@ -29,17 +31,26 @@ node("master") {
             try {
                 ansiColor('xterm') {
                     def status = sh (
-                        script: """
+                        script: "#!/bin/bash \n" +
+                        """
                             set +e
-                            python3 --version
-                            python3 -m venv env
+                            set -x
+                            python3.8 --version
+                            python3.8 -m pip --version
+
+                            python3.8 -m venv env
                             source ./env/bin/activate
-                            python3 -m pip install -r requirements.txt
+                            python3.8 -m pip install -r requirements.txt
 
+                            # The AWS SDK needs to know which region the infrastructure is in.
+                            export AWS_DEFAULT_REGION=us-east-1
+                            
                             export TEST_ENV=$env
-                            python3 runner.py
-
+                            python3.8 runner.py test_results.log
                             exit_status=\$?
+
+                            cat test_results.log
+
                             deactivate
                             exit \$exit_status
                         """,
@@ -48,43 +59,30 @@ node("master") {
 
                     if (status >= 1) {
                         currentBuild.result = "UNSTABLE"
+                    } else {
+                        currentBuild.result = "SUCCESS"
                     }
                 }
             } catch (Exception ex) {
                 echo "Infrastructure Testing Failed"
-                currentBuild.result = "UNSTABLE"
+                currentBuild.result = "FAILURE"
             }
         }
     }
     stage('Send Results via Email') {
-        def statusColors = [
-            SUCCESS: '#28a745',
-            UNSTABLE: '#ffc107',
-            FAILURE: '#dc3545',
-            OTHER: '#bbb'
-        ]
+        def bodyContent = ""
+        def testResultLog = ""
 
-        def subject = "$env.JOB_NAME Build #$env.BUILD_NUMBER - $currentBuild.result"
-        def body = """
-            <body>
-                <h1 style="font-family: Calibri, Arial, sans-serif">SaintsXCTF Infrastructure ${get_env()} Tests</h1>
-                <p style="font-family: Calibri, Arial, sans-serif">
-                    Build 
-                    <a href="$env.BUILD_URL" style="font-weight: bold; color: #777;">$env.BUILD_NUMBER</a> 
-                    Result:
-                    <strong style="color: ${statusColors[currentBuild.result] ?: statusColors['OTHER']}">
-                        $currentBuild.result
-                    </strong>
-                </p>
-            </body>
-        """
+        dir("test") {
+            testResultLog = readFile "test_results.log"
+        }
 
-        emailext(
-            subject: subject,
-            body: body,
-            to: "andrew@jarombek.com",
-            mimeType: 'text/html'
-        )
+        testResultLog.split('\n').each {
+            bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
+        }
+
+        def bodyTitle = "SaintsXCTF Infrastructure ${get_env().toUpperCase()} Tests"
+        email.sendEmail(bodyTitle, bodyContent, env.JOB_NAME, currentBuild.result, env.BUILD_NUMBER, env.BUILD_URL)
     }
     stage('Clean Workspace') {
         cleanWs()

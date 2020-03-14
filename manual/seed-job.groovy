@@ -16,7 +16,7 @@ job("seed-jobs/seed-job") {
         git {
             branch("\$branch")
             remote {
-                credentials("865da7f9-6fc8-49f3-aa56-8febd149e72b")
+                credentials("ajarombek-github")
                 github("AJarombek/\$repository", "ssh", "github.com")
             }
         }

@@ -31,4 +31,5 @@ underscores.
 
 ### Resources
 
-[1] [Job DSL Plugin Docs](https://jenkinsci.github.io/job-dsl-plugin/#)
+1) [Job DSL Plugin Docs](https://jenkinsci.github.io/job-dsl-plugin/#)
+2) [GSuite Configuration with Jenkins for Emails](https://stackoverflow.com/a/27130058)

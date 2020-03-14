@@ -11,7 +11,7 @@ pipeline {
             cleanWs()
             checkout([$class: 'GitSCM',
                       branches: [[name: '*/master']],
-                      credentialsId: "865da7f9-6fc8-49f3-aa56-8febd149e72b",
+                      credentialsId: "ajarombek-github",
                       userRemoteConfigs: [[url: "git@github.com:AJarombek/react-webpack-seed.git"]]])
         }
         stage('Install Dependencies') {

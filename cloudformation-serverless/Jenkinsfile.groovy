@@ -12,7 +12,7 @@ node("master") {
         def git_url = "git@github.com:AJarombek/python-serverless-backend-prototype.git"
         checkout([$class: 'GitSCM',
                   branches: [[name: '*/master']],
-                  credentialsId: "865da7f9-6fc8-49f3-aa56-8febd149e72b",
+                  credentialsId: "ajarombek-github",
                   userRemoteConfigs: [[url: git_url]]])
     }
     stage("build-cloudformation-template") {
