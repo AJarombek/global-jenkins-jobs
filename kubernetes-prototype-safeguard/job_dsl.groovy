@@ -18,4 +18,8 @@ pipelineJob("kubernetes-prototype/kubernetes-prototype-safeguard") {
             script(readFileFromWorkspace("kubernetes-prototype-safeguard/Jenkinsfile.groovy"))
         }
     }
+    logRotator {
+        daysToKeep(10)
+        numToKeep(5)
+    }
 }

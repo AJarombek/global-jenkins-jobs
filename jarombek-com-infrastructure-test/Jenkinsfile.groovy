@@ -99,7 +99,7 @@ pipeline {
 
                 def bodyTitle = "JarombekCom Infrastructure ${get_env().toUpperCase()} Tests"
                 email.sendEmail(bodyTitle, bodyContent, env.JOB_NAME, currentBuild.result, env.BUILD_NUMBER, env.BUILD_URL)
-                
+
                 cleanWs()
             }
         }

@@ -19,4 +19,8 @@ pipelineJob("devops-jobs/bake-ami") {
             script(readFileFromWorkspace("bake-ami/Jenkinsfile.groovy"))
         }
     }
+    logRotator {
+        daysToKeep(10)
+        numToKeep(5)
+    }
 }

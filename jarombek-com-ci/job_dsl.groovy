@@ -17,4 +17,8 @@ pipelineJob("jarombek-com/jarombek-com-ci") {
             script(readFileFromWorkspace("jarombek-com-ci/Jenkinsfile.groovy"))
         }
     }
+    logRotator {
+        daysToKeep(10)
+        numToKeep(5)
+    }
 }

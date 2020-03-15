@@ -17,4 +17,8 @@ pipelineJob("devops-jobs/terraform-destroy") {
             script(readFileFromWorkspace("terraform-destroy/Jenkinsfile.groovy"))
         }
     }
+    logRotator {
+        daysToKeep(10)
+        numToKeep(5)
+    }
 }

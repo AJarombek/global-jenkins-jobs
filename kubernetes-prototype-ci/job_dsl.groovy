@@ -17,4 +17,8 @@ pipelineJob("kubernetes-prototype/kubernetes-prototype-ci") {
             script(readFileFromWorkspace("kubernetes-prototype-ci/Jenkinsfile.groovy"))
         }
     }
+    logRotator {
+        daysToKeep(10)
+        numToKeep(5)
+    }
 }

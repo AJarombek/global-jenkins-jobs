@@ -13,4 +13,8 @@ pipelineJob("react-webpack-seed/react-webpack-seed") {
             script(readFileFromWorkspace("react-webpack-seed/Jenkinsfile.groovy"))
         }
     }
+    logRotator {
+        daysToKeep(10)
+        numToKeep(5)
+    }
 }

@@ -17,7 +17,4 @@ pipelineJob("global-aws-infrastructure/global-aws-infrastructure-test") {
             script(readFileFromWorkspace("global-aws-infrastructure-test/Jenkinsfile.groovy"))
         }
     }
-    triggers {
-        cron('30 7 * * *')
-    }
 }

@@ -25,15 +25,7 @@ folder('devops-jobs') {
             jobs {
                 names('terraform-apply', 'terraform-destroy')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
         listView('Packer') {
             description('Packer jobs used globally for building AMIs for AWS')
@@ -42,15 +34,7 @@ folder('devops-jobs') {
             jobs {
                 names('bake-ami')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
     }
 }
@@ -90,15 +74,7 @@ folder('kubernetes-prototype') {
             jobs {
                 names('kubernetes-prototype-infra', 'kubernetes-prototype-safeguard')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
         listView('Continuous Integration') {
             description('Continuous Integration (CI) jobs for the Kubernetes Prototype')
@@ -107,15 +83,7 @@ folder('kubernetes-prototype') {
             jobs {
                 names('kubernetes-prototype-ci')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
     }
 }
@@ -140,15 +108,7 @@ folder('global-aws-infrastructure') {
             jobs {
                 names('global-aws-infrastructure-test')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
     }
 }
@@ -173,15 +133,7 @@ folder('jarombek-com') {
             jobs {
                 names('jarombek-com-ci')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
     }
 }
@@ -206,15 +158,7 @@ folder('jarombek-com-infrastructure') {
             jobs {
                 names('jarombek-com-infrastructure-test-dev', 'jarombek-com-infrastructure-test-prod')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
     }
 }
@@ -239,15 +183,7 @@ folder('saints-xctf-infrastructure') {
             jobs {
                 names('saints-xctf-infrastructure-dev', 'saints-xctf-infrastructure-prod')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
         listView('Continuous Deployment') {
             description('Continuous Deployment jobs for the SaintsXCTF Infrastructure')
@@ -256,15 +192,32 @@ folder('saints-xctf-infrastructure') {
             jobs {
                 names('saints-xctf-rds-snapshot-lambda')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
+            listViewColumns()
+        }
+    }
+}
+
+// Repository Specific: saints-xctf-web
+folder('saints-xctf-web') {
+    displayName('saints-xctf-web')
+    description('Folder for the saints-xctf-web Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the SaintsXCTF Web Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('saints-xctf-web')
             }
+            listViewColumns()
         }
     }
 }
@@ -289,15 +242,23 @@ folder('react-webpack-seed') {
             jobs {
                 names('react-webpack-seed')
             }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+            listViewColumns()
         }
+    }
+}
+
+/**
+ * Reusable function which returns the columns displayed within a folders list view.
+ * @return Jenkins Job DSL Plugin closure with all the columns in a list view.
+ */
+def listViewColumns() {
+    return columns() {
+        status()
+        weather()
+        name()
+        lastSuccess()
+        lastFailure()
+        lastDuration()
+        buildButton()
     }
 }

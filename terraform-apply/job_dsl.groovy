@@ -17,4 +17,8 @@ pipelineJob("devops-jobs/terraform-apply") {
             script(readFileFromWorkspace("terraform-apply/Jenkinsfile.groovy"))
         }
     }
+    logRotator {
+        daysToKeep(10)
+        numToKeep(5)
+    }
 }
