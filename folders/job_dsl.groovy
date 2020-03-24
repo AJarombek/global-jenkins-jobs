@@ -163,6 +163,31 @@ folder('jarombek-com-infrastructure') {
     }
 }
 
+// Repository Specific: jarombek-react-components
+folder('jarombek-react-components') {
+    displayName('jarombek-react-components')
+    description('Folder for the jarombek-react-components Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+                'hudson.model.Item.Create',
+                'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the Reusable React Component Library')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('jarombek-react-components-test')
+            }
+            listViewColumns()
+        }
+    }
+}
+
 // Repository Specific: saints-xctf-infrastructure
 folder('saints-xctf-infrastructure') {
     displayName('saints-xctf-infrastructure')
@@ -215,7 +240,7 @@ folder('saints-xctf-web') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('saints-xctf-web')
+                names('saints-xctf-web-test')
             }
             listViewColumns()
         }

@@ -8,7 +8,7 @@
 
 @Library(['global-jenkins-library@master']) _
 
-final String PARAM_BRANCH = branch
+final String PARAM_BRANCH = env.branch
 
 pipeline {
     agent {
@@ -35,7 +35,7 @@ pipeline {
         stage("Checkout Repository") {
             steps {
                 script {
-                    git.basicClone('saints-xctf-web')
+                    git.basicClone('saints-xctf-web', PARAM_BRANCH)
                 }
             }
         }
