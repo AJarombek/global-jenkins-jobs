@@ -5,6 +5,22 @@
  * @since 5/14/2019
  */
 
+/**
+ * Reusable function which returns the columns displayed within a folders list view.
+ * @return Jenkins Job DSL Plugin closure with all the columns in a list view.
+ */
+def listViewColumns() {
+    columns() {
+        status()
+        weather()
+        name()
+        lastSuccess()
+        lastFailure()
+        lastDuration()
+        buildButton()
+    }
+}
+
 // Global: DevOps
 folder('devops-jobs') {
     displayName('DevOps Jobs')
@@ -269,21 +285,5 @@ folder('react-webpack-seed') {
             }
             listViewColumns()
         }
-    }
-}
-
-/**
- * Reusable function which returns the columns displayed within a folders list view.
- * @return Jenkins Job DSL Plugin closure with all the columns in a list view.
- */
-def listViewColumns() {
-    return columns() {
-        status()
-        weather()
-        name()
-        lastSuccess()
-        lastFailure()
-        lastDuration()
-        buildButton()
     }
 }

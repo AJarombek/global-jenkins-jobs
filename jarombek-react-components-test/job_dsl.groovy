@@ -16,7 +16,4 @@ pipelineJob("jarombek-react-components/jarombek-react-components-test") {
             script(readFileFromWorkspace("jarombek-react-components-test/Jenkinsfile.groovy"))
         }
     }
-    triggers {
-        cron('H 0 * * *')
-    }
 }
