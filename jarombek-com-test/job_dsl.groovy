@@ -5,7 +5,7 @@
  * @since 5/12/2019
  */
 
-pipelineJob("jarombek-com/jarombek-com-ci") {
+pipelineJob("jarombek-com/jarombek-com-test") {
     description("Pipeline Job for testing the jarombek-com project")
     concurrentBuild(true)
     definition {

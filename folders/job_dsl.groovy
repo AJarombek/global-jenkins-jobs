@@ -302,6 +302,39 @@ folder('saints-xctf-infrastructure') {
     }
 }
 
+// Repository Specific: saints-xctf-api
+folder('saints-xctf-api') {
+    displayName('saints-xctf-api')
+    description('Folder for the saints-xctf-api Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+                'hudson.model.Item.Create',
+                'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the SaintsXCTF API Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('saints-xctf-api-test')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
 // Repository Specific: saints-xctf-web
 folder('saints-xctf-web') {
     displayName('saints-xctf-web')
