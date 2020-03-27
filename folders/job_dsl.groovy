@@ -5,22 +5,6 @@
  * @since 5/14/2019
  */
 
-/**
- * Reusable function which returns the columns displayed within a folders list view.
- * @return Jenkins Job DSL Plugin closure with all the columns in a list view.
- */
-def listViewColumns() {
-    columns() {
-        status()
-        weather()
-        name()
-        lastSuccess()
-        lastFailure()
-        lastDuration()
-        buildButton()
-    }
-}
-
 // Global: DevOps
 folder('devops-jobs') {
     displayName('DevOps Jobs')
@@ -41,7 +25,15 @@ folder('devops-jobs') {
             jobs {
                 names('terraform-apply', 'terraform-destroy')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
         listView('Packer') {
             description('Packer jobs used globally for building AMIs for AWS')
@@ -50,7 +42,15 @@ folder('devops-jobs') {
             jobs {
                 names('bake-ami')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }
@@ -90,7 +90,15 @@ folder('kubernetes-prototype') {
             jobs {
                 names('kubernetes-prototype-infra', 'kubernetes-prototype-safeguard')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
         listView('Continuous Integration') {
             description('Continuous Integration (CI) jobs for the Kubernetes Prototype')
@@ -99,7 +107,15 @@ folder('kubernetes-prototype') {
             jobs {
                 names('kubernetes-prototype-ci')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }
@@ -124,7 +140,15 @@ folder('global-aws-infrastructure') {
             jobs {
                 names('global-aws-infrastructure-test')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }
@@ -149,7 +173,15 @@ folder('jarombek-com') {
             jobs {
                 names('jarombek-com-ci')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }
@@ -174,7 +206,15 @@ folder('jarombek-com-infrastructure') {
             jobs {
                 names('jarombek-com-infrastructure-test-dev', 'jarombek-com-infrastructure-test-prod')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }
@@ -199,7 +239,15 @@ folder('jarombek-react-components') {
             jobs {
                 names('jarombek-react-components-test')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }
@@ -224,7 +272,15 @@ folder('saints-xctf-infrastructure') {
             jobs {
                 names('saints-xctf-infrastructure-dev', 'saints-xctf-infrastructure-prod')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
         listView('Continuous Deployment') {
             description('Continuous Deployment jobs for the SaintsXCTF Infrastructure')
@@ -233,7 +289,15 @@ folder('saints-xctf-infrastructure') {
             jobs {
                 names('saints-xctf-rds-snapshot-lambda')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }
@@ -258,7 +322,15 @@ folder('saints-xctf-web') {
             jobs {
                 names('saints-xctf-web-test')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }
@@ -283,7 +355,15 @@ folder('react-webpack-seed') {
             jobs {
                 names('react-webpack-seed')
             }
-            listViewColumns()
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
         }
     }
 }

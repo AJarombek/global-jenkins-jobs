@@ -16,7 +16,7 @@ underscores.
 | `cloudformation-serverless`        | Jenkins job to build the serverless prototype.                                   |
 | `folders`                          | Folders on the Jenkins server used to group jobs.                                |
 | `global-aws-infrastructure-test`   | Jenkins job to run tests on the global AWS infrastructure.                       |
-| `jarombek-com-ci`                  | Jenkins job to run CI unit tests for the `jarombek.com` application.             |
+| `jarombek-com-test`                | Jenkins job to run unit tests for the `jarombek.com` application.                |
 | `jarombek-com-infrastructure-test` | Jenkins job to test the `jarombek.com` AWS infrastructure.                       |
 | `kubernetes-prototype-ci`          | Jenkins job to run CI unit tests for the kubernetes prototype.                   |
 | `kubernetes-prototype-infra`       | Jenkins job to build/destroy AWS infrastructure for the kubernetes prototype.    |

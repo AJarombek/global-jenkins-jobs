@@ -1,7 +1,7 @@
 /**
- * Jenkins script for testing jarombek-react-components.
+ * Jenkins script for testing jarombek-com.
  * @author Andrew Jarombek
- * @since 3/25/2020
+ * @since 5/12/2019
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -23,7 +23,8 @@ def executeTests = {
             script: """
                 set +e
                 set -x
-                yarn test 2>&1 | tee test_results.log
+                yarn client:test 2>&1 | tee test_results.log
+                yarn server:test 2>&1 | tee -a test_results.log
                 exit_status=\$?
     
                 exit \$exit_status
@@ -36,7 +37,7 @@ def executeTests = {
         }
 
     } catch (Exception ex) {
-        echo "Jarombek React Component Testing Failed"
+        echo "Jarombek Com Testing Failed"
         currentBuild.result = "UNSTABLE"
     }
 }
@@ -49,7 +50,7 @@ def emailTestResults = {
         bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
     }
 
-    def bodyTitle = "Jarombek React Component Tests"
+    def bodyTitle = "Jarombek Com Application Tests"
     email.sendEmail(
         bodyTitle,
         bodyContent,
@@ -76,7 +77,7 @@ def config = [
         numToKeepStr: '5'
     ],
     stages: [
-        repository: 'jarombek-react-components',
+        repository: 'jarombek-com',
         branch: env.branch,
         setupProjectScript: setupProject,
         executeTestsScript: executeTests
