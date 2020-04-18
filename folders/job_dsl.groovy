@@ -252,6 +252,72 @@ folder('jarombek-react-components') {
     }
 }
 
+// Repository Specific: react-webpack-seed
+folder('react-webpack-seed') {
+    displayName('react-webpack-seed')
+    description('Folder for the react-webpack-seed Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+                'hudson.model.Item.Create',
+                'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the React.js and Webpack Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('react-webpack-seed')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
+// Repository Specific: react-16-3-demo
+folder('react-16-3-demo') {
+    displayName('react-16-3-demo')
+    description('Folder for the react-16-3-demo Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the React 16.3 Demo Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('react-16-3-demo-test')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
 // Repository Specific: saints-xctf-infrastructure
 folder('saints-xctf-infrastructure') {
     displayName('saints-xctf-infrastructure')
@@ -354,39 +420,6 @@ folder('saints-xctf-web') {
             filterExecutors()
             jobs {
                 names('saints-xctf-web-test')
-            }
-            columns() {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
-        }
-    }
-}
-
-// Repository Specific: react-webpack-seed
-folder('react-webpack-seed') {
-    displayName('react-webpack-seed')
-    description('Folder for the react-webpack-seed Repository')
-    primaryView('All')
-    authorization {
-        permissions('andy', [
-            'hudson.model.Item.Create',
-            'hudson.model.Item.Discover'
-        ])
-        permission('hudson.model.Item.Discover', 'guest')
-    }
-    views {
-        listView('Continuous Integration') {
-            description('Continuous Integration jobs for the React.js and Webpack Application')
-            filterBuildQueue()
-            filterExecutors()
-            jobs {
-                names('react-webpack-seed')
             }
             columns() {
                 status()
