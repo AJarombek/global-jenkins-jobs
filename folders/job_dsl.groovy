@@ -153,6 +153,39 @@ folder('global-aws-infrastructure') {
     }
 }
 
+// Repository Specific: graphql-react-prototype
+folder('graphql-react-prototype') {
+    displayName('graphql-react-prototype')
+    description('Folder for the graphql-react-prototype Repository')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+                'hudson.model.Item.Create',
+                'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the GraphQL React Prototype Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('graphql-react-prototype-test')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
 // Repository Specific: jarombek-com
 folder('jarombek-com') {
     displayName('jarombek-com')

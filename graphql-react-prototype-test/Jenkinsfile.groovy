@@ -1,10 +1,8 @@
 /**
- * Jenkins script for testing saints-xctf-web.
+ * Jenkins script for testing the graphql-react-prototype application.
  * @author Andrew Jarombek
- * @since 3/14/2020
+ * @since 4/18/2020
  */
-
-// 15 West 64th Street, Begin setting up furniture, Too many IKEA trips
 
 @Library(['global-jenkins-library@master']) _
 
@@ -15,7 +13,6 @@ def setupProject = {
         npm --version
         yarn --version
         
-        git config --global url."https://".insteadOf git://
         yarn
     '''
 }
@@ -26,9 +23,9 @@ def executeTests = {
             script: """
                 set +e
                 set -x
-                yarn client:test 2>&1 | tee test_results.log
+                yarn test 2>&1 | tee test_results.log
                 exit_status=\${PIPESTATUS[0]}
-
+    
                 exit \$exit_status
             """,
             returnStatus: true
@@ -39,7 +36,7 @@ def executeTests = {
         }
 
     } catch (Exception ex) {
-        echo "SaintsXCTF Web Application Testing Failed"
+        echo "GraphQL React Prototype Application Testing Failed"
         currentBuild.result = "UNSTABLE"
     }
 }
@@ -52,7 +49,7 @@ def emailTestResults = {
         bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
     }
 
-    def bodyTitle = "SaintsXCTF Web Application Tests"
+    def bodyTitle = "GraphQL React Prototype Application Tests"
     email.sendEmail(
         bodyTitle,
         bodyContent,
@@ -79,7 +76,7 @@ def config = [
         numToKeepStr: '5'
     ],
     stages: [
-        repository: 'saints-xctf-web',
+        repository: 'graphql-react-prototype',
         branch: env.branch,
         setupProjectScript: setupProject,
         executeTestsScript: executeTests

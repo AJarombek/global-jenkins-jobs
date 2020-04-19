@@ -24,7 +24,7 @@ def executeTests = {
                 set +e
                 set -x
                 yarn test 2>&1 | tee test_results.log
-                exit_status=\$?
+                exit_status=\${PIPESTATUS[0]}
     
                 exit \$exit_status
             """,

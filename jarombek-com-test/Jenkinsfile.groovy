@@ -24,8 +24,12 @@ def executeTests = {
                 set +e
                 set -x
                 yarn client:test 2>&1 | tee test_results.log
+                exit_status_client=\${PIPESTATUS[0]}
+
                 yarn server:test 2>&1 | tee -a test_results.log
-                exit_status=\$?
+                exit_status_server=\${PIPESTATUS[0]}
+                
+                exit_status=\$((exit_status_client + exit_status_server))
     
                 exit \$exit_status
             """,
