@@ -62,8 +62,8 @@ folder('seed-jobs') {
     primaryView('All')
     authorization {
         permissions('andy', [
-                'hudson.model.Item.Create',
-                'hudson.model.Item.Discover'
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
         ])
         permission('hudson.model.Item.Discover', 'guest')
     }
@@ -160,8 +160,8 @@ folder('graphql-react-prototype') {
     primaryView('All')
     authorization {
         permissions('andy', [
-                'hudson.model.Item.Create',
-                'hudson.model.Item.Discover'
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
         ])
         permission('hudson.model.Item.Discover', 'guest')
     }
@@ -193,8 +193,8 @@ folder('jarombek-com') {
     primaryView('All')
     authorization {
         permissions('andy', [
-                'hudson.model.Item.Create',
-                'hudson.model.Item.Discover'
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
         ])
         permission('hudson.model.Item.Discover', 'guest')
     }
@@ -226,8 +226,8 @@ folder('jarombek-com-infrastructure') {
     primaryView('All')
     authorization {
         permissions('andy', [
-                'hudson.model.Item.Create',
-                'hudson.model.Item.Discover'
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
         ])
         permission('hudson.model.Item.Discover', 'guest')
     }
@@ -259,8 +259,8 @@ folder('jarombek-react-components') {
     primaryView('All')
     authorization {
         permissions('andy', [
-                'hudson.model.Item.Create',
-                'hudson.model.Item.Discover'
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
         ])
         permission('hudson.model.Item.Discover', 'guest')
     }
@@ -292,8 +292,8 @@ folder('react-webpack-seed') {
     primaryView('All')
     authorization {
         permissions('andy', [
-                'hudson.model.Item.Create',
-                'hudson.model.Item.Discover'
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
         ])
         permission('hudson.model.Item.Discover', 'guest')
     }
@@ -386,7 +386,30 @@ folder('saints-xctf-infrastructure') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('saints-xctf-rds-snapshot-lambda')
+                names(
+                    'saints-xctf-rds-snapshot-lambda',
+                    'deploy-all',
+                    'deploy-dev',
+                    'destroy-dev',
+                    'deploy-bastion-dev',
+                    'destroy-bastion-dev',
+                    'deploy-database-dev',
+                    'destroy-database-dev',
+                    'deploy-database-snapshot-dev',
+                    'destroy-database-snapshot-dev',
+                    'deploy-saints-xctf-com-dev',
+                    'destroy-saints-xctf-com-dev',
+                    'deploy-saints-xctf-com-asset-dev',
+                    'destroy-saints-xctf-com-asset-dev',
+                    'deploy-saints-xctf-com-auth-dev',
+                    'destroy-saints-xctf-com-auth-dev',
+                    'deploy-saints-xctf-com-fn-dev',
+                    'destroy-saints-xctf-com-fn-dev',
+                    'deploy-saints-xctf-com-uasset-dev',
+                    'destroy-saints-xctf-com-uasset-dev',
+                    'deploy-secrets-manager-dev',
+                    'destroy-secrets-manager-dev',
+                )
             }
             columns() {
                 status()
@@ -408,8 +431,8 @@ folder('saints-xctf-api') {
     primaryView('All')
     authorization {
         permissions('andy', [
-                'hudson.model.Item.Create',
-                'hudson.model.Item.Discover'
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
         ])
         permission('hudson.model.Item.Discover', 'guest')
     }

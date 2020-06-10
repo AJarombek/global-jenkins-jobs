@@ -1,7 +1,7 @@
 /**
- * Jenkins script for testing jarombek-com.
+ * Jenkins script for testing the graphql-react-prototype application.
  * @author Andrew Jarombek
- * @since 5/12/2019
+ * @since 4/18/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -20,16 +20,12 @@ def setupProject = {
 def executeTests = {
     try {
         def status = sh (
-            script: """
+            script: "#!/bin/bash \n" +
+            """
                 set +e
                 set -x
-                yarn client:test 2>&1 | tee test_results.log
-                exit_status_client=\${PIPESTATUS[0]}
-
-                yarn server:test 2>&1 | tee -a test_results.log
-                exit_status_server=\${PIPESTATUS[0]}
-                
-                exit_status=\$((exit_status_client + exit_status_server))
+                yarn test 2>&1 | tee test_results.log
+                exit_status=\${PIPESTATUS[0]}
     
                 exit \$exit_status
             """,
@@ -41,7 +37,7 @@ def executeTests = {
         }
 
     } catch (Exception ex) {
-        echo "Jarombek Com Testing Failed"
+        echo "GraphQL React Prototype Application Testing Failed"
         currentBuild.result = "UNSTABLE"
     }
 }
@@ -54,7 +50,7 @@ def emailTestResults = {
         bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
     }
 
-    def bodyTitle = "Jarombek Com Application Tests"
+    def bodyTitle = "GraphQL React Prototype Application Tests"
     email.sendEmail(
         bodyTitle,
         bodyContent,
@@ -81,7 +77,7 @@ def config = [
         numToKeepStr: '5'
     ],
     stages: [
-        repository: 'jarombek-com',
+        repository: 'graphql-react-prototype',
         branch: env.branch,
         setupProjectScript: setupProject,
         executeTestsScript: executeTests

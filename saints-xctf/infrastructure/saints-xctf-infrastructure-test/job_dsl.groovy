@@ -8,7 +8,7 @@
 def environments = ["prod", "dev"]
 
 environments.each { env ->
-    pipelineJob("saints-xctf-infrastructure/saints-xctf-infrastructure-$env") {
+    pipelineJob("saints-xctf-infrastructure/saints-xctf-infrastructure-test-$env") {
         description("Pipeline Job for testing the saints-xctf-infrastructure project")
         parameters {
             stringParam('branch', 'master', 'Branch in the saints-xctf-infrastructure repository to test')
@@ -17,7 +17,7 @@ environments.each { env ->
         definition {
             cps {
                 sandbox()
-                script(readFileFromWorkspace("saints-xctf-infrastructure/Jenkinsfile.groovy"))
+                script(readFileFromWorkspace("saints-xctf-infrastructure-test/Jenkinsfile.groovy"))
             }
         }
         triggers {

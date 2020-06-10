@@ -4,7 +4,7 @@
  * @since 4/18/2020
  */
 
-pipelineJob("react-16-3-demo/graphql-react-prototype-test") {
+pipelineJob("graphql-react-prototype/graphql-react-prototype-test") {
     description("Pipeline Job for testing the graphql-react-prototype project")
     parameters {
         stringParam('branch', 'master', 'Branch in the graphql-react-prototype repository to test')

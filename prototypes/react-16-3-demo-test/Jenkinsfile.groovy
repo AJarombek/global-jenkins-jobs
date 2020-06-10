@@ -1,10 +1,8 @@
 /**
- * Jenkins script for testing saints-xctf-web.
+ * Jenkins script for testing the react-16-3-demo application.
  * @author Andrew Jarombek
- * @since 3/14/2020
+ * @since 4/18/2020
  */
-
-// 15 West 64th Street, Begin setting up furniture, Too many IKEA trips
 
 @Library(['global-jenkins-library@master']) _
 
@@ -15,31 +13,33 @@ def setupProject = {
         npm --version
         yarn --version
         
-        git config --global url."https://".insteadOf git://
         yarn
     '''
 }
 
 def executeTests = {
     try {
-        def status = sh (
-            script: """
-                set +e
-                set -x
-                yarn client:test 2>&1 | tee test_results.log
-                exit_status=\${PIPESTATUS[0]}
+        dir('app') {
+            def status = sh (
+                script: "#!/bin/bash \n" +
+                """
+                    set +e
+                    set -x
+                    yarn test 2>&1 | tee test_results.log
+                    exit_status=\${PIPESTATUS[0]}
+        
+                    exit \$exit_status
+                """,
+                returnStatus: true
+            )
 
-                exit \$exit_status
-            """,
-            returnStatus: true
-        )
-
-        if (status >= 1) {
-            currentBuild.result = "UNSTABLE"
+            if (status >= 1) {
+                currentBuild.result = "UNSTABLE"
+            }
         }
 
     } catch (Exception ex) {
-        echo "SaintsXCTF Web Application Testing Failed"
+        echo "React 16.3 Demo Testing Failed"
         currentBuild.result = "UNSTABLE"
     }
 }
@@ -52,7 +52,7 @@ def emailTestResults = {
         bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
     }
 
-    def bodyTitle = "SaintsXCTF Web Application Tests"
+    def bodyTitle = "React 16.3 Demo Application Tests"
     email.sendEmail(
         bodyTitle,
         bodyContent,
@@ -79,7 +79,7 @@ def config = [
         numToKeepStr: '5'
     ],
     stages: [
-        repository: 'saints-xctf-web',
+        repository: 'react-16-3-demo',
         branch: env.branch,
         setupProjectScript: setupProject,
         executeTestsScript: executeTests

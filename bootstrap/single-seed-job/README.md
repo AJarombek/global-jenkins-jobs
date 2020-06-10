@@ -1,6 +1,7 @@
 ### Overview
 
-This directory contains a Jenkins Job DSL Script which generates a freestyle seed job for a single job.
+This directory contains a Jenkins Job DSL Script which generates a freestyle seed job for a single job.  This seed job 
+is created when the server first boots up.
 
 ### Files
 

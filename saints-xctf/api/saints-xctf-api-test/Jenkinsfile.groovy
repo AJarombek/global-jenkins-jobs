@@ -1,19 +1,16 @@
 /**
- * Jenkins script for testing the react-16-3-demo application.
+ * Jenkins script for testing the SaintsXCTF API unit tests.
  * @author Andrew Jarombek
- * @since 4/18/2020
+ * @since 3/27/2020
  */
 
 @Library(['global-jenkins-library@master']) _
 
 def setupProject = {
     sh '''
+        set +e
         set -x
-        nodejs --version
-        npm --version
-        yarn --version
-        
-        yarn
+        pipenv install
     '''
 }
 
@@ -23,9 +20,17 @@ def executeTests = {
             script: """
                 set +e
                 set -x
-                yarn test 2>&1 | tee test_results.log
-                exit_status=\${PIPESTATUS[0]}
+                pip3 install pipenv
+                pipenv --rm
+                pipenv install
+                
+                # See all the endpoints exposed by Flask, ensure there are no syntax errors in the Python files.
+                pipenv run flask routes
+                                
+                pipenv run flask test
+                exit_status=\$?
     
+                cat test_results.log
                 exit \$exit_status
             """,
             returnStatus: true
@@ -36,7 +41,7 @@ def executeTests = {
         }
 
     } catch (Exception ex) {
-        echo "React 16.3 Demo Testing Failed"
+        echo "SaintsXCTF API Testing Failed"
         currentBuild.result = "UNSTABLE"
     }
 }
@@ -49,7 +54,7 @@ def emailTestResults = {
         bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
     }
 
-    def bodyTitle = "React 16.3 Demo Application Tests"
+    def bodyTitle = "SaintsXCTF API Tests"
     email.sendEmail(
         bodyTitle,
         bodyContent,
@@ -76,7 +81,7 @@ def config = [
         numToKeepStr: '5'
     ],
     stages: [
-        repository: 'react-16-3-demo',
+        repository: 'jarombek-react-components',
         branch: env.branch,
         setupProjectScript: setupProject,
         executeTestsScript: executeTests
