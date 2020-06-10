@@ -4,7 +4,7 @@
  * @since 1/24/2019
  */
 
-pipelineJob("devops-jobs/bake-ami") {
+pipelineJob("infrastructure/bake-ami") {
     description("Pipeline Job for baking AMIs")
     parameters {
         stringParam('repository', '', 'Repository containing a Packer template to build an AMI')
@@ -16,7 +16,7 @@ pipelineJob("devops-jobs/bake-ami") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("bake-ami/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("infrastructure/bake-ami/Jenkinsfile.groovy"))
         }
     }
     logRotator {

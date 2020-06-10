@@ -5,13 +5,13 @@
  * @since 11/27/2018
  */
 
-pipelineJob("cloudformation-serverless") {
+pipelineJob("prototypes/cloudformation-serverless") {
     description("Pipeline Job for creating and deploying a CloudFormation template")
     concurrentBuild(true)
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("cloudformation-serverless/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("prototypes/cloudformation-serverless/Jenkinsfile.groovy"))
         }
     }
     logRotator {

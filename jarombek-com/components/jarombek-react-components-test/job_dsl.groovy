@@ -4,7 +4,7 @@
  * @since 3/23/2020
  */
 
-pipelineJob("jarombek-react-components/jarombek-react-components-test") {
+pipelineJob("jarombek-com/components/jarombek-react-components-test") {
     description("Pipeline Job for testing the jarombek-react-components project")
     parameters {
         stringParam('branch', 'master', 'Branch in the jarombek-react-components repository to test')
@@ -13,7 +13,7 @@ pipelineJob("jarombek-react-components/jarombek-react-components-test") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("jarombek-react-components-test/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("jarombek-com/components/jarombek-react-components-test/Jenkinsfile.groovy"))
         }
     }
 }

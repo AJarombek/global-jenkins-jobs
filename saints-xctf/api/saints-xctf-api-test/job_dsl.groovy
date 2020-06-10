@@ -4,7 +4,7 @@
  * @since 3/15/2020
  */
 
-pipelineJob("saints-xctf-api/saints-xctf-api-test") {
+pipelineJob("saints-xctf/api/saints-xctf-api-test") {
     description("Pipeline Job for testing the saints-xctf-api project")
     parameters {
         stringParam('branch', 'master', 'Branch in the saints-xctf-api repository to test')
@@ -13,7 +13,7 @@ pipelineJob("saints-xctf-api/saints-xctf-api-test") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("saints-xctf-api-test/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("saints-xctf/api/saints-xctf-api-test/Jenkinsfile.groovy"))
         }
     }
     triggers {

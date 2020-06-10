@@ -5,7 +5,7 @@
  * @since 5/23/2019
  */
 
-pipelineJob("kubernetes-prototype/kubernetes-prototype-safeguard") {
+pipelineJob("prototypes/kubernetes-prototype/kubernetes-prototype-safeguard") {
     description("Pipeline Job for safeguarding the Kubernetes Prototype EKS cluster")
     triggers {
         // This job will run every morning when the Jenkins server is up
@@ -15,7 +15,7 @@ pipelineJob("kubernetes-prototype/kubernetes-prototype-safeguard") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("kubernetes-prototype-safeguard/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("prototypes/kubernetes-prototype-safeguard/Jenkinsfile.groovy"))
         }
     }
     logRotator {

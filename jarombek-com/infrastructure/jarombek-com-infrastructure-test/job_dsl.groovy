@@ -8,7 +8,7 @@
 def environments = ["prod", "dev"]
 
 environments.each { env ->
-    pipelineJob("jarombek-com-infrastructure/jarombek-com-infrastructure-$env") {
+    pipelineJob("jarombek-com/infrastructure/jarombek-com-infrastructure-$env") {
         description("Pipeline Job for testing the jarombek-com-infrastructure project")
         parameters {
             stringParam('branch', 'master', 'Branch in the jarombek-com-infrastructure repository to test')
@@ -17,7 +17,11 @@ environments.each { env ->
         definition {
             cps {
                 sandbox()
-                script(readFileFromWorkspace("jarombek-com-infrastructure-test/Jenkinsfile.groovy"))
+                script(
+                    readFileFromWorkspace(
+                        "jarombek-com/infrastructure/jarombek-com-infrastructure-test/Jenkinsfile.groovy"
+                    )
+                )
             }
         }
     }

@@ -4,7 +4,7 @@
  * @since 11/21/2018
  */
 
-pipelineJob("devops-jobs/terraform-destroy") {
+pipelineJob("infrastructure/terraform-destroy") {
     description("Pipeline Job for destroying AWS infrastructure using Terraform")
     parameters {
         stringParam("repository_name", "", "Repository Name")
@@ -14,7 +14,7 @@ pipelineJob("devops-jobs/terraform-destroy") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("terraform-destroy/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("infrastructure/terraform-destroy/Jenkinsfile.groovy"))
         }
     }
     logRotator {

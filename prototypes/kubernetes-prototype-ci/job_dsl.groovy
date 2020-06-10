@@ -5,7 +5,7 @@
  * @since 5/12/2019
  */
 
-pipelineJob("kubernetes-prototype/kubernetes-prototype-ci") {
+pipelineJob("prototypes/kubernetes-prototype/kubernetes-prototype-ci") {
     description("Pipeline Job for testing the kubernetes-prototype project")
     parameters {
         stringParam('branch', 'master', 'Branch in the kubernetes-prototype repository to test')
@@ -14,7 +14,7 @@ pipelineJob("kubernetes-prototype/kubernetes-prototype-ci") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("kubernetes-prototype-ci/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("prototypes/kubernetes-prototype-ci/Jenkinsfile.groovy"))
         }
     }
     logRotator {

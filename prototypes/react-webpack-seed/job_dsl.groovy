@@ -4,13 +4,13 @@
  * @since 3/15/2019
  */
 
-pipelineJob("react-webpack-seed/react-webpack-seed") {
+pipelineJob("prototypes/react-webpack-seed/react-webpack-seed") {
     description("Pipeline Job for deploying the react-webpack-seed project")
     concurrentBuild(false)
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("react-webpack-seed/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("prototypes/react-webpack-seed/Jenkinsfile.groovy"))
         }
     }
     logRotator {

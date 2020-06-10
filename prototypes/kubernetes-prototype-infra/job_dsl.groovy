@@ -4,7 +4,7 @@
  * @since 3/24/2019
  */
 
-pipelineJob("kubernetes-prototype/kubernetes-prototype-infra") {
+pipelineJob("prototypes/kubernetes-prototype/kubernetes-prototype-infra") {
     description("Pipeline Job for building the Kubernetes Prototype base infrastructure")
     parameters {
         choiceParam(
@@ -17,7 +17,7 @@ pipelineJob("kubernetes-prototype/kubernetes-prototype-infra") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("kubernetes-prototype-infra/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("prototypes/kubernetes-prototype-infra/Jenkinsfile.groovy"))
         }
     }
     logRotator {

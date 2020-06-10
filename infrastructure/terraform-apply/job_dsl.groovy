@@ -4,7 +4,7 @@
  * @since 11/21/2018
  */
 
-pipelineJob("devops-jobs/terraform-apply") {
+pipelineJob("infrastructure/terraform-apply") {
     description("Pipeline Job for applying changes to AWS infrastructure using Terraform")
     parameters {
         stringParam("repository_name", "", "Repository Name")
@@ -14,7 +14,7 @@ pipelineJob("devops-jobs/terraform-apply") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("terraform-apply/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("infrastructure/terraform-apply/Jenkinsfile.groovy"))
         }
     }
     logRotator {

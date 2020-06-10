@@ -4,7 +4,7 @@
  * @since 4/18/2020
  */
 
-pipelineJob("react-16-3-demo/react-16-3-demo-test") {
+pipelineJob("prototypes/react-16-3-demo/react-16-3-demo-test") {
     description("Pipeline Job for testing the react-16-3-demo project")
     parameters {
         stringParam('branch', 'master', 'Branch in the react-16-3-demo repository to test')
@@ -13,7 +13,7 @@ pipelineJob("react-16-3-demo/react-16-3-demo-test") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("react-16-3-demo-test/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("prototypes/react-16-3-demo-test/Jenkinsfile.groovy"))
         }
     }
     triggers {

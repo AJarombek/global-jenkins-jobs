@@ -5,13 +5,13 @@
  * @since 5/12/2019
  */
 
-pipelineJob("jarombek-com/jarombek-com-test") {
+pipelineJob("jarombek-com/web/jarombek-com-test") {
     description("Pipeline Job for testing the jarombek-com project")
     concurrentBuild(true)
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("jarombek-com-test/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("jarombek-com/web/jarombek-com-test/Jenkinsfile.groovy"))
         }
     }
     logRotator {
