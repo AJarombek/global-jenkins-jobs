@@ -4,7 +4,7 @@
  * @since 3/15/2019
  */
 
-pipelineJob("prototypes/react-webpack-seed/react-webpack-seed") {
+pipelineJob("prototypes/react-webpack-seed") {
     description("Pipeline Job for deploying the react-webpack-seed project")
     concurrentBuild(false)
     definition {

@@ -35,6 +35,23 @@ folder('global-aws') {
                 buildButton()
             }
         }
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the Global AWS Infrastructure')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('push-jenkins-ecr-docker-image')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
     }
 }
 

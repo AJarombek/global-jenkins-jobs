@@ -5,7 +5,7 @@
  * @since 5/23/2019
  */
 
-pipelineJob("prototypes/kubernetes-prototype/kubernetes-prototype-safeguard") {
+pipelineJob("prototypes/kubernetes-prototype-safeguard") {
     description("Pipeline Job for safeguarding the Kubernetes Prototype EKS cluster")
     triggers {
         // This job will run every morning when the Jenkins server is up
