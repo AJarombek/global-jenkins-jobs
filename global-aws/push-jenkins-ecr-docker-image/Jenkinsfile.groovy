@@ -8,13 +8,20 @@
 
 pipeline {
     agent {
-        label: 'master'
+        label 'master'
+    }
+    parameters {
+        string(
+            name: 'label',
+            defaultValue: '1.0.0',
+            description: 'Label/Version of the Docker image to push to an ECR repository'
+        )
     }
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')
         buildDiscarder(
-            logRotator(daysToKeepStr: 10, numToKeepStr: 5)
+            logRotator(daysToKeepStr: '10', numToKeepStr: '5')
         )
     }
     stages {
@@ -28,8 +35,8 @@ pipeline {
         stage("Checkout Repository") {
             steps {
                 script {
-                    dir('repos/saints-xctf-infrastructure') {
-                        git.basicClone('saints-xctf-infrastructure', 'master')
+                    dir('repos/global-aws-infrastructure') {
+                        git.basicClone('global-aws-infrastructure', 'master')
                     }
                 }
             }
@@ -37,7 +44,23 @@ pipeline {
         stage("Push Docker Image") {
             steps {
                 script {
-                    sh "TODO"
+                    dir('repos/global-aws-infrastructure/jenkins-ecs/docker') {
+                        def status = sh (
+                            script: """
+                                set +e
+                                set -x
+                                export AWS_DEFAULT_REGION=us-east-1
+                                ./push-ecr.sh $params.string 
+                            """,
+                            returnStatus: true
+                        )
+
+                        if (status >= 1) {
+                            currentBuild.result = "UNSTABLE"
+                        } else {
+                            currentBuild.result = "SUCCESS"
+                        }
+                    }
                 }
             }
         }

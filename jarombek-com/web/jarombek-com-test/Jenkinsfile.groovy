@@ -8,8 +8,8 @@
 
 def setupProject = {
     sh '''
-        set -x
-        nodejs --version
+        set +x
+        node --version
         npm --version
         yarn --version
         
