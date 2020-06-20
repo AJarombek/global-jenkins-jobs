@@ -44,7 +44,7 @@ pipeline {
         stage("Push Docker Image") {
             steps {
                 script {
-                    dir('repos/global-aws-infrastructure/jenkins-ecs/docker') {
+                    dir('repos/global-aws-infrastructure/jenkins-kubernetes/docker') {
                         def status = sh (
                             script: """
                                 set +e

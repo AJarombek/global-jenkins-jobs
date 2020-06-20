@@ -16,7 +16,7 @@ environments.each { env ->
                 sandbox()
                 script(
                     readFileFromWorkspace(
-                        "global-aws/destroy-saints-xctf-com-auth/Jenkinsfile.groovy"
+                        "saints-xctf/infrastructure/destroy-saints-xctf-com-auth/Jenkinsfile.groovy"
                     )
                 )
             }
