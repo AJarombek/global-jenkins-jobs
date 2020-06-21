@@ -29,13 +29,20 @@ pipeline {
             steps {
                 script {
                     sh """
-                        echo 'Install additional dependencies here...'
+                        # Install additional dependencies not handled by the Dockerfile
+                        
+                        # 1) Bazel
+                        curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+                        echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+                        sudo apt-get update
+                        sudo apt-get install bazel
                         
                         # Installed Libraries
                         docker --version
                         python --version
                         node --version
                         aws --version
+                        bazel --version
                     """
                 }
             }

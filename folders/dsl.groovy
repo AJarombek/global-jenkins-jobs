@@ -308,6 +308,39 @@ folder('saints-xctf/api') {
     }
 }
 
+// SaintsXCTF Auth Application Jobs
+folder('saints-xctf/auth') {
+    displayName('api')
+    description('Folder for the SaintsXCTF Auth application')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the SaintsXCTF Auth Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('push-lambda-builder-base-image')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
 // SaintsXCTF Infrastructure Jobs
 folder('saints-xctf/infrastructure') {
     displayName('infrastructure')
