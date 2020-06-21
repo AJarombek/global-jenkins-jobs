@@ -50,7 +50,7 @@ pipeline {
                                 set +e
                                 set -x
                                 export AWS_DEFAULT_REGION=us-east-1
-                                ./push-ecr.sh $params.string 
+                                ./push-ecr.sh ${params.label} 
                             """,
                             returnStatus: true
                         )

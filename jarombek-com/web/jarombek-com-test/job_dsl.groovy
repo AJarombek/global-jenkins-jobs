@@ -7,7 +7,6 @@
 
 pipelineJob("jarombek-com/web/jarombek-com-test") {
     description("Pipeline Job for testing the jarombek-com project")
-    concurrentBuild(true)
     definition {
         cps {
             sandbox()

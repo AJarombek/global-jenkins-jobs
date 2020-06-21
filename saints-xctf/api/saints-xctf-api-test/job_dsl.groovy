@@ -9,7 +9,6 @@ pipelineJob("saints-xctf/api/saints-xctf-api-test") {
     parameters {
         stringParam('branch', 'master', 'Branch in the saints-xctf-api repository to test')
     }
-    concurrentBuild(true)
     definition {
         cps {
             sandbox()

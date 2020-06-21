@@ -11,7 +11,6 @@ job("single-seed-job") {
         stringParam("branch", "", "Repo branch containing the Job DSL script")
         stringParam("job_dsl_path", "", "Location of Job DSL script")
     }
-    concurrentBuild(true)
     scm {
         git {
             branch("\$branch")

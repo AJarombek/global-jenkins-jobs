@@ -6,7 +6,6 @@
 
 pipelineJob("prototypes/react-webpack-seed") {
     description("Pipeline Job for deploying the react-webpack-seed project")
-    concurrentBuild(false)
     definition {
         cps {
             sandbox()

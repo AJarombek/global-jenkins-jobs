@@ -11,7 +11,6 @@ pipelineJob("prototypes/kubernetes-prototype-safeguard") {
         // This job will run every morning when the Jenkins server is up
         scm('15 11 * * *')
     }
-    concurrentBuild(false)
     definition {
         cps {
             sandbox()

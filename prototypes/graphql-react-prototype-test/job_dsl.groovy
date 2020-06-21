@@ -9,7 +9,6 @@ pipelineJob("prototypes/graphql-react-prototype-test") {
     parameters {
         stringParam('branch', 'master', 'Branch in the graphql-react-prototype repository to test')
     }
-    concurrentBuild(true)
     definition {
         cps {
             sandbox()

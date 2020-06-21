@@ -11,7 +11,6 @@ job("seed-jobs/seed-job") {
         stringParam("repository", "", "Repository containing the Job DSL scripts")
         stringParam("branch", "", "Repo branch containing the Job DSL scripts")
     }
-    concurrentBuild(false)
     scm {
         git {
             branch("\$branch")

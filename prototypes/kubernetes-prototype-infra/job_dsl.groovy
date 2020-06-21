@@ -13,7 +13,6 @@ pipelineJob("prototypes/kubernetes-prototype-infra") {
             '<span style="font-size: 1.2em">Create or destroy infrastructure with Terraform.</span>'
         )
     }
-    concurrentBuild(false)
     definition {
         cps {
             sandbox()

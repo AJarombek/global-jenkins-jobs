@@ -10,7 +10,6 @@ pipelineJob("global-aws/global-aws-infrastructure-test") {
     parameters {
         stringParam('branch', 'master', 'Branch in the global-aws-infrastructure repository to test')
     }
-    concurrentBuild(true)
     definition {
         cps {
             sandbox()

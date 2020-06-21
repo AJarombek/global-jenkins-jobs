@@ -40,7 +40,7 @@ pipeline {
                 }
             }
         }
-        stage("Init Scripts") {
+        stage("Create Jobs") {
             steps {
                 script {
                     // The first time JOB DSL scripts are built, they will fail and need approval.
@@ -52,10 +52,13 @@ pipeline {
                         ],
                         propagate: false
                     )
-                    // Pause the job until the user approves the scripts.
-                    input message: 'Approve Scripts before continuing', ok: 'Scripts Approved'
 
-                    // On the scripts second run, it should pass.
+                    // Pause the job until the user approves the scripts.
+                    timeout(time: 1, unit: 'HOURS') {
+                        input message: 'Approve Scripts before continuing...', ok: 'Scripts Approved'
+                    }
+
+                    // On the Job DSL scripts second run, they should pass.
                     build(
                         job: 'seed-job',
                         parameters: [

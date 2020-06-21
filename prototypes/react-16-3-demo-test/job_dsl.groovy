@@ -9,7 +9,6 @@ pipelineJob("prototypes/react-16-3-demo-test") {
     parameters {
         stringParam('branch', 'master', 'Branch in the react-16-3-demo repository to test')
     }
-    concurrentBuild(true)
     definition {
         cps {
             sandbox()
