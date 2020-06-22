@@ -63,37 +63,37 @@ def checkoutRepo() {
 }
 
 def pushImage() {
-    dir("repos/saints-xctf-auth") {
+    dir("repos/saints-xctf-auth/token") {
         sh """
-            docker image build \
+            sudo docker image build \
+                -f ../Dockerfile \
                 -t python-lambda-dist:latest \
+                --network=host \
                 --build-arg ZIP_FILENAME=SaintsXCTFRotate .
         """
 
-        dir ("token") {
-            sh """
-                docker image build -t auth-saints-xctf-com-token:latest .
-            """
-        }
+        sh """
+            sudo docker image build -t auth-saints-xctf-com-token:latest .
+        """
     }
 
     withCredentials([
         usernamePassword(
-            credentialsId: '',
+            credentialsId: 'ajarombek-docker-hub',
             passwordVariable: 'dockerPassword',
             usernameVariable: 'dockerUsername'
         )
     ]) {
-        sh """
-            docker login -u $dockerUsername -p $dockerPassword
-
-            docker image tag auth-saints-xctf-com-token:latest $dockerUsername/auth-saints-xctf-com-token:latest
-            docker push auth-saints-xctf-com-token:latest
-            
-            docker image tag auth-saints-xctf-com-token:latest $dockerUsername/auth-saints-xctf-com-token:$param.label
-            docker push ajarombek/auth-saints-xctf-com-token:$param.label
-        """
+        sh 'sudo docker login -u $dockerUsername -p $dockerPassword'
     }
+
+    sh """
+        sudo docker image tag auth-saints-xctf-com-token:latest ajarombek/auth-saints-xctf-com-token:latest
+        sudo docker push ajarombek/auth-saints-xctf-com-token:latest
+        
+        sudo docker image tag auth-saints-xctf-com-token:latest ajarombek/auth-saints-xctf-com-token:${params.label}
+        sudo docker push ajarombek/auth-saints-xctf-com-token:${params.label}
+    """
 }
 
 def postScript() {
