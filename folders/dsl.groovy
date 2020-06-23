@@ -326,7 +326,10 @@ folder('saints-xctf/auth') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('push-lambda-builder-base-image')
+                names('push-authenticate-lambda-image')
+                names('push-authorizer-lambda-image')
+                names('push-rotate-lambda-image')
+                names('push-token-lambda-image')
             }
             columns() {
                 status()

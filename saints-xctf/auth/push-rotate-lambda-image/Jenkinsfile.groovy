@@ -1,9 +1,7 @@
 /**
- * Jenkins script for pushing a Docker image that pushes a 'token' AWS Lambda function to DockerHub.
- * Dotty & Lily wanted me to tell you that no matter if you are in the middle of very happy and exciting times or
- * sad and tough times, you are very much loved.
+ * Jenkins script for pushing a Docker image that pushes a 'rotate' AWS Lambda function to DockerHub.
  * @author Andrew Jarombek
- * @since 6/21/2020
+ * @since 6/23/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -79,14 +77,14 @@ def checkoutRepo() {
 
 def buildImage() {
     def subDir = "token"
-    def zipFilename = "SaintsXCTFToken"
-    def imageName = "auth-saints-xctf-com-token"
+    def zipFilename = "SaintsXCTFRotate"
+    def imageName = "auth-saints-xctf-com-rotate"
 
     saintsxctfsteps.buildImage(subDir, zipFilename, imageName)
 }
 
 def pushImage() {
-    def imageName = "auth-saints-xctf-com-token"
+    def imageName = "auth-saints-xctf-com-rotate"
     def imageLabel = params.label
     def isLatest = params.isLatest
 
@@ -94,7 +92,7 @@ def pushImage() {
 }
 
 def postScript() {
-    def bodyTitle = "Push SaintsXCTF Auth 'Token' AWS Lambda Docker image to DockerHub."
+    def bodyTitle = "Push SaintsXCTF Auth 'Rotate' AWS Lambda Docker image to DockerHub."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
