@@ -9,7 +9,7 @@
 def setupProject = {
     sh '''
         set -x
-        nodejs --version
+        node --version
         npm --version
         yarn --version
         
@@ -20,14 +20,15 @@ def setupProject = {
 def executeTests = {
     try {
         def status = sh (
-            script: """
+            script: "#!/bin/bash \n" +
+            '''
                 set +e
                 set -x
                 yarn test 2>&1 | tee test_results.log
-                exit_status=\${PIPESTATUS[0]}
+                exit_status=${PIPESTATUS[0]}
     
-                exit \$exit_status
-            """,
+                exit $exit_status
+            ''',
             returnStatus: true
         )
 

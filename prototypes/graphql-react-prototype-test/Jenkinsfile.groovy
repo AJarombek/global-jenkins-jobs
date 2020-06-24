@@ -9,7 +9,7 @@
 def setupProject = {
     sh '''
         set -x
-        nodejs --version
+        node --version
         npm --version
         yarn --version
         

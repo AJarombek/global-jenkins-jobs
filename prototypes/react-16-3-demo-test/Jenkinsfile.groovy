@@ -7,14 +7,16 @@
 @Library(['global-jenkins-library@master']) _
 
 def setupProject = {
-    sh '''
-        set -x
-        nodejs --version
-        npm --version
-        yarn --version
-        
-        yarn
-    '''
+    dir('app') {
+        sh '''
+            set -x
+            node --version
+            npm --version
+            yarn --version
+            
+            yarn
+        '''
+    }
 }
 
 def executeTests = {
@@ -46,7 +48,7 @@ def executeTests = {
 
 def emailTestResults = {
     def bodyContent = ""
-    def testResultLog = readFile "test_results.log"
+    def testResultLog = readFile "app/test_results.log"
 
     testResultLog.split('\n').each {
         bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"

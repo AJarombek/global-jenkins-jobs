@@ -6,48 +6,127 @@
 
 @Library(['global-jenkins-library@master']) _
 
-def setupProject = {
-    sh '''
-        set +x
-        node --version
-        npm --version
-        yarn --version
-        
-        yarn
-    '''
+pipeline {
+    agent {
+        label 'master'
+    }
+    triggers {
+        cron('H 0 * * *')
+    }
+    options {
+        ansiColor('xterm')
+        timeout(time: 1, unit: 'HOURS')
+        buildDiscarder(
+            logRotator(daysToKeepStr: '10', numToKeepStr: '5')
+        )
+    }
+    stages {
+        stage("Clean Workspace") {
+            steps {
+                script {
+                    cleanWs()
+                }
+            }
+        }
+        stage("Checkout Repository") {
+            steps {
+                script {
+                    checkoutRepo()
+                }
+            }
+        }
+        stage("Setup Project") {
+            steps {
+                script {
+                    setupProjectScript()
+                }
+            }
+        }
+        stage("Execute Client Tests") {
+            steps {
+                script {
+                    executeClientTestScript()
+                }
+            }
+        }
+        stage("Execute Server Tests") {
+            steps {
+                script {
+                    executeServerTestScript()
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                postScript()
+            }
+        }
+    }
 }
 
-def executeTests = {
+def checkoutRepo() {
+    def name = "jarombek-com"
+    def branch = "master"
+
+    genericsteps.checkoutRepo(name, branch)
+}
+
+def setupProjectScript() {
+    dir('jarombek-com') {
+        sh '''
+            set +x
+            node --version
+            npm --version
+            yarn --version
+            
+            yarn
+        '''
+    }
+}
+
+def executeClientTestScript() {
     try {
-        def status = sh (
+        CLIENT_STATUS = sh (
             script: "#!/bin/bash \n" +
             """
                 set +e
                 set -x
                 yarn client:test 2>&1 | tee test_results.log
-                exit_status_client=\${PIPESTATUS[0]}
-
-                yarn server:test 2>&1 | tee -a test_results.log
-                exit_status_server=\${PIPESTATUS[0]}
-                
-                exit_status=\$((exit_status_client + exit_status_server))
+                exit_status=\${PIPESTATUS[0]}
     
                 exit \$exit_status
             """,
             returnStatus: true
         )
-
-        if (status >= 1) {
-            currentBuild.result = "UNSTABLE"
-        }
-
     } catch (Exception ex) {
-        echo "Jarombek Com Testing Failed"
-        currentBuild.result = "UNSTABLE"
+        echo "Client Tests Failed"
+        CLIENT_STATUS = 1
     }
 }
 
-def emailTestResults = {
+def executeServerTestScript() {
+    try {
+        SERVER_STATUS = sh (
+            script: "#!/bin/bash \n" +
+            """
+                set +e
+                set -x
+                yarn server:test 2>&1 | tee -a test_results.log
+                exit_status=\${PIPESTATUS[0]}
+    
+                exit \$exit_status
+            """,
+            returnStatus: true
+        )
+    } catch (Exception ex) {
+        echo "Jarombek Com Testing Failed"
+        SERVER_STATUS = 1
+    }
+}
+
+def postScript() {
     def bodyContent = ""
     def testResultLog = readFile "test_results.log"
 
@@ -56,40 +135,10 @@ def emailTestResults = {
     }
 
     def bodyTitle = "Jarombek Com Application Tests"
-    email.sendEmail(
-        bodyTitle,
-        bodyContent,
-        env.JOB_NAME,
-        currentBuild.result,
-        env.BUILD_NUMBER,
-        env.BUILD_URL
-    )
+    def jobName = env.JOB_NAME
+    def buildStatus = currentBuild.result
+    def buildNumber = env.BUILD_NUMBER
+    def buildUrl = env.BUILD_URL
 
-    cleanWs()
+    genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
 }
-
-def config = [
-    agent: [
-        label: 'master'
-    ],
-    triggers: [
-        cron: 'H 0 * * *'
-    ],
-    options: [
-        time: 1,
-        unit: 'HOURS',
-        daysToKeepStr: '10',
-        numToKeepStr: '5'
-    ],
-    stages: [
-        repository: 'jarombek-com',
-        branch: env.branch,
-        setupProjectScript: setupProject,
-        executeTestsScript: executeTests
-    ],
-    post: [
-        script: emailTestResults
-    ]
-]
-
-pipelinejob(config)

@@ -95,6 +95,6 @@ node("master") {
  */
 @NonCPS
 def get_env() {
-    def matches = JOB_NAME =~ /saints-xctf-infrastructure-(\w+)/
+    def matches = JOB_NAME =~ /saints-xctf-infrastructure-test-(\w+)/
     return matches[0][1]
 }

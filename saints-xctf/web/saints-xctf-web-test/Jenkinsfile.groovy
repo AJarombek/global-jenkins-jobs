@@ -11,7 +11,7 @@
 def setupProject = {
     sh '''
         set -x
-        nodejs --version
+        node --version
         npm --version
         yarn --version
         
@@ -27,7 +27,7 @@ def executeTests = {
             """
                 set +e
                 set -x
-                yarn client:test 2>&1 | tee test_results.log
+                yarn test 2>&1 | tee test_results.log
                 exit_status=\${PIPESTATUS[0]}
 
                 exit \$exit_status
