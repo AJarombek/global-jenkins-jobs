@@ -37,12 +37,18 @@ pipeline {
                         sudo apt-get update
                         sudo apt-get install bazel
                         
+                        # 2) aws-iam-authenticator
+                        sudo curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/aws-iam-authenticator
+                        sudo chmod +x ./aws-iam-authenticator
+                        sudo cp ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+                        
                         # Installed Libraries
                         docker --version
                         python --version
                         node --version
                         aws --version
                         bazel --version
+                        aws-iam-authenticator version
                     """
                 }
             }

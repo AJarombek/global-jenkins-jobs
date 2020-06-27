@@ -8,7 +8,9 @@
 
 pipeline {
     agent {
-        label 'master'
+        kubernetes {
+            yamlFile 'pod.yaml'
+        }
     }
     triggers {
         cron('H 0 * * *')
@@ -56,6 +58,13 @@ pipeline {
                 }
             }
         }
+        stage("Execute End to End Tests") {
+            steps {
+                script {
+                    executeE2ETestScript()
+                }
+            }
+        }
     }
     post {
         always {
@@ -70,65 +79,97 @@ def checkoutRepo() {
     def name = "jarombek-com"
     def branch = "master"
 
-    genericsteps.checkoutRepo(name, branch)
+    container('test') {
+        genericsteps.checkoutRepo(name, branch)
+    }
 }
 
 def setupProjectScript() {
-    dir('jarombek-com') {
-        sh '''
-            set +x
-            node --version
-            npm --version
-            yarn --version
-            
-            yarn
-        '''
+    container('test') {
+        dir('repos/jarombek-com') {
+            sh '''
+                set +x
+                node --version
+                npm --version
+                yarn --version
+                
+                yarn
+            '''
+        }
     }
 }
 
 def executeClientTestScript() {
-    try {
-        CLIENT_STATUS = sh (
-            script: "#!/bin/bash \n" +
-            """
-                set +e
-                set -x
-                yarn client:test 2>&1 | tee test_results.log
-                exit_status=\${PIPESTATUS[0]}
-    
-                exit \$exit_status
-            """,
-            returnStatus: true
-        )
-    } catch (Exception ex) {
-        echo "Client Tests Failed"
-        CLIENT_STATUS = 1
+    container('test') {
+        dir('repos/jarombek-com') {
+            try {
+                CLIENT_STATUS = sh(
+                    script: "#!/bin/bash \n" +
+                    """
+                        set +e
+                        set -x
+                        yarn client:test 2>&1 | tee test_results.log
+                        exit_status=\${PIPESTATUS[0]}
+            
+                        exit \$exit_status
+                    """,
+                    returnStatus: true
+                )
+            } catch (Exception ex) {
+                echo "Client Tests Failed"
+                CLIENT_STATUS = 1
+            }
+        }
     }
 }
 
 def executeServerTestScript() {
-    try {
-        SERVER_STATUS = sh (
-            script: "#!/bin/bash \n" +
-            """
-                set +e
-                set -x
-                yarn server:test 2>&1 | tee -a test_results.log
-                exit_status=\${PIPESTATUS[0]}
-    
-                exit \$exit_status
-            """,
-            returnStatus: true
-        )
-    } catch (Exception ex) {
-        echo "Jarombek Com Testing Failed"
-        SERVER_STATUS = 1
+    dir('repos/jarombek-com') {
+        try {
+            SERVER_STATUS = sh(
+                script: "#!/bin/bash \n" +
+                """
+                    set +e
+                    set -x
+                    yarn server:test 2>&1 | tee -a test_results.log
+                    exit_status=\${PIPESTATUS[0]}
+        
+                    exit \$exit_status
+                """,
+                returnStatus: true
+            )
+        } catch (Exception ex) {
+            echo "Server Testing Failed"
+            SERVER_STATUS = 1
+        }
+    }
+}
+
+def executeE2ETestScript() {
+    container('test') {
+        dir('repos/jarombek-com') {
+            try {
+                E2E_STATUS = sh(
+                    script: """
+                        #!/bin/bash
+                        yarn cy:run-headless 2>&1 | tee -a test_results.log
+                        exit_status=\${PIPESTATUS[0]}
+            
+                        exit \$exit_status
+                    """,
+                    returnStatus: true
+                )
+            } catch (Exception ex) {
+                echo "E2E Testing Failed"
+                E2E_STATUS = 1
+            }
+        }
     }
 }
 
 def postScript() {
     def bodyContent = ""
-    def testResultLog = readFile "test_results.log"
+    def testResultLog = readFile "repos/jarombek-com/test_results.log"
 
     testResultLog.split('\n').each {
         bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
