@@ -7,7 +7,7 @@ Jenkins jobs for prototype applications.
 | Directory Name                     | Description                                                                      |
 |------------------------------------|----------------------------------------------------------------------------------|
 | `cloudformation-serverless`        | Jenkins job to build the serverless prototype.                                   |
-| `graphql-react-prototype-test`     | Jenkins job to run tests in the GraphQL React prototype.                         |
+| `graphql-react-prototype`          | Folder of jobs related to the GraphQL React prototype.                           |
 | `kubernetes-prototype-ci`          | Jenkins job to run CI unit tests for the kubernetes prototype.                   |
 | `kubernetes-prototype-infra`       | Jenkins job to build/destroy AWS infrastructure for the kubernetes prototype.    |
 | `kubernetes-prototype-safeguard`   | Jenkins job to destroy the kubernetes prototype EKS cluster if it runs too long. |

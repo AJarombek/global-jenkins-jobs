@@ -1,9 +1,7 @@
 /**
- * Jenkins script that pushes a 'token' AWS Lambda function to DockerHub.
- * Dotty & Lily wanted me to tell you that no matter if you are in the middle of very happy and exciting times or
- * sad and tough times, you are very much loved.
+ * Jenkins script that pushes a 'token' AWS Lambda function to ECR.
  * @author Andrew Jarombek
- * @since 6/21/2020
+ * @since 6/28/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -71,30 +69,24 @@ pipeline {
 }
 
 def checkoutRepo() {
-    def name = "saints-xctf-auth"
+    def name = "graphql-react-prototype"
     def branch = "master"
 
     genericsteps.checkoutRepo(name, branch)
 }
 
 def buildImage() {
-    def subDir = "token"
-    def zipFilename = "SaintsXCTFToken"
-    def imageName = "auth-saints-xctf-com-token"
-
-    saintsxctfsteps.buildImage(subDir, zipFilename, imageName)
+    def imageName = "graphql-react-prototype-base"
 }
 
 def pushImage() {
-    def imageName = "auth-saints-xctf-com-token"
+    def imageName = "graphql-react-prototype-base"
     def imageLabel = params.label
     def isLatest = params.isLatest
-
-    saintsxctfsteps.pushImage(imageName, imageLabel, isLatest)
 }
 
 def postScript() {
-    def bodyTitle = "Push SaintsXCTF Auth 'Token' AWS Lambda Docker image to DockerHub."
+    def bodyTitle = "Push graphql-react-prototype-base Docker image to ECR."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

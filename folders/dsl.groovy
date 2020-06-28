@@ -229,7 +229,6 @@ folder('prototypes') {
             filterExecutors()
             jobs {
                 names(
-                    'graphql-react-prototype-test',
                     'react-16-3-demo-test',
                     'react-webpack-seed',
                     'kubernetes-prototype-ci'
@@ -255,6 +254,56 @@ folder('prototypes') {
                     'kubernetes-prototype-infra',
                     'kubernetes-prototype-safeguard'
                 )
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
+// GraphQL React Prototype Jobs
+folder('prototypes/graphql-react-prototype') {
+    displayName('graphql-react-prototype')
+    description('Folder for the GraphQL React Prototype')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the GraphQL React Prototype')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('graphql-react-prototype-test')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the GraphQL React Prototype')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('push-app-image', 'push-base-image')
             }
             columns() {
                 status()
@@ -310,7 +359,7 @@ folder('saints-xctf/api') {
 
 // SaintsXCTF Auth Application Jobs
 folder('saints-xctf/auth') {
-    displayName('api')
+    displayName('auth')
     description('Folder for the SaintsXCTF Auth application')
     primaryView('All')
     authorization {
@@ -326,10 +375,12 @@ folder('saints-xctf/auth') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('push-authenticate-lambda-image')
-                names('push-authorizer-lambda-image')
-                names('push-rotate-lambda-image')
-                names('push-token-lambda-image')
+                names(
+                    'push-authenticate-lambda-image',
+                    'push-authorizer-lambda-image',
+                    'push-rotate-lambda-image',
+                    'push-token-lambda-image'
+                )
             }
             columns() {
                 status()

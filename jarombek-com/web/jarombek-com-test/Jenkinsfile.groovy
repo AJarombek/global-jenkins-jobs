@@ -104,12 +104,12 @@ def executeClientTestScript() {
         dir('repos/jarombek-com') {
             try {
                 CLIENT_STATUS = sh(
-                    script: "#!/bin/bash \n" +
-                    """
+                    script: """#!/bin/bash
                         set +e
                         set -x
-                        yarn client:test 2>&1 | tee test_results.log
+                        yarn client:test -- --updateSnapshot 2>&1 | tee test_results.log
                         exit_status=\${PIPESTATUS[0]}
+                        chmod 777 test_results.log
             
                         exit \$exit_status
                     """,
@@ -124,23 +124,24 @@ def executeClientTestScript() {
 }
 
 def executeServerTestScript() {
-    dir('repos/jarombek-com') {
-        try {
-            SERVER_STATUS = sh(
-                script: "#!/bin/bash \n" +
-                """
-                    set +e
-                    set -x
-                    yarn server:test 2>&1 | tee -a test_results.log
-                    exit_status=\${PIPESTATUS[0]}
-        
-                    exit \$exit_status
-                """,
-                returnStatus: true
-            )
-        } catch (Exception ex) {
-            echo "Server Testing Failed"
-            SERVER_STATUS = 1
+    container('test') {
+        dir('repos/jarombek-com') {
+            try {
+                SERVER_STATUS = sh(
+                    script: """#!/bin/bash
+                        set +e
+                        set -x
+                        yarn server:test -- --detectOpenHandles 2>&1 | tee -a test_results.log
+                        exit_status=\${PIPESTATUS[0]}
+            
+                        exit \$exit_status
+                    """,
+                    returnStatus: true
+                )
+            } catch (Exception ex) {
+                echo "Server Testing Failed"
+                SERVER_STATUS = 1
+            }
         }
     }
 }
@@ -150,8 +151,7 @@ def executeE2ETestScript() {
         dir('repos/jarombek-com') {
             try {
                 E2E_STATUS = sh(
-                    script: """
-                        #!/bin/bash
+                    script: """#!/bin/bash
                         yarn cy:run-headless 2>&1 | tee -a test_results.log
                         exit_status=\${PIPESTATUS[0]}
             
@@ -164,6 +164,13 @@ def executeE2ETestScript() {
                 E2E_STATUS = 1
             }
         }
+    }
+
+    // Determine the final result of the pipeline
+    def result = CLIENT_STATUS + SERVER_STATUS + E2E_STATUS
+
+    if (result > 0) {
+        currentBuild.result = "UNSTABLE"
     }
 }
 
