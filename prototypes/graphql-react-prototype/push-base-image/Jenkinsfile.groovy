@@ -58,6 +58,13 @@ pipeline {
                 }
             }
         }
+        stage("Cleanup Docker Environment") {
+            steps {
+                script {
+                    cleanupDockerEnvironment()
+                }
+            }
+        }
     }
     post {
         always {
@@ -77,12 +84,44 @@ def checkoutRepo() {
 
 def buildImage() {
     def imageName = "graphql-react-prototype-base"
+
+    dir("repos/graphql-react-prototype") {
+        sh """
+            sudo docker image build \
+                -f base.dockerfile \
+                -t graphql-react-prototype-base:latest \
+                --network=host .
+        """
+    }
 }
 
 def pushImage() {
+    def repoUrl = "739088120071.dkr.ecr.us-east-1.amazonaws.com"
     def imageName = "graphql-react-prototype-base"
     def imageLabel = params.label
     def isLatest = params.isLatest
+
+    sh """
+        aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --password-stdin $repoUrl
+    
+        sudo docker image tag $imageName:latest $repoUrl/$imageName:$imageLabel
+        sudo docker push $repoUrl/$imageName:$imageLabel
+    """
+
+    if (isLatest) {
+        sh """
+            sudo docker image tag $imageName:latest $repoUrl/$imageName:latest
+            sudo docker push $repoUrl/$imageName:latest
+        """
+    }
+}
+
+def cleanupDockerEnvironment() {
+    def imageName = "graphql-react-prototype-base"
+
+    sh """
+        sudo docker image rm $imageName:latest
+    """
 }
 
 def postScript() {

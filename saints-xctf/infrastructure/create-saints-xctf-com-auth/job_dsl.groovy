@@ -7,7 +7,7 @@
 def environments = ["prod", "dev", "all"]
 
 environments.each { env ->
-    pipelineJob("global-aws/create-saints-xctf-com-auth-$env") {
+    pipelineJob("saints-xctf/infrastructure/create-saints-xctf-com-auth-$env") {
         description(
             "Pipeline Job for creating AWS infrastructure for SaintsXCTF Auth in the ${env.capitalize()} environment"
         )
