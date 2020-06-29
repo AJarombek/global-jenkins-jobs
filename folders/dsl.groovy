@@ -303,7 +303,14 @@ folder('prototypes/graphql-react-prototype') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('push-app-image', 'push-base-image')
+                names(
+                    'push-app-image',
+                    'push-base-image',
+                    'create-ecr-infrastructure',
+                    'create-eks-infrastructure',
+                    'destroy-ecr-infrastructure',
+                    'destroy-eks-infrastructure'
+                )
             }
             columns() {
                 status()

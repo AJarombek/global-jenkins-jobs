@@ -1,5 +1,5 @@
 /**
- * Jenkins script that pushes a 'token' AWS Lambda function to ECR.
+ * Jenkins script that uses Terraform to create ECR repositories used by the GraphQL React Prototype.
  * @author Andrew Jarombek
  * @since 6/28/2020
  */
@@ -63,9 +63,15 @@ pipeline {
             }
         }
         stage("Terraform Apply") {
+            when {
+                allOf {
+                    environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
+                    environment name: 'TERRAFORM_PLAN_ERRORS', value: 'false'
+                }
+            }
             steps {
                 script {
-                    terraformApply(params.autoApply)
+                    terraformApply()
                 }
             }
         }
@@ -88,61 +94,20 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/graphql-react-prototype/infra"
-    dir(INFRA_DIR) {
-        sh """
-            terraform --version
-            terraform init
-        """
-    }
+    INFRA_DIR = "repos/graphql-react-prototype/infra/ecr"
+    terraform.terraformInit(INFRA_DIR)
 }
 
 def terraformValidate() {
-    dir(INFRA_DIR) {
-        sh "terraform validate"
-    }
+    terraform.terraformValidate(INFRA_DIR)
 }
 
 def terraformPlan() {
-    dir(INFRA_DIR) {
-        def result = sh(
-            script: 'terraform plan -detailed-exitcode -out=terraform-dev.tfplan',
-            returnStatus: true
-        )
-
-        // The result is 0 if the plan found no changes, 1 if there are errors with the plan,
-        // and 2 if the plan is successful and changes will be made.
-        switch (result) {
-            case 0:
-                currentBuild.result = 'SUCCESS'
-                break
-            case 1:
-                currentBuild.result = 'UNSTABLE'
-                break
-            case 2:
-                println 'The "terraform plan" Response Was Valid.'
-                break
-            default:
-                println 'Unexpected Terraform exit code.'
-                currentBuild.result = 'FAILURE'
-        }
-    }
+    terraform.terraformPlan(INFRA_DIR)
 }
 
-def terraformApply(autoApply) {
-    if (!autoApply) {
-        try {
-            timeout(time: 15, unit: 'MINUTES') {
-                input message: 'Confirm Plan', ok: 'Apply'
-            }
-        } catch (Throwable ex) {
-            println 'Timeout Exceeded.'
-            currentBuild.result = 'UNSTABLE'
-        }
-    }
-    dir(INFRA_DIR) {
-        sh "terraform apply -auto-approve terraform-dev.tfplan"
-    }
+def terraformApply() {
+    terraform.terraformApply(INFRA_DIR, params.autoApply)
 }
 
 def postScript() {
