@@ -35,32 +35,21 @@ pipeline {
         stage("Checkout Repository") {
             steps {
                 script {
-                    dir('repos/global-aws-infrastructure') {
-                        git.basicClone('global-aws-infrastructure', 'master')
-                    }
+                    checkoutRepo()
                 }
             }
         }
         stage("Push Docker Image") {
             steps {
                 script {
-                    dir('repos/global-aws-infrastructure/jenkins-kubernetes/docker') {
-                        def status = sh (
-                            script: """
-                                set +e
-                                set -x
-                                export AWS_DEFAULT_REGION=us-east-1
-                                ./push-ecr.sh ${params.label} 
-                            """,
-                            returnStatus: true
-                        )
-
-                        if (status >= 1) {
-                            currentBuild.result = "UNSTABLE"
-                        } else {
-                            currentBuild.result = "SUCCESS"
-                        }
-                    }
+                    pushImage()
+                }
+            }
+        }
+        stage("Cleanup Docker Environment") {
+            steps {
+                script {
+                    cleanupDockerEnvironment()
                 }
             }
         }
@@ -68,17 +57,58 @@ pipeline {
     post {
         always {
             script {
-                email.sendEmail(
-                    "Push Jenkins Docker Image to ECR",
-                    "",
-                    env.JOB_NAME,
-                    currentBuild.result,
-                    env.BUILD_NUMBER,
-                    env.BUILD_URL
-                )
-
-                cleanWs()
+                postScript()
             }
         }
     }
+}
+
+def checkoutRepo() {
+    dir('repos/global-aws-infrastructure') {
+        git.basicClone('global-aws-infrastructure', 'master')
+    }
+}
+
+def pushImage() {
+    def repoUrl = "739088120071.dkr.ecr.us-east-1.amazonaws.com"
+
+    dir('repos/global-aws-infrastructure/jenkins-kubernetes/docker') {
+        def status = sh (
+            script: """
+                set +e
+                set -x
+                export AWS_DEFAULT_REGION=us-east-1
+                aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --password-stdin $repoUrl
+                ./push-ecr.sh ${params.label} 
+            """,
+            returnStatus: true
+        )
+
+        if (status >= 1) {
+            currentBuild.result = "UNSTABLE"
+        } else {
+            currentBuild.result = "SUCCESS"
+        }
+    }
+}
+
+def cleanupDockerEnvironment() {
+    def imageName = "jenkins-jarombek-io:$params.label"
+
+    sh """
+        sudo docker image rm $imageName:$params.label
+    """
+}
+
+def postScript() {
+    email.sendEmail(
+        "Push Jenkins Docker Image to ECR",
+        "",
+        env.JOB_NAME,
+        currentBuild.result,
+        env.BUILD_NUMBER,
+        env.BUILD_URL
+    )
+
+    cleanWs()
 }
