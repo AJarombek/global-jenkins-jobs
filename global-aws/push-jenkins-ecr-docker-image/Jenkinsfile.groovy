@@ -72,13 +72,14 @@ def checkoutRepo() {
 def pushImage() {
     def repoUrl = "739088120071.dkr.ecr.us-east-1.amazonaws.com"
 
+    sh "aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --password-stdin $repoUrl"
+
     dir('repos/global-aws-infrastructure/jenkins-kubernetes/docker') {
         def status = sh (
             script: """
                 set +e
                 set -x
                 export AWS_DEFAULT_REGION=us-east-1
-                aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --password-stdin $repoUrl
                 ./push-ecr.sh ${params.label} 
             """,
             returnStatus: true
@@ -93,10 +94,14 @@ def pushImage() {
 }
 
 def cleanupDockerEnvironment() {
-    def imageName = "jenkins-jarombek-io:$params.label"
+    def repoUrl = "739088120071.dkr.ecr.us-east-1.amazonaws.com"
+    def imageName = "jenkins-jarombek-io"
 
     sh """
-        sudo docker image rm $imageName:$params.label
+        sudo docker image rm $imageName:latest
+        sudo docker image rm $repoUrl/$imageName:$params.label
+        
+        sudo docker image ls
     """
 }
 

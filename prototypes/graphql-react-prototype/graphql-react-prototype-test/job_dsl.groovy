@@ -12,7 +12,11 @@ pipelineJob("prototypes/graphql-react-prototype-test") {
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("prototypes/graphql-react-prototype-test/Jenkinsfile.groovy"))
+            script(
+                readFileFromWorkspace(
+                    "prototypes/graphql-react-prototype/graphql-react-prototype-test/Jenkinsfile.groovy"
+                )
+            )
         }
     }
     triggers {
