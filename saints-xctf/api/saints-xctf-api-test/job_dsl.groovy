@@ -15,7 +15,4 @@ pipelineJob("saints-xctf/api/saints-xctf-api-test") {
             script(readFileFromWorkspace("saints-xctf/api/saints-xctf-api-test/Jenkinsfile.groovy"))
         }
     }
-    triggers {
-        cron('H 0 * * *')
-    }
 }

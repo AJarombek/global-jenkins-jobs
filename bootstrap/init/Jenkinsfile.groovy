@@ -82,6 +82,25 @@ pipeline {
                 }
             }
         }
+        stage("Trigger Initial Scheduled Jobs") {
+            steps {
+                script {
+                    buildJobs([
+                        'global-aws/cost-detection',
+                        'global-aws/global-aws-infrastructure-test-prod',
+                        'global-aws/global-aws-infrastructure-test-dev',
+                        'jarombek-com/components/jarombek-react-components-test',
+                        'jarombek-com/infrastructure/jarombek-com-infrastructure-test',
+                        'jarombek-com/web/jarombek-com-test',
+                        'prototypes/graphql-react-prototype/graphql-react-prototype-test',
+                        'prototypes/react-16-3-demo-test',
+                        'saints-xctf/api/saints-xctf-api-test',
+                        'saints-xctf/infrastructure/saints-xctf-infrastructure-test',
+                        'saints-xctf/web/saints-xctf-web-test'
+                    ])
+                }
+            }
+        }
     }
     post {
         always {
@@ -98,5 +117,11 @@ pipeline {
                 cleanWs()
             }
         }
+    }
+}
+
+def buildJobs(List<String> jobList) {
+    jobList.each {
+        build(job: it, propagate: false, wait: false)
     }
 }

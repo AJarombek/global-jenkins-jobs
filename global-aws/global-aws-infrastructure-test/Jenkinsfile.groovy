@@ -10,6 +10,9 @@ pipeline {
     agent {
         label 'master'
     }
+    triggers {
+        cron('H 0 * * *')
+    }
     parameters {
         string(
             name: 'branch',
@@ -70,71 +73,20 @@ def checkoutRepo(String branch) {
 }
 
 def setupEnvironment() {
-    dir('repos/global-aws-infrastructure/test') {
-        sh '''
-            set +e
-            set -x
-            python3.8 --version
-            python3.8 -m pip --version
-
-            sudo pip3 install pipenv
-            pipenv --rm
-            pipenv install
-        '''
-    }
+    infrastructuresteps.setupEnvironment('repos/global-aws-infrastructure/test')
 }
 
 def executeTests() {
-    dir('repos/global-aws-infrastructure/test') {
-        try {
-            ansiColor('xterm') {
-                def status = sh (
-                    script: "#!/bin/bash \n" +
-                    """
-                        # The AWS SDK needs to know which region the infrastructure is in.
-                        export AWS_DEFAULT_REGION=us-east-1
-                        
-                        pipenv run python runner.py test_results.log
-                        exit_status=\$?
-
-                        cat test_results.log
-
-                        deactivate
-                        exit \$exit_status
-                    """,
-                    returnStatus: true
-                )
-
-                if (status >= 1) {
-                    currentBuild.result = "UNSTABLE"
-                } else {
-                    currentBuild.result = "SUCCESS"
-                }
-            }
-        } catch (Exception ex) {
-            echo "Infrastructure Testing Failed"
-            currentBuild.result = "FAILURE"
-        }
-    }
+    infrastructuresteps.executeTests('repos/global-aws-infrastructure/test', env.TEST_ENV)
 }
 
 def postScript() {
+    def directory = 'repos/global-aws-infrastructure/test'
     def bodyTitle = "Global Infrastructure Tests"
-    def bodyContent = ""
-    def testResultLog = ""
-
-    dir("test") {
-        testResultLog = readFile "test_results.log"
-    }
-
-    testResultLog.split('\n').each {
-        bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
-    }
-
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
     def buildNumber = env.BUILD_NUMBER
     def buildUrl = env.BUILD_URL
 
-    genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
+    infrastructuresteps.postScript(directory, bodyTitle, jobName, buildStatus, buildNumber, buildUrl)
 }

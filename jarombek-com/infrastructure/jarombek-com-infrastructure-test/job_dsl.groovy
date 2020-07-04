@@ -7,11 +7,14 @@
 
 def environments = ["prod", "dev"]
 
-environments.each { env ->
-    pipelineJob("jarombek-com/infrastructure/jarombek-com-infrastructure-$env") {
+environments.each { environment ->
+    pipelineJob("jarombek-com/infrastructure/jarombek-com-infrastructure-$environment") {
         description("Pipeline Job for testing the jarombek-com-infrastructure project")
         parameters {
             stringParam('branch', 'master', 'Branch in the jarombek-com-infrastructure repository to test')
+        }
+        environmentVariables {
+            env('TEST_ENV', environment)
         }
         definition {
             cps {

@@ -7,10 +7,6 @@
 
 pipelineJob("prototypes/kubernetes-prototype-safeguard") {
     description("Pipeline Job for safeguarding the Kubernetes Prototype EKS cluster")
-    triggers {
-        // This job will run every morning when the Jenkins server is up
-        scm('15 11 * * *')
-    }
     definition {
         cps {
             sandbox()

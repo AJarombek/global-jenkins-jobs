@@ -5,15 +5,22 @@
  * @since 3/16/2019
  */
 
-pipelineJob("global-aws/global-aws-infrastructure-test") {
-    description("Pipeline Job for testing the global-aws-infrastructure project")
-    parameters {
-        stringParam('branch', 'master', 'Branch in the global-aws-infrastructure repository to test')
-    }
-    definition {
-        cps {
-            sandbox()
-            script(readFileFromWorkspace("global-aws/global-aws-infrastructure-test/Jenkinsfile.groovy"))
+def environments = ["prod", "dev"]
+
+environments.each { environment ->
+    pipelineJob("global-aws/global-aws-infrastructure-test-${environment}") {
+        description("Pipeline Job for testing the global-aws-infrastructure project")
+        parameters {
+            stringParam('branch', 'master', 'Branch in the global-aws-infrastructure repository to test')
+        }
+        environmentVariables {
+            env('TEST_ENV', environment)
+        }
+        definition {
+            cps {
+                sandbox()
+                script(readFileFromWorkspace("global-aws/global-aws-infrastructure-test/Jenkinsfile.groovy"))
+            }
         }
     }
 }

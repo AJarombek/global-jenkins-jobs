@@ -4,7 +4,7 @@
  * @since 4/18/2020
  */
 
-pipelineJob("prototypes/graphql-react-prototype-test") {
+pipelineJob("prototypes/graphql-react-prototype/graphql-react-prototype-test") {
     description("Pipeline Job for testing the graphql-react-prototype project")
     parameters {
         stringParam('branch', 'master', 'Branch in the graphql-react-prototype repository to test')
@@ -18,8 +18,5 @@ pipelineJob("prototypes/graphql-react-prototype-test") {
                 )
             )
         }
-    }
-    triggers {
-        cron('H 0 * * *')
     }
 }

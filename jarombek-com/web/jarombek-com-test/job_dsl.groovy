@@ -17,7 +17,4 @@ pipelineJob("jarombek-com/web/jarombek-com-test") {
         daysToKeep(10)
         numToKeep(5)
     }
-    triggers {
-        cron('H 0 * * *')
-    }
 }

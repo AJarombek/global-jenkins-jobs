@@ -1,7 +1,7 @@
 /**
- * Jenkins script for testing jarombek-com-infrastructure.
+ * Jenkins script for detecting unexpected AWS costs.
  * @author Andrew Jarombek
- * @since 6/2/2019
+ * @since 7/4/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -11,14 +11,7 @@ pipeline {
         label 'master'
     }
     triggers {
-        cron('H 0 * * *')
-    }
-    parameters {
-        string(
-            name: 'branch',
-            defaultValue: 'master',
-            description: 'Git branch to execute tests from'
-        )
+        cron('H 7 * * *')
     }
     options {
         ansiColor('xterm')
@@ -38,7 +31,7 @@ pipeline {
         stage("Checkout Repository") {
             steps {
                 script {
-                    checkoutRepo(params.branch)
+                    checkoutRepo()
                 }
             }
         }
@@ -49,10 +42,10 @@ pipeline {
                 }
             }
         }
-        stage("Execute Infrastructure Tests") {
+        stage("Detect AWS Costs") {
             steps {
                 script {
-                    executeTests()
+                    detectAWSCosts()
                 }
             }
         }
@@ -66,27 +59,44 @@ pipeline {
     }
 }
 
-def checkoutRepo(String branch) {
-    dir('repos/jarombek-com-infrastructure') {
-        git.basicClone('jarombek-com-infrastructure', branch)
+def checkoutRepo() {
+    dir('repos/global-aws-infrastructure') {
+        git.basicClone('global-aws-infrastructure', 'master')
     }
 }
 
 def setupEnvironment() {
-    infrastructuresteps.setupEnvironment('repos/jarombek-com-infrastructure/test')
+    infrastructuresteps.setupEnvironment('repos/global-aws-infrastructure/scripts')
 }
 
-def executeTests() {
-    infrastructuresteps.executeTests('repos/jarombek-com-infrastructure/test', env.TEST_ENV)
+def detectAWSCosts() {
+    dir('repos/global-aws-infrastructure/scripts') {
+        String cost_string = sh (
+            script: "pipenv run python costDetection.py",
+            returnStdout: true
+        )
+
+        float cost = cost_string as float
+
+        if (cost <= 8.5) {
+            currentBuild.result = "SUCCESS"
+        } else if (8.5 < cost < 9.5) {
+            currentBuild.result = "UNSTABLE"
+        } else {
+            currentBuild.result = "FAILURE"
+        }
+
+        env.AVG_COST = cost_string
+    }
 }
 
 def postScript() {
-    def directory = 'repos/jarombek-com-infrastructure/test'
-    def bodyTitle = "jarombek.com Infrastructure Tests"
+    def bodyTitle = "Detect AWS Costs"
+    def bodyContent = "3-Day Moving Cost Average: $env.AVG_COST"
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
     def buildNumber = env.BUILD_NUMBER
     def buildUrl = env.BUILD_URL
 
-    infrastructuresteps.postScript(directory, bodyTitle, jobName, buildStatus, buildNumber, buildUrl)
+    genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
 }

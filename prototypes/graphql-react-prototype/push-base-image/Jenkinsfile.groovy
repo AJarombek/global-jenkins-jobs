@@ -44,6 +44,13 @@ pipeline {
                 }
             }
         }
+        stage("Add Env File") {
+            steps {
+                script {
+                    addEnvFile()
+                }
+            }
+        }
         stage("Build Docker Image") {
             steps {
                 script {
@@ -80,6 +87,14 @@ def checkoutRepo() {
     def branch = "master"
 
     genericsteps.checkoutRepo(name, branch)
+}
+
+def addEnvFile() {
+    dir("repos/graphql-react-prototype") {
+        sh """
+            touch .env
+        """
+    }
 }
 
 def buildImage() {
