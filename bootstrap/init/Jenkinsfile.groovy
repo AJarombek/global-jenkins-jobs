@@ -90,12 +90,14 @@ pipeline {
                         'global-aws/global-aws-infrastructure-test-prod',
                         'global-aws/global-aws-infrastructure-test-dev',
                         'jarombek-com/components/jarombek-react-components-test',
-                        'jarombek-com/infrastructure/jarombek-com-infrastructure-test',
+                        'jarombek-com/infrastructure/jarombek-com-infrastructure-prod',
+                        'jarombek-com/infrastructure/jarombek-com-infrastructure-dev',
                         'jarombek-com/web/jarombek-com-test',
                         'prototypes/graphql-react-prototype/graphql-react-prototype-test',
                         'prototypes/react-16-3-demo-test',
                         'saints-xctf/api/saints-xctf-api-test',
-                        'saints-xctf/infrastructure/saints-xctf-infrastructure-test',
+                        'saints-xctf/infrastructure/saints-xctf-infrastructure-test-prod',
+                        'saints-xctf/infrastructure/saints-xctf-infrastructure-test-dev',
                         'saints-xctf/web/saints-xctf-web-test'
                     ])
                 }

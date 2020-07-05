@@ -8,7 +8,7 @@
 def environments = ["prod", "dev"]
 
 environments.each { environment ->
-    pipelineJob("jarombek-com/infrastructure/jarombek-com-infrastructure-$environment") {
+    pipelineJob("jarombek-com/infrastructure/jarombek-com-infrastructure-test-$environment") {
         description("Pipeline Job for testing the jarombek-com-infrastructure project")
         parameters {
             stringParam('branch', 'master', 'Branch in the jarombek-com-infrastructure repository to test')

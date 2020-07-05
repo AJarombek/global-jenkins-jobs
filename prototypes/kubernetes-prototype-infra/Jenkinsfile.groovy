@@ -67,10 +67,10 @@ def bastionKeyStage(boolean is_create) {
     stage("bastion-key") {
         dir("infra/bastion/key") {
             def result = sh(
-                    script: """
+                script: """
                     aws ec2 describe-key-pairs --key-name eks-sandbox-bastion-key --query "KeyPairs" | jq length
                 """,
-                    returnStdout: true
+                returnStdout: true
             )
             if (result == "0") {
                 ansiColor('css') {

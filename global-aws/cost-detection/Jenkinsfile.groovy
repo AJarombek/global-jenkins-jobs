@@ -76,11 +76,12 @@ def detectAWSCosts() {
             returnStdout: true
         )
 
+        println cost_string
         float cost = cost_string as float
 
         if (cost <= 8.5) {
             currentBuild.result = "SUCCESS"
-        } else if (8.5 < cost < 9.5) {
+        } else if (cost > 8.5 && cost <= 9.5) {
             currentBuild.result = "UNSTABLE"
         } else {
             currentBuild.result = "FAILURE"

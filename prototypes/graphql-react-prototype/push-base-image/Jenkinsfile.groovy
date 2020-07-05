@@ -1,5 +1,5 @@
 /**
- * Jenkins script that pushes a 'token' AWS Lambda function to ECR.
+ * Jenkins script that pushes a base Docker image for the graphql-react-prototype application.
  * @author Andrew Jarombek
  * @since 6/28/2020
  */
@@ -91,15 +91,16 @@ def checkoutRepo() {
 
 def addEnvFile() {
     dir("repos/graphql-react-prototype") {
-        sh """
-            touch .env
-        """
+        withCredentials([string(credentialsId: 'ajarombek-github-access-token', variable: 'accessToken')]) {
+            sh """
+                touch .env
+                echo "GITHUB_ACCESS_TOKEN=$accessToken" >> .env
+            """
+        }
     }
 }
 
 def buildImage() {
-    def imageName = "graphql-react-prototype-base"
-
     dir("repos/graphql-react-prototype") {
         sh """
             sudo docker image build \
@@ -133,10 +134,20 @@ def pushImage() {
 
 def cleanupDockerEnvironment() {
     def imageName = "graphql-react-prototype-base"
+    def repoUrl = "739088120071.dkr.ecr.us-east-1.amazonaws.com"
 
     sh """
         sudo docker image rm $imageName:latest
+        sudo docker image rm $repoUrl/$imageName:$params.label
     """
+
+    if (params.isLatest) {
+        sh """
+            sudo docker image rm $repoUrl/$imageName:latest
+        """
+    }
+
+    sh "sudo docker image ls"
 }
 
 def postScript() {

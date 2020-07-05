@@ -77,7 +77,7 @@ def setupEnvironment() {
 }
 
 def executeTests() {
-    infrastructuresteps.executeTests('repos/jarombek-com-infrastructure/test', env.TEST_ENV)
+    infrastructuresteps.executeTests('repos/jarombek-com-infrastructure/test', getTestEnv())
 }
 
 def postScript() {
@@ -89,4 +89,10 @@ def postScript() {
     def buildUrl = env.BUILD_URL
 
     infrastructuresteps.postScript(directory, bodyTitle, jobName, buildStatus, buildNumber, buildUrl)
+}
+
+@NonCPS
+def getTestEnv() {
+    def matches = JOB_NAME =~ /jarombek-com-infrastructure-test-(\w+)/
+    return matches[0][1]
 }
