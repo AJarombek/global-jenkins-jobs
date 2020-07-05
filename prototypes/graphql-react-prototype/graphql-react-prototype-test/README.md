@@ -8,3 +8,4 @@ This directory contains a Jenkins pipeline job that runs unit tests in the `grap
 |---------------------------|-----------------------------------------------------------------------------------------------|
 | `jenkinsfile.groovy`      | Jenkinsfile which is executed when the `graphql-react-prototype-test` pipeline job is run.    |
 | `job_dsl.groovy`          | *Job DSL Plugin* script which creates the `graphql-react-prototype-test` Jenkins job.         |
+| `pod.yaml`                | Kubernetes YAML config for a Pod used as an environment to test the application.              |

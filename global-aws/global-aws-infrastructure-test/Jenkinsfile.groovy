@@ -77,7 +77,7 @@ def setupEnvironment() {
 }
 
 def executeTests() {
-    infrastructuresteps.executeTests('repos/global-aws-infrastructure/test', env.TEST_ENV)
+    infrastructuresteps.executeTests('repos/global-aws-infrastructure/test', getTestEnv())
 }
 
 def postScript() {
@@ -89,4 +89,10 @@ def postScript() {
     def buildUrl = env.BUILD_URL
 
     infrastructuresteps.postScript(directory, bodyTitle, jobName, buildStatus, buildNumber, buildUrl)
+}
+
+@NonCPS
+def getTestEnv() {
+    def matches = JOB_NAME =~ /global-aws-infrastructure-test-(\w+)/
+    return matches[0][1]
 }

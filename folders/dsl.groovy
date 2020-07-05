@@ -23,7 +23,10 @@ folder('global-aws') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('global-aws-infrastructure-test')
+                names('cost-detection')
+                names('global-aws-infrastructure-test-dev')
+                names('global-aws-infrastructure-test-prod')
+                names('global-kubernetes-infrastructure-test')
             }
             columns() {
                 status()

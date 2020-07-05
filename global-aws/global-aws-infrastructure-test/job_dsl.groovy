@@ -13,9 +13,6 @@ environments.each { environment ->
         parameters {
             stringParam('branch', 'master', 'Branch in the global-aws-infrastructure repository to test')
         }
-        environmentVariables {
-            env('TEST_ENV', environment)
-        }
         definition {
             cps {
                 sandbox()

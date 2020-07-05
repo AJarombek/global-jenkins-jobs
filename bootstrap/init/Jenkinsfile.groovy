@@ -89,6 +89,7 @@ pipeline {
                         'global-aws/cost-detection',
                         'global-aws/global-aws-infrastructure-test-prod',
                         'global-aws/global-aws-infrastructure-test-dev',
+                        'global-aws/global-kubernetes-infrastructure-test',
                         'jarombek-com/components/jarombek-react-components-test',
                         'jarombek-com/infrastructure/jarombek-com-infrastructure-prod',
                         'jarombek-com/infrastructure/jarombek-com-infrastructure-dev',

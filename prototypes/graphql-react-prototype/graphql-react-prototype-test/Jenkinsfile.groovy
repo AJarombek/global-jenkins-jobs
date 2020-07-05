@@ -30,6 +30,13 @@ pipeline {
                 }
             }
         }
+        stage("Update Docker Image") {
+            steps {
+                script {
+                    updateDockerImage()
+                }
+            }
+        }
         stage("Execute Tests") {
             steps {
                 script {
@@ -45,6 +52,14 @@ pipeline {
             }
         }
     }
+}
+
+def updateDockerImage() {
+    build(
+        job: 'prototypes/graphql-react-prototype/push-base-image',
+        propagate: false,
+        wait: true
+    )
 }
 
 def executeTestScript() {
