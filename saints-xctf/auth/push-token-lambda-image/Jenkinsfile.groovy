@@ -60,6 +60,13 @@ pipeline {
                 }
             }
         }
+        stage("Cleanup Docker Images") {
+            steps {
+                script {
+                    cleanupImages()
+                }
+            }
+        }
     }
     post {
         always {
@@ -91,6 +98,14 @@ def pushImage() {
     def isLatest = params.isLatest
 
     saintsxctfsteps.pushImage(imageName, imageLabel, isLatest)
+}
+
+def cleanupImages() {
+    def imageName = "auth-saints-xctf-com-token"
+    def imageLabel = params.label
+    def isLatest = params.isLatest
+
+    saintsxctfsteps.cleanupImages(imageName, imageLabel, isLatest)
 }
 
 def postScript() {

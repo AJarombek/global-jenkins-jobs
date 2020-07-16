@@ -53,6 +53,13 @@ pipeline {
                 }
             }
         }
+        stage("Set Folder Structure") {
+            steps {
+                script {
+                    build(job: 'set-folders', propagate: true, wait: true)
+                }
+            }
+        }
         stage("Create Jobs") {
             steps {
                 script {
