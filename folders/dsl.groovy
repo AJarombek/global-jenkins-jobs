@@ -441,28 +441,8 @@ folder('saints-xctf/infrastructure') {
             filterExecutors()
             jobs {
                 names(
-                    'saints-xctf-rds-snapshot-lambda',
-                    'deploy-all',
-                    'deploy-dev',
-                    'destroy-dev',
-                    'deploy-bastion-dev',
-                    'destroy-bastion-dev',
-                    'deploy-database-dev',
-                    'destroy-database-dev',
-                    'deploy-database-snapshot-dev',
-                    'destroy-database-snapshot-dev',
-                    'deploy-saints-xctf-com-dev',
-                    'destroy-saints-xctf-com-dev',
-                    'deploy-saints-xctf-com-asset-dev',
-                    'destroy-saints-xctf-com-asset-dev',
-                    'deploy-saints-xctf-com-auth-dev',
-                    'destroy-saints-xctf-com-auth-dev',
-                    'deploy-saints-xctf-com-fn-dev',
-                    'destroy-saints-xctf-com-fn-dev',
-                    'deploy-saints-xctf-com-uasset-dev',
-                    'destroy-saints-xctf-com-uasset-dev',
-                    'deploy-secrets-manager-dev',
-                    'destroy-secrets-manager-dev',
+                    'create-saints-xctf-com-auth',
+                    'destroy-saints-xctf-com-auth'
                 )
             }
             columns() {
