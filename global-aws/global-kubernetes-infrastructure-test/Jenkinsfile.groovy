@@ -9,7 +9,24 @@
 pipeline {
     agent {
         kubernetes {
-            yamlFile 'pod.yaml'
+            yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: global-kubernetes-infrastructure-test
+  namespace: jenkins
+  labels:
+    version: v1.0.0
+    environment: development
+    application: global-kubernetes-infrastructure-test
+spec:
+  containers:
+    - name: go
+      image: golang:1.14.4-buster
+      tty: true
+  serviceAccountName: jenkins-kubernetes-test
+  automountServiceAccountToken: true
+            '''
         }
     }
     triggers {
@@ -57,16 +74,18 @@ pipeline {
 def checkoutRepo() {
     container('go') {
         dir('repos/global-aws-infrastructure') {
-            git.basicClone('global-aws-infrastructure', branch)
+            git.basicClone('global-aws-infrastructure', 'master')
         }
     }
 }
 
 def executeTestScript() {
     container('go') {
-        sh '''
-            go test --incluster true
-        '''
+        dir('repos/global-aws-infrastructure/test-k8s') {
+            sh '''
+                go test --incluster true
+            '''
+        }
     }
 }
 

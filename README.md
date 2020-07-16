@@ -26,3 +26,4 @@ underscores.
 1) [Job DSL Plugin Docs](https://jenkinsci.github.io/job-dsl-plugin/#)
 2) [GSuite Configuration with Jenkins for Emails](https://stackoverflow.com/a/27130058)
 3) [Bash Pipe Status](https://unix.stackexchange.com/a/14276)
+4) [Kubernetes Plugin](https://plugins.jenkins.io/kubernetes/)

@@ -16,3 +16,5 @@ spec:
     - name: go
       image: golang:1.14.4-buster
       tty: true
+  serviceAccountName: jenkins-kubernetes-test
+  automountServiceAccountToken: true

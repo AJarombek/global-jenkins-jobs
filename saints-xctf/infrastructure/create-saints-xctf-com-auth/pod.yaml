@@ -1,0 +1,27 @@
+# Pod holding multiple containers for use with the create-saints-xctf-com-auth Jenkins job.
+# Author: Andrew Jarombek
+# Date: 7/14/2020
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: saints-xctf-auth
+  namespace: jenkins
+  labels:
+    version: v1.0.0
+    environment: development
+    application: saints-xctf-auth
+spec:
+  containers:
+    - name: authenticate
+      image: ajarombek/auth-saints-xctf-com-authenticate:latest
+      tty: true
+    - name: authorizer
+      image: ajarombek/auth-saints-xctf-com-authorizer:latest
+      tty: true
+    - name: rotate
+      image: ajarombek/auth-saints-xctf-com-rotate:latest
+      tty: true
+    - name: token
+      image: ajarombek/auth-saints-xctf-com-token:latest
+      tty: true
