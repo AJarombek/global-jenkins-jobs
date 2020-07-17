@@ -33,6 +33,10 @@ spec:
     - name: token
       image: ajarombek/auth-saints-xctf-com-token:latest
       tty: true
+    - name: terraform
+      image: hashicorp/terraform:latest
+      command: ["sleep", "infinity"]
+      tty: true
             '''
         }
     }
@@ -122,8 +126,10 @@ spec:
 }
 
 def checkoutRepos() {
-    genericsteps.checkoutRepo('saints-xctf-infrastructure', 'master')
-    genericsteps.checkoutRepo('saints-xctf-auth', 'master')
+    container('terraform') {
+        genericsteps.checkoutRepo('saints-xctf-infrastructure', 'master')
+        genericsteps.checkoutRepo('saints-xctf-auth', 'master')
+    }
 }
 
 def getLambdaZipFiles() {
@@ -147,30 +153,41 @@ def getLambdaZipFiles() {
         stash name: "tokenZip", includes: 'SaintsXCTFToken.zip'
     }
 
-    dir("repos/saints-xctf-infrastructure/saints-xctf-com-auth/modules/lambda") {
-        unstash name: "authenticateZip"
-        unstash name: "authorizerZip"
-        unstash name: "rotateZip"
-        unstash name: "tokenZip"
-        sh "ls -ltr"
+    container('terraform') {
+        dir("repos/saints-xctf-infrastructure/saints-xctf-com-auth/modules/lambda") {
+            unstash name: "authenticateZip"
+            unstash name: "authorizerZip"
+            unstash name: "rotateZip"
+            unstash name: "tokenZip"
+            sh "ls -ltr"
+        }
     }
 }
 
 def terraformInit() {
     INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-auth/env/$params.environment"
-    terraform.terraformInit(INFRA_DIR)
+
+    container('terraform') {
+        terraform.terraformInit(INFRA_DIR)
+    }
 }
 
 def terraformValidate() {
-    terraform.terraformValidate(INFRA_DIR)
+    container('terraform') {
+        terraform.terraformValidate(INFRA_DIR)
+    }
 }
 
 def terraformPlan() {
-    terraform.terraformPlan(INFRA_DIR)
+    container('terraform') {
+        terraform.terraformPlan(INFRA_DIR)
+    }
 }
 
 def terraformApply() {
-    terraform.terraformApply(INFRA_DIR, params.autoApply)
+    container('terraform') {
+        terraform.terraformApply(INFRA_DIR, params.autoApply)
+    }
 }
 
 def postScript() {

@@ -1,5 +1,6 @@
 /**
  * Jenkins script for pushing a Docker image that pushes an 'authenticate' AWS Lambda function to DockerHub.
+ * I hope you now feel truly free to do as you wish.  I'm proud of you :)
  * @author Andrew Jarombek
  * @since 6/23/2020
  */
@@ -83,7 +84,7 @@ def checkoutRepo() {
 }
 
 def buildImage() {
-    def subDir = "token"
+    def subDir = "authenticate"
     def zipFilename = "SaintsXCTFAuthenticate"
     def imageName = "auth-saints-xctf-com-authenticate"
 

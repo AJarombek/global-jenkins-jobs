@@ -83,7 +83,7 @@ def checkoutRepo() {
 }
 
 def buildImage() {
-    def subDir = "token"
+    def subDir = "rotate"
     def zipFilename = "SaintsXCTFRotate"
     def imageName = "auth-saints-xctf-com-rotate"
 

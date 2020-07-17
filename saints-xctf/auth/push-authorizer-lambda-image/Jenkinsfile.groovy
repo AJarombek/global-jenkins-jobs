@@ -83,7 +83,7 @@ def checkoutRepo() {
 }
 
 def buildImage() {
-    def subDir = "token"
+    def subDir = "authorizer"
     def zipFilename = "SaintsXCTFAuthorizer"
     def imageName = "auth-saints-xctf-com-authorizer"
 

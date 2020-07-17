@@ -10,6 +10,18 @@ pipeline {
     agent {
         label 'master'
     }
+    parameters {
+        booleanParam(
+            name: 'autoDestroy',
+            defaultValue: true,
+            description: "Whether the Terraform infrastructure should be automatically destroyed."
+        )
+        choice(
+            name: 'environment',
+            choices: ['dev', 'prod'],
+            description: 'Environment to build the infrastructure in.'
+        )
+    }
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')
@@ -32,10 +44,30 @@ pipeline {
                 }
             }
         }
-        stage("Create Infrastructure") {
+        stage("Terraform Init") {
             steps {
                 script {
-                    createInfrastructure()
+                    terraformInit()
+                }
+            }
+        }
+        stage("Terraform Plan") {
+            steps {
+                script {
+                    terraformPlanDestroy()
+                }
+            }
+        }
+        stage("Terraform Destroy") {
+            when {
+                allOf {
+                    environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
+                    environment name: 'TERRAFORM_PLAN_ERRORS', value: 'false'
+                }
+            }
+            steps {
+                script {
+                    terraformDestroy()
                 }
             }
         }
@@ -50,26 +82,27 @@ pipeline {
 }
 
 def checkoutRepo() {
-    dir('repos/saints-xctf-infrastructure') {
-        git.basicClone('saints-xctf-infrastructure', 'master')
-    }
+    def name = "saints-xctf-infrastructure"
+    def branch = "master"
+
+    genericsteps.checkoutRepo(name, branch)
 }
 
-def createInfrastructure() {
-    dir("repos/saints-xctf-infrastructure") {
-        def status = sh (
-            script: """
-                echo 'TODO'
-            """,
-            returnStatus: true
-        )
+def terraformInit() {
+    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-auth/env/$params.environment"
+    terraform.terraformInit(INFRA_DIR)
+}
 
-        if (status >= 1) {
-            currentBuild.result = "UNSTABLE"
-        } else {
-            currentBuild.result = "SUCCESS"
-        }
-    }
+def terraformValidate() {
+    terraform.terraformValidate(INFRA_DIR)
+}
+
+def terraformPlanDestroy() {
+    terraform.terraformPlanDestroy(INFRA_DIR)
+}
+
+def terraformDestroy() {
+    terraform.terraformDestroy(INFRA_DIR, params.autoDestroy)
 }
 
 def postScript() {
