@@ -1,12 +1,10 @@
 /**
- * Jenkins script that uses Terraform to destroy ECR repositories used by the GraphQL React Prototype.
+ * Jenkins script that uses Terraform to create ACM certificates for SaintsXCTF.
  * @author Andrew Jarombek
- * @since 6/28/2020
+ * @since 7/18/2020
  */
 
 @Library(['global-jenkins-library@master']) _
-
-def INFRA_DIR
 
 pipeline {
     agent {
@@ -14,9 +12,21 @@ pipeline {
     }
     parameters {
         booleanParam(
-            name: 'autoDestroy',
+            name: 'autoApply',
             defaultValue: true,
-            description: "Whether the Terraform infrastructure should be automatically destroyed."
+            description: "Whether the Terraform infrastructure should be automatically approved."
+        )
+        choice(
+            name: 'cert',
+            choices: [
+                '*.asset.saintsxctf.com',
+                '*.auth.saintsxctf.com',
+                '*.dev.saintsxctf.com',
+                '*.fn.saintsxctf.com',
+                '*.saintsxctf.com, saintsxctf.com',
+                '*.uasset.saintsxctf.com'
+            ],
+            description: 'Certificate(s) to create.'
         )
     }
     options {
@@ -48,14 +58,21 @@ pipeline {
                 }
             }
         }
-        stage("Terraform Plan") {
+        stage("Terraform Validate") {
             steps {
                 script {
-                    terraformPlanDestroy()
+                    terraformValidate()
                 }
             }
         }
-        stage("Terraform Destroy") {
+        stage("Terraform Plan") {
+            steps {
+                script {
+                    terraformPlan()
+                }
+            }
+        }
+        stage("Terraform Apply") {
             when {
                 allOf {
                     environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
@@ -64,7 +81,7 @@ pipeline {
             }
             steps {
                 script {
-                    terraformDestroy()
+                    terraformApply()
                 }
             }
         }
@@ -80,27 +97,40 @@ pipeline {
 
 // Stage functions
 def checkoutRepo() {
-    def name = "graphql-react-prototype"
+    def name = "saints-xctf-infrastructure"
     def branch = "master"
 
     genericsteps.checkoutRepo(name, branch)
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/graphql-react-prototype/infra/ecr"
+    def certDirDict = [
+        '*.asset.saintsxctf.com': 'asset-saints-xctf',
+        '*.auth.saintsxctf.com': 'auth-saints-xctf',
+        '*.dev.saintsxctf.com': 'dev-saints-xctf',
+        '*.fn.saintsxctf.com': 'fn-saints-xctf',
+        '*.saintsxctf.com, saintsxctf.com': 'saints-xctf',
+        '*.uasset.saintsxctf.com': 'uasset-saints-xctf'
+    ]
+
+    INFRA_DIR = "repos/saints-xctf-infrastructure/acm/${certDirDict[params.cert]}"
     terraform.terraformInit(INFRA_DIR)
 }
 
-def terraformPlanDestroy() {
-    terraform.terraformPlanDestroy(INFRA_DIR)
+def terraformValidate() {
+    terraform.terraformValidate(INFRA_DIR)
 }
 
-def terraformDestroy() {
-    terraform.terraformDestroy(INFRA_DIR, params.autoDestroy)
+def terraformPlan() {
+    terraform.terraformPlan(INFRA_DIR)
+}
+
+def terraformApply() {
+    terraform.terraformApply(INFRA_DIR, params.autoApply)
 }
 
 def postScript() {
-    def bodyTitle = "Destroy graphql-react-prototype ECR Infrastructure."
+    def bodyTitle = "Create saints-xctf-infrastructure $param.cert ACM Infrastructure."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

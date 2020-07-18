@@ -441,6 +441,8 @@ folder('saints-xctf/infrastructure') {
             filterExecutors()
             jobs {
                 names(
+                    'create-acm',
+                    'destroy-acm',
                     'create-saints-xctf-com-auth',
                     'destroy-saints-xctf-com-auth'
                 )
