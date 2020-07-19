@@ -443,9 +443,11 @@ folder('saints-xctf/infrastructure') {
                 names(
                     'create-acm',
                     'create-database',
+                    'create-database-snapshot',
                     'create-saints-xctf-com-auth',
                     'destroy-acm',
                     'destroy-database',
+                    'destroy-database-snapshot',
                     'destroy-saints-xctf-com-auth'
                 )
             }
