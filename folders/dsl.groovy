@@ -441,6 +441,7 @@ folder('saints-xctf/infrastructure') {
             filterExecutors()
             jobs {
                 names(
+                    'backup-database',
                     'create-acm',
                     'create-bastion',
                     'create-database',
@@ -452,7 +453,8 @@ folder('saints-xctf/infrastructure') {
                     'destroy-database',
                     'destroy-database-snapshot',
                     'destroy-saints-xctf-com-auth',
-                    'destroy-secrets-manager'
+                    'destroy-secrets-manager',
+                    'restore-database'
                 )
             }
             columns() {
