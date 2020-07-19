@@ -1,7 +1,7 @@
 /**
- * Jenkins script that destroys secrets in SecretsManager for SaintsXCTF.
+ * Jenkins script that uses Terraform to destroy a bastion host in the SaintsXCTF VPC.
  * @author Andrew Jarombek
- * @since 7/18/2020
+ * @since 7/19/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -15,11 +15,6 @@ pipeline {
             name: 'autoDestroy',
             defaultValue: true,
             description: "Whether the Terraform infrastructure should be automatically destroyed."
-        )
-        choice(
-            name: 'environment',
-            choices: ['dev', 'prod'],
-            description: 'Environment to destroy the secrets.'
         )
     }
     options {
@@ -90,7 +85,7 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/secrets-manager/env/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/bastion"
     terraform.terraformInit(INFRA_DIR)
 }
 
@@ -103,7 +98,7 @@ def terraformDestroy() {
 }
 
 def postScript() {
-    def bodyTitle = "Destroy saints-xctf-infrastructure $params.environment Secrets in SecretsManager."
+    def bodyTitle = "Destroy saints-xctf-infrastructure Bastion."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

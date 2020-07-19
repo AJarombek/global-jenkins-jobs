@@ -423,7 +423,7 @@ folder('saints-xctf/infrastructure') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('saints-xctf-infrastructure-dev', 'saints-xctf-infrastructure-prod')
+                names('saints-xctf-infrastructure-test-dev', 'saints-xctf-infrastructure-test-prod')
             }
             columns() {
                 status()
@@ -442,11 +442,13 @@ folder('saints-xctf/infrastructure') {
             jobs {
                 names(
                     'create-acm',
+                    'create-bastion',
                     'create-database',
                     'create-database-snapshot',
                     'create-saints-xctf-com-auth',
                     'create-secrets-manager',
                     'destroy-acm',
+                    'destroy-bastion',
                     'destroy-database',
                     'destroy-database-snapshot',
                     'destroy-saints-xctf-com-auth',

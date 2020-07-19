@@ -1,7 +1,7 @@
 /**
- * Jenkins script that destroys secrets in SecretsManager for SaintsXCTF.
+ * Jenkins script that uses Terraform to create a bastion host in the SaintsXCTF VPC.
  * @author Andrew Jarombek
- * @since 7/18/2020
+ * @since 7/19/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -12,14 +12,9 @@ pipeline {
     }
     parameters {
         booleanParam(
-            name: 'autoDestroy',
+            name: 'autoApply',
             defaultValue: true,
-            description: "Whether the Terraform infrastructure should be automatically destroyed."
-        )
-        choice(
-            name: 'environment',
-            choices: ['dev', 'prod'],
-            description: 'Environment to destroy the secrets.'
+            description: "Whether the Terraform infrastructure should be automatically approved."
         )
     }
     options {
@@ -51,14 +46,21 @@ pipeline {
                 }
             }
         }
-        stage("Terraform Plan") {
+        stage("Terraform Validate") {
             steps {
                 script {
-                    terraformPlanDestroy()
+                    terraformValidate()
                 }
             }
         }
-        stage("Terraform Destroy") {
+        stage("Terraform Plan") {
+            steps {
+                script {
+                    terraformPlan()
+                }
+            }
+        }
+        stage("Terraform Apply") {
             when {
                 allOf {
                     environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
@@ -67,7 +69,7 @@ pipeline {
             }
             steps {
                 script {
-                    terraformDestroy()
+                    terraformApply()
                 }
             }
         }
@@ -90,20 +92,24 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/secrets-manager/env/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/bastion"
     terraform.terraformInit(INFRA_DIR)
 }
 
-def terraformPlanDestroy() {
-    terraform.terraformPlanDestroy(INFRA_DIR)
+def terraformValidate() {
+    terraform.terraformValidate(INFRA_DIR)
 }
 
-def terraformDestroy() {
-    terraform.terraformDestroy(INFRA_DIR, params.autoDestroy)
+def terraformPlan() {
+    terraform.terraformPlan(INFRA_DIR)
+}
+
+def terraformApply() {
+    terraform.terraformApply(INFRA_DIR, params.autoApply)
 }
 
 def postScript() {
-    def bodyTitle = "Destroy saints-xctf-infrastructure $params.environment Secrets in SecretsManager."
+    def bodyTitle = "Create saints-xctf-infrastructure Bastion."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

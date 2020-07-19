@@ -9,9 +9,7 @@ pipelineJob("saints-xctf/infrastructure/destroy-acm") {
     definition {
         cps {
             sandbox()
-            script(
-                readFileFromWorkspace("saints-xctf/infrastructure/destroy-acm/Jenkinsfile.groovy")
-            )
+            script(readFileFromWorkspace("saints-xctf/infrastructure/destroy-acm/Jenkinsfile.groovy"))
         }
     }
 }

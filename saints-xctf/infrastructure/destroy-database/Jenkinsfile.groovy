@@ -103,7 +103,7 @@ def terraformDestroy() {
 }
 
 def postScript() {
-    def bodyTitle = "Create saints-xctf-infrastructure $params.environment Database."
+    def bodyTitle = "Destroy saints-xctf-infrastructure $params.environment Database."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
