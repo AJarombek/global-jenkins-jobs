@@ -445,10 +445,12 @@ folder('saints-xctf/infrastructure') {
                     'create-database',
                     'create-database-snapshot',
                     'create-saints-xctf-com-auth',
+                    'create-secrets-manager',
                     'destroy-acm',
                     'destroy-database',
                     'destroy-database-snapshot',
-                    'destroy-saints-xctf-com-auth'
+                    'destroy-saints-xctf-com-auth',
+                    'destroy-secrets-manager'
                 )
             }
             columns() {

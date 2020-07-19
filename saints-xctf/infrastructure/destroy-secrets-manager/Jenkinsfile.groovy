@@ -1,5 +1,5 @@
 /**
- * Jenkins script that uses Terraform to create a MySQL database on Amazon RDS for SaintsXCTF.
+ * Jenkins script that destroys secrets in SecretsManager for SaintsXCTF.
  * @author Andrew Jarombek
  * @since 7/18/2020
  */
@@ -12,14 +12,14 @@ pipeline {
     }
     parameters {
         booleanParam(
-            name: 'autoApply',
+            name: 'autoDestroy',
             defaultValue: true,
-            description: "Whether the Terraform infrastructure should be automatically approved."
+            description: "Whether the Terraform infrastructure should be automatically destroyed."
         )
         choice(
             name: 'environment',
-            choices: ['dev'],
-            description: 'Environment to create the database.'
+            choices: ['dev', 'prod'],
+            description: 'Environment to destroy the secrets.'
         )
     }
     options {
@@ -51,21 +51,14 @@ pipeline {
                 }
             }
         }
-        stage("Terraform Validate") {
-            steps {
-                script {
-                    terraformValidate()
-                }
-            }
-        }
         stage("Terraform Plan") {
             steps {
                 script {
-                    terraformPlan()
+                    terraformPlanDestroy()
                 }
             }
         }
-        stage("Terraform Apply") {
+        stage("Terraform Destroy") {
             when {
                 allOf {
                     environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
@@ -74,7 +67,7 @@ pipeline {
             }
             steps {
                 script {
-                    terraformApply()
+                    terraformDestroy()
                 }
             }
         }
@@ -97,35 +90,20 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/database/env/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/secrets-manager/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
 }
 
-def terraformValidate() {
-    terraform.terraformValidate(INFRA_DIR)
+def terraformPlanDestroy() {
+    terraform.terraformPlanDestroy(INFRA_DIR)
 }
 
-def terraformPlan() {
-    withCredentials([
-        usernamePassword(
-            credentialsId: 'saintsxctf-rds-dev',
-            passwordVariable: 'password',
-            usernameVariable: 'username'
-        )
-    ]) {
-        terraform.terraformPlan(
-            INFRA_DIR,
-            "terraform plan -var 'username=${username}' -var 'password=${password}' -detailed-exitcode -out=terraform.tfplan"
-        )
-    }
-}
-
-def terraformApply() {
-    terraform.terraformApply(INFRA_DIR, params.autoApply)
+def terraformDestroy() {
+    terraform.terraformDestroy(INFRA_DIR, params.autoDestroy)
 }
 
 def postScript() {
-    def bodyTitle = "Create saints-xctf-infrastructure $params.environment Database."
+    def bodyTitle = "Create saints-xctf-infrastructure $params.environment Secrets in SecretsManager."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

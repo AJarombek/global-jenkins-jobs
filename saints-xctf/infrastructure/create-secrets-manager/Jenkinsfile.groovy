@@ -1,7 +1,7 @@
 /**
- * Jenkins script that uses Terraform to create a MySQL database on Amazon RDS for SaintsXCTF.
+ * Jenkins script that creates secrets in SecretsManager for SaintsXCTF.
  * @author Andrew Jarombek
- * @since 7/18/2020
+ * @since 7/19/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -18,8 +18,13 @@ pipeline {
         )
         choice(
             name: 'environment',
-            choices: ['dev'],
-            description: 'Environment to create the database.'
+            choices: ['dev', 'prod'],
+            description: 'Environment to create the secrets.'
+        )
+        string(
+            name: 'rdsPasswordSecret',
+            defaultValue: '',
+            description: 'Password for the RDS database.'
         )
     }
     options {
@@ -97,7 +102,7 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/database/env/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/secrets-manager/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
 }
 
@@ -106,18 +111,13 @@ def terraformValidate() {
 }
 
 def terraformPlan() {
-    withCredentials([
-        usernamePassword(
-            credentialsId: 'saintsxctf-rds-dev',
-            passwordVariable: 'password',
-            usernameVariable: 'username'
-        )
-    ]) {
-        terraform.terraformPlan(
-            INFRA_DIR,
-            "terraform plan -var 'username=${username}' -var 'password=${password}' -detailed-exitcode -out=terraform.tfplan"
-        )
-    }
+    def username = "saintsxctf$params.environment"
+    def password = params.rdsPasswordSecret
+
+    terraform.terraformPlan(
+        INFRA_DIR,
+        "terraform plan -var 'rds_secrets={ username = \"${username}\", password = \"${password}\" }' -detailed-exitcode -out=terraform.tfplan"
+    )
 }
 
 def terraformApply() {
@@ -125,7 +125,7 @@ def terraformApply() {
 }
 
 def postScript() {
-    def bodyTitle = "Create saints-xctf-infrastructure $params.environment Database."
+    def bodyTitle = "Create saints-xctf-infrastructure $params.environment Secrets in SecretsManager."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
