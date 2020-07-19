@@ -42,21 +42,20 @@ pipeline {
                         sudo chmod +x ./aws-iam-authenticator
                         sudo cp ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
                         
+                        # 3) Terraform (latest)
+                        sudo wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+                        sudo unzip terraform_0.12.28_linux_amd64.zip
+                        sudo mv terraform /usr/local/bin/
+                        
                         # Installed Libraries
                         docker --version
                         python --version
                         node --version
                         aws --version
+                        terraform --version
                         bazel --version
                         aws-iam-authenticator version
                     """
-                }
-            }
-        }
-        stage("Set Folder Structure") {
-            steps {
-                script {
-                    build(job: 'set-folders', propagate: true, wait: true)
                 }
             }
         }
@@ -64,6 +63,8 @@ pipeline {
             steps {
                 script {
                     // The first time JOB DSL scripts are built, they will fail and need approval.
+                    build(job: 'set-folders', propagate: false, wait: true)
+
                     build(
                         job: 'seed-job',
                         parameters: [
@@ -79,6 +80,8 @@ pipeline {
                     }
 
                     // On the Job DSL scripts second run, they should pass.
+                    build(job: 'set-folders', propagate: true, wait: true)
+
                     build(
                         job: 'seed-job',
                         parameters: [

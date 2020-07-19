@@ -442,8 +442,10 @@ folder('saints-xctf/infrastructure') {
             jobs {
                 names(
                     'create-acm',
-                    'destroy-acm',
+                    'create-database',
                     'create-saints-xctf-com-auth',
+                    'destroy-acm',
+                    'destroy-database',
                     'destroy-saints-xctf-com-auth'
                 )
             }

@@ -1,5 +1,5 @@
 /**
- * Jenkins script that uses Terraform to create ACM certificates for SaintsXCTF.
+ * Jenkins script that uses Terraform to create a MySQL database on Amazon RDS for SaintsXCTF.
  * @author Andrew Jarombek
  * @since 7/18/2020
  */
@@ -17,16 +17,9 @@ pipeline {
             description: "Whether the Terraform infrastructure should be automatically approved."
         )
         choice(
-            name: 'cert',
-            choices: [
-                '*.asset.saintsxctf.com',
-                '*.auth.saintsxctf.com',
-                '*.dev.saintsxctf.com',
-                '*.fn.saintsxctf.com',
-                '*.saintsxctf.com, saintsxctf.com',
-                '*.uasset.saintsxctf.com'
-            ],
-            description: 'Certificate(s) to create.'
+            name: 'environment',
+            choices: ['dev'],
+            description: 'Environment to create the database.'
         )
     }
     options {
@@ -104,16 +97,7 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    def certDirDict = [
-        '*.asset.saintsxctf.com': 'asset-saints-xctf',
-        '*.auth.saintsxctf.com': 'auth-saints-xctf',
-        '*.dev.saintsxctf.com': 'dev-saints-xctf',
-        '*.fn.saintsxctf.com': 'fn-saints-xctf',
-        '*.saintsxctf.com, saintsxctf.com': 'saints-xctf',
-        '*.uasset.saintsxctf.com': 'uasset-saints-xctf'
-    ]
-
-    INFRA_DIR = "repos/saints-xctf-infrastructure/acm/${certDirDict[params.cert]}"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/database/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
 }
 
@@ -130,7 +114,7 @@ def terraformApply() {
 }
 
 def postScript() {
-    def bodyTitle = "Create saints-xctf-infrastructure $params.cert ACM Infrastructure."
+    def bodyTitle = "Create saints-xctf-infrastructure $params.environment Database."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

@@ -1,5 +1,5 @@
 /**
- * Jenkins script that uses Terraform to create ACM certificates for SaintsXCTF.
+ * Jenkins script that uses Terraform to destroy a MySQL database on Amazon RDS for SaintsXCTF.
  * @author Andrew Jarombek
  * @since 7/18/2020
  */
@@ -12,21 +12,14 @@ pipeline {
     }
     parameters {
         booleanParam(
-            name: 'autoApply',
+            name: 'autoDestroy',
             defaultValue: true,
-            description: "Whether the Terraform infrastructure should be automatically approved."
+            description: "Whether the Terraform infrastructure should be automatically destroyed."
         )
         choice(
-            name: 'cert',
-            choices: [
-                '*.asset.saintsxctf.com',
-                '*.auth.saintsxctf.com',
-                '*.dev.saintsxctf.com',
-                '*.fn.saintsxctf.com',
-                '*.saintsxctf.com, saintsxctf.com',
-                '*.uasset.saintsxctf.com'
-            ],
-            description: 'Certificate(s) to create.'
+            name: 'environment',
+            choices: ['dev'],
+            description: 'Environment to destroy the database.'
         )
     }
     options {
@@ -58,21 +51,14 @@ pipeline {
                 }
             }
         }
-        stage("Terraform Validate") {
-            steps {
-                script {
-                    terraformValidate()
-                }
-            }
-        }
         stage("Terraform Plan") {
             steps {
                 script {
-                    terraformPlan()
+                    terraformPlanDestroy()
                 }
             }
         }
-        stage("Terraform Apply") {
+        stage("Terraform Destroy") {
             when {
                 allOf {
                     environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
@@ -81,7 +67,7 @@ pipeline {
             }
             steps {
                 script {
-                    terraformApply()
+                    terraformDestroy()
                 }
             }
         }
@@ -104,33 +90,20 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    def certDirDict = [
-        '*.asset.saintsxctf.com': 'asset-saints-xctf',
-        '*.auth.saintsxctf.com': 'auth-saints-xctf',
-        '*.dev.saintsxctf.com': 'dev-saints-xctf',
-        '*.fn.saintsxctf.com': 'fn-saints-xctf',
-        '*.saintsxctf.com, saintsxctf.com': 'saints-xctf',
-        '*.uasset.saintsxctf.com': 'uasset-saints-xctf'
-    ]
-
-    INFRA_DIR = "repos/saints-xctf-infrastructure/acm/${certDirDict[params.cert]}"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/database/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
 }
 
-def terraformValidate() {
-    terraform.terraformValidate(INFRA_DIR)
+def terraformPlanDestroy() {
+    terraform.terraformPlanDestroy(INFRA_DIR)
 }
 
-def terraformPlan() {
-    terraform.terraformPlan(INFRA_DIR)
-}
-
-def terraformApply() {
-    terraform.terraformApply(INFRA_DIR, params.autoApply)
+def terraformDestroy() {
+    terraform.terraformDestroy(INFRA_DIR, params.autoDestroy)
 }
 
 def postScript() {
-    def bodyTitle = "Create saints-xctf-infrastructure $params.cert ACM Infrastructure."
+    def bodyTitle = "Create saints-xctf-infrastructure $params.environment Database."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

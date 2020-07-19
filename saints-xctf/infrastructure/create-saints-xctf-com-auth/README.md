@@ -8,3 +8,4 @@ Jenkins job that creates the AWS infrastructure for the `auth.saintsxctf.com` do
 |---------------------------|-------------------------------------------------------------------------------------------------|
 | `Jenkinsfile.groovy`      | Jenkinsfile which is executed when the `create-saints-xctf-com-auth` pipeline job is run.       |
 | `job_dsl.groovy`          | *Job DSL Plugin* script which creates the `create-saints-xctf-com-auth` Jenkins job.            |
+| `pod.yaml`                | Kubernetes Pod with containers that the Jenkins job runs on.                                    |
