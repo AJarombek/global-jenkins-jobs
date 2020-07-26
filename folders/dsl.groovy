@@ -448,6 +448,7 @@ folder('saints-xctf/infrastructure') {
                     'create-database-backup',
                     'create-database-snapshot',
                     'create-saints-xctf-com',
+                    'create-saints-xctf-com-api',
                     'create-saints-xctf-com-auth',
                     'create-secrets-manager',
                     'destroy-acm',
@@ -456,6 +457,7 @@ folder('saints-xctf/infrastructure') {
                     'destroy-database-backup',
                     'destroy-database-snapshot',
                     'destroy-saints-xctf-com',
+                    'destroy-saints-xctf-com-api',
                     'destroy-saints-xctf-com-auth',
                     'destroy-secrets-manager',
                     'restore-database'

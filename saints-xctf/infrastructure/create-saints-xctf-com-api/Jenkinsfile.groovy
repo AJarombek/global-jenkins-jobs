@@ -1,7 +1,7 @@
 /**
- * Jenkins script for creating AWS infrastructure for saintsxctf.com (web application).
+ * Jenkins script that uses Terraform to create infrastructure for api.saintsxctf.com (the API).
  * @author Andrew Jarombek
- * @since 7/25/2020
+ * @since 7/26/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -19,7 +19,7 @@ pipeline {
         choice(
             name: 'environment',
             choices: ['all', 'dev', 'prod'],
-            description: 'Environment to build the infrastructure in.'
+            description: 'Environment to create infrastructure for api.saintsxctf.com.'
         )
     }
     options {
@@ -40,28 +40,29 @@ pipeline {
         stage("Checkout Repository") {
             steps {
                 script {
-                    checkoutRepo()
+                    genericsteps.checkoutRepo("saints-xctf-infrastructure", "master")
                 }
             }
         }
         stage("Terraform Init") {
             steps {
                 script {
-                    terraformInit()
+                    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-api/env/$params.environment"
+                    terraform.terraformInit(INFRA_DIR)
                 }
             }
         }
         stage("Terraform Validate") {
             steps {
                 script {
-                    terraformValidate()
+                    terraform.terraformValidate(INFRA_DIR)
                 }
             }
         }
         stage("Terraform Plan") {
             steps {
                 script {
-                    terraformPlan()
+                    terraform.terraformPlan(INFRA_DIR)
                 }
             }
         }
@@ -74,7 +75,7 @@ pipeline {
             }
             steps {
                 script {
-                    terraformApply()
+                    terraform.terraformApply(INFRA_DIR, params.autoApply)
                 }
             }
         }
@@ -82,40 +83,15 @@ pipeline {
     post {
         always {
             script {
-                postScript()
+                def bodyTitle = "Create SaintsXCTF $params.environment API AWS Infrastructure"
+                def bodyContent = ""
+                def jobName = env.JOB_NAME
+                def buildStatus = currentBuild.result
+                def buildNumber = env.BUILD_NUMBER
+                def buildUrl = env.BUILD_URL
+
+                genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
             }
         }
     }
-}
-
-def checkoutRepos() {
-    genericsteps.checkoutRepo('saints-xctf-infrastructure', 'master')
-}
-
-def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com/env/$params.environment"
-    terraform.terraformInit(INFRA_DIR)
-}
-
-def terraformValidate() {
-    terraform.terraformValidate(INFRA_DIR)
-}
-
-def terraformPlan() {
-    terraform.terraformPlan(INFRA_DIR)
-}
-
-def terraformApply() {
-    terraform.terraformApply(INFRA_DIR, params.autoApply)
-}
-
-def postScript() {
-    def bodyTitle = "Create SaintsXCTF $params.environment Web Application AWS Infrastructure"
-    def bodyContent = ""
-    def jobName = env.JOB_NAME
-    def buildStatus = currentBuild.result
-    def buildNumber = env.BUILD_NUMBER
-    def buildUrl = env.BUILD_URL
-
-    genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
 }
