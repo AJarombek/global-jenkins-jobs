@@ -1,8 +1,7 @@
 /**
- * Jenkins script that uses Terraform to destroy backup and restore AWS Lambda functions for a SaintsXCTF MySQL database
- * on Amazon RDS.
+ * Jenkins script for creating AWS infrastructure for saintsxctf.com (web application).
  * @author Andrew Jarombek
- * @since 7/19/2020
+ * @since 7/25/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -13,14 +12,14 @@ pipeline {
     }
     parameters {
         booleanParam(
-            name: 'autoDestroy',
+            name: 'autoApply',
             defaultValue: true,
-            description: "Whether the Terraform infrastructure should be automatically destroyed."
+            description: "Whether the Terraform infrastructure should be automatically approved."
         )
         choice(
             name: 'environment',
             choices: ['all', 'dev', 'prod'],
-            description: 'Environment to destroy the database backup/restore functions.'
+            description: 'Environment to build the infrastructure in.'
         )
     }
     options {
@@ -52,14 +51,21 @@ pipeline {
                 }
             }
         }
-        stage("Terraform Plan") {
+        stage("Terraform Validate") {
             steps {
                 script {
-                    terraformPlanDestroy()
+                    terraformValidate()
                 }
             }
         }
-        stage("Terraform Destroy") {
+        stage("Terraform Plan") {
+            steps {
+                script {
+                    terraformPlan()
+                }
+            }
+        }
+        stage("Terraform Apply") {
             when {
                 allOf {
                     environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
@@ -68,7 +74,7 @@ pipeline {
             }
             steps {
                 script {
-                    terraformDestroy()
+                    terraformApply()
                 }
             }
         }
@@ -82,29 +88,29 @@ pipeline {
     }
 }
 
-// Stage functions
-def checkoutRepo() {
-    def name = "saints-xctf-infrastructure"
-    def branch = "master"
-
-    genericsteps.checkoutRepo(name, branch)
+def checkoutRepos() {
+    genericsteps.checkoutRepo('saints-xctf-infrastructure', 'master')
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/database-snapshot/env/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
 }
 
-def terraformPlanDestroy() {
-    terraform.terraformPlanDestroy(INFRA_DIR)
+def terraformValidate() {
+    terraform.terraformValidate(INFRA_DIR)
 }
 
-def terraformDestroy() {
-    terraform.terraformDestroy(INFRA_DIR, params.autoDestroy)
+def terraformPlan() {
+    terraform.terraformPlan(INFRA_DIR)
+}
+
+def terraformApply() {
+    terraform.terraformApply(INFRA_DIR, params.autoApply)
 }
 
 def postScript() {
-    def bodyTitle = "Destroy saints-xctf-infrastructure $params.environment Database Snapshot."
+    def bodyTitle = "Create SaintsXCTF Web Application AWS Infrastructure"
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

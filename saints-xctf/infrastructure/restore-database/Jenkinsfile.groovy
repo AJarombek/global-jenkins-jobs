@@ -35,7 +35,11 @@ pipeline {
         stage("Restore Database") {
             steps {
                 script {
-                    sh "aws lambda invoke --function-name SaintsXCTFMySQLRestore${params.environment.toUpperCase()}"
+                    sh """
+                        export AWS_DEFAULT_REGION=us-east-1
+                        aws lambda invoke --function-name SaintsXCTFMySQLRestore${params.environment.toUpperCase()} response.json
+                        cat response.json
+                    """
                 }
             }
         }

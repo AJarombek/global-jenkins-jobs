@@ -1,8 +1,7 @@
 /**
- * Jenkins script that uses Terraform to destroy backup and restore AWS Lambda functions for a SaintsXCTF MySQL database
- * on Amazon RDS.
+ * Jenkins script for creating AWS infrastructure for saintsxctf.com (web application).
  * @author Andrew Jarombek
- * @since 7/19/2020
+ * @since 7/25/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -19,8 +18,8 @@ pipeline {
         )
         choice(
             name: 'environment',
-            choices: ['all', 'dev', 'prod'],
-            description: 'Environment to destroy the database backup/restore functions.'
+            choices: ['all', 'dev'],
+            description: 'Environment to destroy the database.'
         )
     }
     options {
@@ -91,7 +90,7 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/database-snapshot/env/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
 }
 
@@ -104,7 +103,7 @@ def terraformDestroy() {
 }
 
 def postScript() {
-    def bodyTitle = "Destroy saints-xctf-infrastructure $params.environment Database Snapshot."
+    def bodyTitle = "Destroy SaintsXCTF Web Application AWS Infrastructure"
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

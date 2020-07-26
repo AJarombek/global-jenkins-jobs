@@ -11,12 +11,14 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `create-bastion`                   | Jenkins job to create a bastion host in the `saints-xctf` VPC.                  |
 | `create-database`                  | Jenkins job to create an RDS MySQL database for SaintsXCTF.                     |
 | `create-database-snapshot`         | Jenkins job to create backup/restore functions for an RDS MySQL database.       |
+| `create-saints-xctf-com`           | Jenkins job to create the `saintsxctf.com` AWS infrastructure.                  |
 | `create-saints-xctf-com-auth`      | Jenkins job to create the `auth.saintsxctf.com` AWS infrastructure.             |
 | `create-secrets-manager`           | Jenkins job to create secrets in SecretsManager for SaintsXCTF.                 |
 | `destroy-acm`                      | Jenkins job to destroy ACM certificates for SaintsXCTF.                         |
 | `destroy-bastion`                  | Jenkins job to destroy a bastion host in the `saints-xctf` VPC.                 |
 | `destroy-database`                 | Jenkins job to destroy an RDS MySQL database for SaintsXCTF.                    |
 | `destroy-database-snapshot`        | Jenkins job to destroy backup/restore functions for an RDS MySQL database.      |
+| `destroy-saints-xctf-com`          | Jenkins job to destroy the `saintsxctf.com` AWS infrastructure.                 |
 | `destroy-saints-xctf-com-auth`     | Jenkins job to destroy the `auth.saintsxctf.com` AWS infrastructure.            |
 | `destroy-secrets-manager`          | Jenkins job to destroy secrets in SecretsManager for SaintsXCTF.                |
 | `restore-database`                 | Jenkins job to restore a database from a backup.                                |

@@ -19,7 +19,7 @@ pipeline {
         )
         choice(
             name: 'environment',
-            choices: ['dev', 'prod'],
+            choices: ['all', 'dev', 'prod'],
             description: 'Environment to create the database backup/restore functions.'
         )
     }
