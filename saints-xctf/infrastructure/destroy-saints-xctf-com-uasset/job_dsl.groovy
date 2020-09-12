@@ -1,5 +1,5 @@
 /**
- * Destroy secrets in SecretsManager for destroying AWS infrastructure for SaintsXCTF user assets.
+ * Create a Pipeline Job that destroys AWS infrastructure for SaintsXCTF user assets.
  * @author Andrew Jarombek
  * @since 9/12/2020
  */
