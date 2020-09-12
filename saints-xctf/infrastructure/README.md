@@ -15,6 +15,7 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `create-saints-xctf-com`           | Jenkins job to create the `saintsxctf.com` AWS infrastructure.                  |
 | `create-saints-xctf-com-api`       | Jenkins job to create the `api.saintsxctf.com` AWS infrastructure.              |
 | `create-saints-xctf-com-auth`      | Jenkins job to create the `auth.saintsxctf.com` AWS infrastructure.             |
+| `create-saints-xctf-com-uasset`    | Jenkins job to create the `uasset.saintsxctf.com` AWS infrastructure.           |
 | `create-secrets-manager`           | Jenkins job to create secrets in SecretsManager for SaintsXCTF.                 |
 | `destroy-acm`                      | Jenkins job to destroy ACM certificates for SaintsXCTF.                         |
 | `destroy-bastion`                  | Jenkins job to destroy a bastion host in the `saints-xctf` VPC.                 |
@@ -24,6 +25,7 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `destroy-saints-xctf-com`          | Jenkins job to destroy the `saintsxctf.com` AWS infrastructure.                 |
 | `destroy-saints-xctf-com-api`      | Jenkins job to destroy the `api.saintsxctf.com` AWS infrastructure.             |
 | `destroy-saints-xctf-com-auth`     | Jenkins job to destroy the `auth.saintsxctf.com` AWS infrastructure.            |
+| `destroy-saints-xctf-com-uasset`   | Jenkins job to destroy the `uasset.saintsxctf.com` AWS infrastructure.          |
 | `destroy-secrets-manager`          | Jenkins job to destroy secrets in SecretsManager for SaintsXCTF.                |
 | `restore-database`                 | Jenkins job to restore a database from a backup.                                |
 | `saints-xctf-infrastructure-test`  | Jenkins jobs to run tests on the SaintsXCTF AWS infrastructure in dev and prod. |
