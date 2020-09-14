@@ -68,7 +68,7 @@ def checkoutRepo() {
 
 def executeTestScript() {
     test_result = 0
-    dir('repos/saints-xctf-infrastructure/test') {
+    dir('repos/saints-xctf-auth/test') {
         try {
             withCredentials([
                 usernamePassword(
@@ -79,6 +79,7 @@ def executeTestScript() {
             ]) {
                 test_result = sh(
                     script: """#!/bin/bash
+                        npm install
                         export TEST_ENV=$params.environment
                         export CLIENT_SECRET=$password
                         npm test 2>&1 | tee test_results.log
@@ -104,9 +105,9 @@ def postScript() {
     def bodyContent = ""
     def testResultLog = ""
 
-    dir('repos/saints-xctf-infrastructure/test') {
+    dir('repos/saints-xctf-auth/test') {
         testResultLog = sh(
-            script: "cat /src/test_results.log",
+            script: "cat test_results.log",
             returnStdout: true
         )
     }

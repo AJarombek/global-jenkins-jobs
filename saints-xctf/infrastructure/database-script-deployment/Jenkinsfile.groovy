@@ -6,10 +6,26 @@
 
 @Library(['global-jenkins-library@master']) _
 
+def podYaml = '''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: database-script-deployment
+  namespace: jenkins
+  labels:
+    version: v1.0.0
+    environment: development
+    application: saints-xctf-database
+spec:
+  containers:
+    - name: mysql-client
+      image: widdpim/mysql-client:latest
+      command: ["sleep", "infinity"]
+      tty: true
+'''
+
 pipeline {
-    agent {
-        label 'master'
-    }
+    agent none
     parameters {
         choice(
             name: 'environment',
@@ -31,16 +47,34 @@ pipeline {
     }
     stages {
         stage("Clean Workspace") {
+            agent {
+                label 'master'
+            }
             steps {
                 script {
                     cleanWs()
                 }
             }
         }
-        stage("Checkout Repository") {
+        stage("Get Database Host") {
+            agent {
+                label 'master'
+            }
             steps {
                 script {
-                    checkoutRepo()
+                    getHost()
+                }
+            }
+        }
+        stage("Execute Deployment") {
+            agent {
+                kubernetes {
+                    yaml podYaml
+                }
+            }
+            steps {
+                script {
+                    executeDeployment()
                 }
             }
         }
@@ -55,11 +89,39 @@ pipeline {
 }
 
 // Stage functions
-def checkoutRepo() {
-    def name = "saints-xctf-infrastructure"
-    def branch = "master"
+def getHost() {
+    HOST = sh(
+        script: """
+            export AWS_DEFAULT_REGION=us-east-1
+            aws rds describe-db-instances \
+                --db-instance-identifier saints-xctf-mysql-database-$params.environment \
+                --query "DBInstances[0].Endpoint.Address" \
+                --output text
+        """,
+        returnStdout: true
+    )
+}
 
-    genericsteps.checkoutRepo(name, branch)
+def executeDeployment() {
+    container('mysql-client') {
+        genericsteps.checkoutRepo('saints-xctf-database', 'master')
+
+        withCredentials([
+            usernamePassword(
+                credentialsId: "saintsxctf-rds-$params.environment",
+                passwordVariable: 'password',
+                usernameVariable: 'username'
+            )
+        ]) {
+            dir('repos/saints-xctf-database') {
+                sh """
+                    export HOST=$HOST
+                    export MYSQL_PWD="$password"
+                    mysql -h \${HOST//[\$'\\t\\r\\n']} -u $username saintsxctf < $params.scriptPath
+                """
+            }
+        }
+    }
 }
 
 def postScript() {

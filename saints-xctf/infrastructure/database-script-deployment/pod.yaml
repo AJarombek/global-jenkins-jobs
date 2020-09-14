@@ -14,6 +14,6 @@ metadata:
 spec:
   containers:
     - name: mysql-client
-      image: arey/mysql-client:latest
+      image: widdpim/mysql-client:latest
       command: ["sleep", "infinity"]
       tty: true
