@@ -43,8 +43,8 @@ pipeline {
                         sudo cp ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
                         
                         # 3) Terraform (latest)
-                        sudo wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
-                        sudo unzip terraform_0.12.28_linux_amd64.zip
+                        sudo wget https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip
+                        sudo unzip terraform_0.13.3_linux_amd64.zip
                         sudo mv terraform /usr/local/bin/
                         
                         # Installed Libraries

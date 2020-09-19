@@ -42,12 +42,16 @@ pipeline {
         stage("Schedule Database") {
             steps {
                 script {
-                    sh 'export AWS_DEFAULT_REGION=us-east-1'
-
                     if (params.action == 'stop') {
-                        sh 'aws rds stop-db-instance --db-instance-identifier saints-xctf-mysql-database-dev'
+                        sh '''
+                            export AWS_DEFAULT_REGION=us-east-1
+                            aws rds stop-db-instance --db-instance-identifier saints-xctf-mysql-database-dev
+                        '''
                     } else {
-                        sh 'aws rds start-db-instance --db-instance-identifier saints-xctf-mysql-database-dev'
+                        sh '''
+                            export AWS_DEFAULT_REGION=us-east-1
+                            aws rds start-db-instance --db-instance-identifier saints-xctf-mysql-database-dev
+                        '''
                     }
                 }
             }

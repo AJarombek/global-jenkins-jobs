@@ -6,26 +6,10 @@
 
 @Library(['global-jenkins-library@master']) _
 
-def podYaml = '''
-apiVersion: v1
-kind: Pod
-metadata:
-  name: database-script-deployment
-  namespace: jenkins
-  labels:
-    version: v1.0.0
-    environment: development
-    application: saints-xctf-database
-spec:
-  containers:
-    - name: mysql-client
-      image: widdpim/mysql-client:latest
-      command: ["sleep", "infinity"]
-      tty: true
-'''
-
 pipeline {
-    agent none
+    agent agent {
+        label 'master'
+    }
     parameters {
         choice(
             name: 'environment',
@@ -48,31 +32,27 @@ pipeline {
     }
     stages {
         stage("Clean Workspace") {
-            agent {
-                label 'master'
-            }
             steps {
                 script {
                     cleanWs()
                 }
             }
         }
-        stage("Get Database Host") {
-            agent {
-                label 'master'
-            }
+        stage("Checkout Repository") {
             steps {
                 script {
-                    getHost()
+                    checkoutRepo()
+                }
+            }
+        }
+        stage("Push Script to S3") {
+            steps {
+                script {
+                    pushScriptS3()
                 }
             }
         }
         stage("Execute Deployment") {
-            agent {
-                kubernetes {
-                    yaml podYaml
-                }
-            }
             steps {
                 script {
                     executeDeployment()
@@ -90,39 +70,28 @@ pipeline {
 }
 
 // Stage functions
-def getHost() {
-    HOST = sh(
-        script: """
-            export AWS_DEFAULT_REGION=us-east-1
-            aws rds describe-db-instances \
-                --db-instance-identifier saints-xctf-mysql-database-$params.environment \
-                --query "DBInstances[0].Endpoint.Address" \
-                --output text
-        """,
-        returnStdout: true
-    )
+def checkoutRepo() {
+    genericsteps.checkoutRepo('saints-xctf-database', 'master')
+}
+
+def pushScriptS3() {
+    def now = new Date()
+    def formattedDate = now.format('yyyy-MM-dd', TimeZone.getTimeZone('UTC'))
+
+    sh """
+        export AWS_DEFAULT_REGION=us-east-1
+        aws s3 $params.scriptPath s3://saints-xctf-database-deployments/$params.environment/$formattedDate/script.sql
+    """
 }
 
 def executeDeployment() {
-    container('mysql-client') {
-        genericsteps.checkoutRepo('saints-xctf-database', 'master')
-
-        withCredentials([
-            usernamePassword(
-                credentialsId: "saintsxctf-rds-$params.environment",
-                passwordVariable: 'password',
-                usernameVariable: 'username'
-            )
-        ]) {
-            dir('repos/saints-xctf-database') {
-                sh """
-                    export HOST=$HOST
-                    export MYSQL_PWD="$password"
-                    mysql -h \${HOST//[\$'\\t\\r\\n']} -u $username saintsxctf < $params.scriptPath
-                """
-            }
-        }
-    }
+    sh """
+        export AWS_DEFAULT_REGION=us-east-1
+        aws lambda invoke \
+            --function-name SaintsXCTFDatabaseDeployment${params.environment.toUpperCase()} \
+            --payload '{ "file_path": "$params.environment/$formattedDate/script.sql" }' \
+            response.json
+    """
 }
 
 def postScript() {
