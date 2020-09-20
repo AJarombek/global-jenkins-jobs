@@ -7,7 +7,7 @@
 @Library(['global-jenkins-library@master']) _
 
 pipeline {
-    agent agent {
+    agent {
         label 'master'
     }
     parameters {
@@ -76,22 +76,26 @@ def checkoutRepo() {
 
 def pushScriptS3() {
     def now = new Date()
-    def formattedDate = now.format('yyyy-MM-dd', TimeZone.getTimeZone('UTC'))
+    FORMATTED_DATE = now.format('yyyy-MM-dd', TimeZone.getTimeZone('UTC'))
 
-    sh """
-        export AWS_DEFAULT_REGION=us-east-1
-        aws s3 $params.scriptPath s3://saints-xctf-database-deployments/$params.environment/$formattedDate/script.sql
-    """
+    dir('repos/saints-xctf-database') {
+        sh """
+            export AWS_DEFAULT_REGION=us-east-1
+            aws s3 mv $params.scriptPath s3://saints-xctf-database-deployments/$params.environment/$FORMATTED_DATE/script.sql
+        """
+    }
 }
 
 def executeDeployment() {
-    sh """
-        export AWS_DEFAULT_REGION=us-east-1
-        aws lambda invoke \
-            --function-name SaintsXCTFDatabaseDeployment${params.environment.toUpperCase()} \
-            --payload '{ "file_path": "$params.environment/$formattedDate/script.sql" }' \
-            response.json
-    """
+    dir('repos/saints-xctf-database') {
+        sh """
+            export AWS_DEFAULT_REGION=us-east-1
+            aws lambda invoke \
+                --function-name SaintsXCTFDatabaseDeployment${params.environment.toUpperCase()} \
+                --payload '{ "file_path": "$params.environment/$FORMATTED_DATE/script.sql" }' \
+                response.json
+        """
+    }
 }
 
 def postScript() {
