@@ -1,5 +1,5 @@
 /**
- * Create a Pipeline Job for pushing a 'saints-xctf-api' Docker image to DockerHub.
+ * Create a Pipeline Job for pushing a 'saints-xctf-api-flask' or 'saints-xctf-api-nginx' Docker image to ECR.
  * @author Andrew Jarombek
  * @since 9/20/2020
  */

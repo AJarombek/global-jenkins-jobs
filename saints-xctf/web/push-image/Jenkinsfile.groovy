@@ -1,7 +1,7 @@
 /**
- * Jenkins script that pushes a Docker image to ECR for the SaintsXCTF API.
+ * Jenkins script that pushes a Docker image to ECR for the SaintsXCTF web application.
  * @author Andrew Jarombek
- * @since 9/20/2020
+ * @since 9/22/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -13,7 +13,7 @@ pipeline {
     parameters {
         choice(
             name: 'image',
-            choices: ['saints-xctf-api-flask', 'saints-xctf-api-nginx'],
+            choices: ['saints-xctf-web'],
             description: 'Name of the Docker image and ECR repository to push to.'
         )
         string(
@@ -81,12 +81,12 @@ pipeline {
 }
 
 def checkoutRepo() {
-    genericsteps.checkoutRepo("saints-xctf-api", "master")
+    genericsteps.checkoutRepo("saints-xctf-web", "master")
 }
 
 def buildImage() {
-    dir("repos/saints-xctf-api/api/src") {
-        def dockerfile = params.image == 'saints-xctf-api-flask' ? 'api.flask.dockerfile' : 'api.nginx.dockerfile'
+    dir("repos/saints-xctf-web") {
+        def dockerfile = 'app.dockerfile'
 
         sh """
             sudo docker image build \
@@ -137,7 +137,7 @@ def cleanupDockerEnvironment() {
 }
 
 def postScript() {
-    def bodyTitle = "Push SaintsXCTF API Docker image to ECR."
+    def bodyTitle = "Push SaintsXCTF Web Docker image to ECR."
     def bodyContent = "Image pushed: $params.image"
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
