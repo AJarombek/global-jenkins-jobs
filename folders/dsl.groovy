@@ -271,6 +271,56 @@ folder('prototypes') {
     }
 }
 
+// Apollo Client & Server Prototype Jobs
+folder('prototypes/apollo-client-server-prototype') {
+    displayName('apollo-client-server-prototype')
+    description('Folder for the Apollo Client & Server Prototype')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the Apollo Client & Server Prototype')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('test-infrastructure', 'test-client', 'test-server')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the Apollo Client & Server Prototype')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('push-images', 'create-infrastructure', 'destroy-infrastructure')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
 // GraphQL React Prototype Jobs
 folder('prototypes/graphql-react-prototype') {
     displayName('graphql-react-prototype')
@@ -310,9 +360,9 @@ folder('prototypes/graphql-react-prototype') {
                     'push-app-image',
                     'push-base-image',
                     'create-ecr-infrastructure',
-                    'create-eks-infrastructure',
+                    'create-k8s-infrastructure',
                     'destroy-ecr-infrastructure',
-                    'destroy-eks-infrastructure'
+                    'destroy-k8s-infrastructure'
                 )
             }
             columns() {
@@ -364,6 +414,23 @@ folder('saints-xctf/api') {
                 buildButton()
             }
         }
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the SaintsXCTF API Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('push-image')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
     }
 }
 
@@ -380,6 +447,23 @@ folder('saints-xctf/auth') {
         permission('hudson.model.Item.Discover', 'guest')
     }
     views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the SaintsXCTF Auth Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('saints-xctf-auth-test')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
         listView('Continuous Deployment') {
             description('Continuous Deployment jobs for the SaintsXCTF Auth Application')
             filterBuildQueue()
@@ -423,7 +507,7 @@ folder('saints-xctf/infrastructure') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('saints-xctf-infrastructure-test-dev', 'saints-xctf-infrastructure-test-prod')
+                names('saints-xctf-infrastructure-test')
             }
             columns() {
                 status()
@@ -446,21 +530,29 @@ folder('saints-xctf/infrastructure') {
                     'create-bastion',
                     'create-database',
                     'create-database-backup',
+                    'create-database-deployment',
                     'create-database-snapshot',
                     'create-saints-xctf-com',
                     'create-saints-xctf-com-api',
+                    'create-saints-xctf-com-asset',
                     'create-saints-xctf-com-auth',
+                    'create-saints-xctf-com-uasset',
                     'create-secrets-manager',
+                    'database-script-deployment',
                     'destroy-acm',
                     'destroy-bastion',
                     'destroy-database',
                     'destroy-database-backup',
+                    'destroy-database-deployment',
                     'destroy-database-snapshot',
                     'destroy-saints-xctf-com',
                     'destroy-saints-xctf-com-api',
+                    'destroy-saints-xctf-com-asset',
                     'destroy-saints-xctf-com-auth',
+                    'destroy-saints-xctf-com-uasset',
                     'destroy-secrets-manager',
-                    'restore-database'
+                    'restore-database',
+                    'scheduling-dev-database'
                 )
             }
             columns() {
@@ -495,6 +587,23 @@ folder('saints-xctf/web') {
             filterExecutors()
             jobs {
                 names('saints-xctf-web-test')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the SaintsXCTF Web Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('push-image')
             }
             columns() {
                 status()
