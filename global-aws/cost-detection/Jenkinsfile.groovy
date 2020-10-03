@@ -93,7 +93,7 @@ def detectAWSCosts() {
 
 def postScript() {
     def bodyTitle = "Detect AWS Costs"
-    def bodyContent = "3-Day Moving Cost Average: $env.AVG_COST"
+    def bodyContent = "3-Day Cost Average: $env.AVG_COST"
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
     def buildNumber = env.BUILD_NUMBER

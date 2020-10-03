@@ -88,6 +88,20 @@ def buildImage() {
     dir("repos/saints-xctf-api/api/src") {
         def dockerfile = params.image == 'saints-xctf-api-flask' ? 'api.flask.dockerfile' : 'api.nginx.dockerfile'
 
+        if (params.image == 'saints-xctf-api-flask') {
+            withCredentials([
+                string(credentialsId: 'aws-access-key-id', variable: 'aws_access_key_id'),
+                string(credentialsId: 'aws-secret-access-key', variable: 'aws_secret_access_key')
+            ]) {
+                sh """
+                    touch credentials
+                    echo "[default]" >> credentials
+                    echo "aws_access_key_id = $aws_access_key_id" >> credentials
+                    echo "aws_secret_access_key = $aws_secret_access_key" >> credentials
+                """
+            }
+        }
+
         sh """
             sudo docker image build \
                 -f $dockerfile \

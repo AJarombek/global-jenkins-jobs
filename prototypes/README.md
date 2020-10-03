@@ -6,6 +6,7 @@ Jenkins jobs for prototype applications.
 
 | Directory Name                     | Description                                                                      |
 |------------------------------------|----------------------------------------------------------------------------------|
+| `apollo-client-server-prototype`   | Jenkins jobs for the Apollo client & server prototypes.                          |
 | `cloudformation-serverless`        | Jenkins job to build the serverless prototype.                                   |
 | `graphql-react-prototype`          | Folder of jobs related to the GraphQL React prototype.                           |
 | `kubernetes-prototype-ci`          | Jenkins job to run CI unit tests for the kubernetes prototype.                   |
