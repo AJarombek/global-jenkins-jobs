@@ -5,6 +5,45 @@
  * @since 5/14/2019
  */
 
+// Code Sample Jobs
+folder('code-samples') {
+    displayName('code-samples')
+    description('Folder for small code sample jobs.')
+}
+
+// Python Code Sample Jobs
+folder('code-samples/python') {
+    displayName('python')
+    description('Folder for small Python code sample jobs.')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for small Python code samples')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('test-concurrency')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
 // Global AWS Infrastructure Jobs
 folder('global-aws') {
     displayName('global-aws')

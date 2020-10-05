@@ -13,6 +13,7 @@ underscores.
 | Directory Name                     | Description                                                                      |
 |------------------------------------|----------------------------------------------------------------------------------|
 | `bootstrap`                        | Jenkins jobs which are made when the server is first booted up.                  |
+| `code-samples`                     | Jenkins jobs for smaller code samples in my repositories, some used in articles. |
 | `folders`                          | Folders on the Jenkins server used to group jobs.                                |
 | `global-aws`                       | Jenkins jobs used with the global AWS infrastructure.                            |
 | `infrastructure`                   | Generic jenkins jobs for infrastructure building.                                |
