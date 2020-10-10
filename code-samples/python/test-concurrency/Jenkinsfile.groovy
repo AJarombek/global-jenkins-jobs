@@ -11,7 +11,7 @@ pipeline {
         label 'master'
     }
     triggers {
-        cron('H 7 * * *')
+        cron('H 0 1,15 * *')
     }
     options {
         ansiColor('xterm')

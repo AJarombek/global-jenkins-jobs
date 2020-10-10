@@ -9,7 +9,7 @@
 pipeline {
     agent {
         kubernetes {
-            yamlFile 'pod.yaml'
+            yamlFile 'jarombek-com/web/jarombek-com-test/pod.yaml'
         }
     }
     triggers {

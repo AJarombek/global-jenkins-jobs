@@ -6,7 +6,75 @@
 
 @Library(['global-jenkins-library@master']) _
 
-def setupProject = {
+pipeline {
+    agent {
+        kubernetes {
+            yamlFile 'saints-xctf/api/saints-xctf-api-test/pod.yaml'
+        }
+    }
+    triggers {
+        cron('H 0 * * *')
+    }
+    options {
+        ansiColor('xterm')
+        timeout(time: 1, unit: 'HOURS')
+        buildDiscarder(
+            logRotator(daysToKeepStr: '10', numToKeepStr: '5')
+        )
+    }
+    stages {
+        stage("Clean Workspace") {
+            steps {
+                script {
+                    cleanWs()
+                }
+            }
+        }
+        stage("Checkout Repository") {
+            steps {
+                script {
+                    checkoutRepo()
+                }
+            }
+        }
+        stage("Setup Database") {
+            steps {
+                script {
+                    setupDatabase()
+                }
+            }
+        }
+        stage("Setup API") {
+            steps {
+                script {
+                    setupAPI()
+                }
+            }
+        }
+        stage("Execute Tests") {
+            steps {
+                script {
+                    executeTests()
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                postScript()
+            }
+        }
+    }
+}
+
+def checkoutRepo() {
+    container('test') {
+        genericsteps.checkoutRepo('saints-xctf-api', 'master')
+    }
+}
+
+def setupDatabase() {
     sh '''
         set +e
         set -x
@@ -16,7 +84,21 @@ def setupProject = {
     '''
 }
 
-def executeTests = {
+def setupAPI() {
+    container('test') {
+        sh 'apt-get update'
+
+        dir('repos/saints-xctf-api/api/src') {
+            sh '''
+                pip install pipenv
+                pipenv install
+                export ENV=test
+            '''
+        }
+    }
+}
+
+def executeTests() {
     try {
         def status = sh (
             script: """
@@ -27,10 +109,6 @@ def executeTests = {
                 pipenv run flask routes
                                 
                 pipenv run flask test
-                exit_status=\$?
-    
-                cat test_results.log
-                exit \$exit_status
             """,
             returnStatus: true
         )
@@ -41,53 +119,17 @@ def executeTests = {
 
     } catch (Exception ex) {
         echo "SaintsXCTF API Testing Failed"
-        currentBuild.result = "UNSTABLE"
+        currentBuild.result = "FAILURE"
     }
 }
 
-def emailTestResults = {
+def postScript() {
     def bodyContent = ""
-    def testResultLog = readFile "test_results.log"
-
-    testResultLog.split('\n').each {
-        bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
-    }
-
     def bodyTitle = "SaintsXCTF API Tests"
-    email.sendEmail(
-        bodyTitle,
-        bodyContent,
-        env.JOB_NAME,
-        currentBuild.result,
-        env.BUILD_NUMBER,
-        env.BUILD_URL
-    )
+    def jobName = env.JOB_NAME
+    def buildStatus = currentBuild.result
+    def buildNumber = env.BUILD_NUMBER
+    def buildUrl = env.BUILD_URL
 
-    cleanWs()
+    genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
 }
-
-def config = [
-    agent: [
-        label: 'master'
-    ],
-    triggers: [
-        cron: 'H 0 * * *'
-    ],
-    options: [
-        time: 1,
-        unit: 'HOURS',
-        daysToKeepStr: '10',
-        numToKeepStr: '5'
-    ],
-    stages: [
-        repository: 'jarombek-react-components',
-        branch: env.branch,
-        setupProjectScript: setupProject,
-        executeTestsScript: executeTests
-    ],
-    post: [
-        script: emailTestResults
-    ]
-]
-
-pipelinejob(config)

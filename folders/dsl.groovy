@@ -62,10 +62,12 @@ folder('global-aws') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('cost-detection')
-                names('global-aws-infrastructure-test-dev')
-                names('global-aws-infrastructure-test-prod')
-                names('global-kubernetes-infrastructure-test')
+                names(
+                    'cost-detection',
+                    'global-aws-infrastructure-test-dev',
+                    'global-aws-infrastructure-test-prod',
+                    'global-kubernetes-infrastructure-test'
+                )
             }
             columns() {
                 status()
@@ -82,7 +84,7 @@ folder('global-aws') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('push-jenkins-ecr-docker-image')
+                names('push-jenkins-ecr-docker-image', 'dockerfiles-push-images')
             }
             columns() {
                 status()

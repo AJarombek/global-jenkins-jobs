@@ -1,0 +1,24 @@
+# Pod holding multiple containers for use with the saints-xctf-api-test Jenkins job.
+# Author: Andrew Jarombek
+# Date: 10/9/2020
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: saints-xctf-api-test
+  namespace: jenkins
+  labels:
+    version: v1.0.0
+    environment: development
+    application: saints-xctf-api-test
+spec:
+  containers:
+    - name: auth
+      image: ajarombek/auth-saints-xctf-com-mock
+      tty: true
+    - name: database
+      image: mysql:5.7
+      tty: true
+    - name: test
+      image: python:3.8
+      tty: true
