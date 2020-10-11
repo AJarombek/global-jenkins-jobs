@@ -14,10 +14,16 @@ metadata:
 spec:
   containers:
     - name: auth
-      image: ajarombek/auth-saints-xctf-com-mock
+      image: ajarombek/pipenv-flask
       tty: true
     - name: database
       image: mysql:5.7
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: saintsxctftest
+      tty: true
+    - name: mysql-aws
+      image: ajarombek/mysql-aws
       tty: true
     - name: test
       image: python:3.8

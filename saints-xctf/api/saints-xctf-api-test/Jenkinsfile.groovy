@@ -44,6 +44,13 @@ pipeline {
                 }
             }
         }
+        stage("Setup Auth API") {
+            steps {
+                script {
+                    setupAuthAPI()
+                }
+            }
+        }
         stage("Setup API") {
             steps {
                 script {
@@ -72,16 +79,50 @@ def checkoutRepo() {
     container('test') {
         genericsteps.checkoutRepo('saints-xctf-api', 'master')
     }
+    container('auth') {
+        genericsteps.checkoutRepo('saints-xctf-auth', 'master')
+    }
 }
 
 def setupDatabase() {
-    sh '''
-        set +e
-        set -x
-        sudo pip3 install pipenv
-        pipenv --rm
-        pipenv install
-    '''
+    container('mysql-aws') {
+        sh '''
+            aws --version
+            export AWS_DEFAULT_REGION=us-east-1
+            aws s3 cp s3://saints-xctf-db-backups-prod/backup.sql backup.sql
+        '''
+        stash includes: 'backup.sql', name: 'DB_BACKUP'
+    }
+
+    container('database') {
+        unstash 'DB_BACKUP'
+        sh '''
+            mysql -uroot -p saintsxctftest < backup.sql
+        '''
+    }
+}
+
+def setupAuthAPI() {
+    container('auth') {
+        dir('repos/saints-xctf-auth/mock') {
+            withCredentials([
+                usernamePassword(
+                    credentialsId: 'saintsxctf-andy',
+                    passwordVariable: 'password',
+                    usernameVariable: 'username'
+                )
+            ]) {
+                sh """
+                    pipenv install
+                    flask --version
+                    export SXCTF_AUTH_ID=$username
+                    export SXCTF_AUTH_SECRET=$password
+                    export FLASK_APP=main.py
+                    pipenv run flask run
+                """
+            }
+        }
+    }
 }
 
 def setupAPI() {
@@ -92,35 +133,24 @@ def setupAPI() {
             sh '''
                 pip install pipenv
                 pipenv install
-                export ENV=test
             '''
         }
     }
 }
 
 def executeTests() {
-    try {
-        def status = sh (
-            script: """
-                set +e
-                set -x
-                
-                # See all the endpoints exposed by Flask, ensure there are no syntax errors in the Python files.
-                pipenv run flask routes
-                                
-                pipenv run flask test
-            """,
-            returnStatus: true
-        )
-
-        if (status >= 1) {
-            currentBuild.result = "UNSTABLE"
-        }
-
-    } catch (Exception ex) {
-        echo "SaintsXCTF API Testing Failed"
-        currentBuild.result = "FAILURE"
-    }
+    genericsteps.shReturnStatus(
+        """
+            set +e
+            set -x
+            export ENV=test
+            
+            # See all the endpoints exposed by Flask, ensure there are no syntax errors in the Python files.
+            pipenv run flask routes
+                            
+            pipenv run flask test
+        """
+    )
 }
 
 def postScript() {
