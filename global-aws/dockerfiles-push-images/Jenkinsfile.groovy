@@ -13,7 +13,7 @@ pipeline {
     parameters {
         choice(
             name: 'image',
-            choices: ['pipenv-flask'],
+            choices: ['mysql-aws', 'pipenv-flask'],
             description: 'Name of the Docker image to push to Dockerhub.'
         )
         string(
@@ -88,6 +88,7 @@ def checkoutRepo() {
 def buildImage() {
     dir("repos/global-aws-infrastructure/dockerfiles") {
         def dockerfileMap = [
+            'mysql-aws': 'mysql-aws.dockerfile',
             'pipenv-flask': 'pipenv-flask.dockerfile'
         ]
 

@@ -18,59 +18,19 @@ pipeline {
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')
-        buildDiscarder(
-            logRotator(daysToKeepStr: '10', numToKeepStr: '5')
-        )
+        buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '5'))
     }
     stages {
-        stage("Clean Workspace") {
-            steps {
-                script {
-                    cleanWs()
-                }
-            }
-        }
-        stage("Checkout Repository") {
-            steps {
-                script {
-                    checkoutRepo()
-                }
-            }
-        }
-        stage("Setup Database") {
-            steps {
-                script {
-                    setupDatabase()
-                }
-            }
-        }
-        stage("Setup Auth API") {
-            steps {
-                script {
-                    setupAuthAPI()
-                }
-            }
-        }
-        stage("Setup API") {
-            steps {
-                script {
-                    setupAPI()
-                }
-            }
-        }
-        stage("Execute Tests") {
-            steps {
-                script {
-                    executeTests()
-                }
-            }
-        }
+        stage("Clean Workspace") { steps { script { cleanWs() } } }
+        stage("Checkout Repository") { steps { script { checkoutRepo() } } }
+        stage("Setup Database") { steps { script { setupDatabase() } } }
+        stage("Setup Auth API") { steps { script { setupAuthAPI() } } }
+        stage("Setup API") { steps { script { setupAPI() } } }
+        stage("Execute Tests") { steps { script { executeTests() } } }
     }
     post {
         always {
-            script {
-                postScript()
-            }
+            script { postScript() }
         }
     }
 }
@@ -91,13 +51,11 @@ def setupDatabase() {
             export AWS_DEFAULT_REGION=us-east-1
             aws s3 cp s3://saints-xctf-db-backups-prod/backup.sql backup.sql
         '''
-        stash includes: 'backup.sql', name: 'DB_BACKUP'
     }
 
     container('database') {
-        unstash 'DB_BACKUP'
         sh '''
-            mysql -uroot -p saintsxctftest < backup.sql
+            mysql -u test --password=test saintsxctf < backup.sql
         '''
     }
 }
@@ -114,7 +72,7 @@ def setupAuthAPI() {
             ]) {
                 sh """
                     pipenv install
-                    flask --version
+                    pipenv run flask --version
                     export SXCTF_AUTH_ID=$username
                     export SXCTF_AUTH_SECRET=$password
                     export FLASK_APP=main.py

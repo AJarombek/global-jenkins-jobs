@@ -6,9 +6,6 @@
 
 pipelineJob("saints-xctf/api/saints-xctf-api-test") {
     description("Pipeline Job for testing the saints-xctf-api project")
-    parameters {
-        stringParam('branch', 'master', 'Branch in the saints-xctf-api repository to test')
-    }
     definition {
         cps {
             sandbox()

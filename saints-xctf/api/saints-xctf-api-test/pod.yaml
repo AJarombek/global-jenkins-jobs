@@ -14,16 +14,22 @@ metadata:
 spec:
   containers:
     - name: auth
-      image: ajarombek/pipenv-flask
+      image: ajarombek/pipenv-flask:latest
       tty: true
     - name: database
       image: mysql:5.7
       env:
         - name: MYSQL_ROOT_PASSWORD
           value: saintsxctftest
+        - name: MYSQL_DATABASE
+          value: saintsxctf
+        - name: MYSQL_USER
+          value: test
+        - name: MYSQL_PASSWORD
+          value: test
       tty: true
     - name: mysql-aws
-      image: ajarombek/mysql-aws
+      image: ajarombek/mysql-aws:latest
       tty: true
     - name: test
       image: python:3.8
