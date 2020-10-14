@@ -24,7 +24,6 @@ pipeline {
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Checkout Repository") { steps { script { checkoutRepo() } } }
         stage("Setup Database") { steps { script { setupDatabase() } } }
-        stage("Setup Auth API") { steps { script { setupAuthAPI() } } }
         stage("Setup API") { steps { script { setupAPI() } } }
         stage("Execute Tests") { steps { script { executeTests() } } }
     }
@@ -60,29 +59,6 @@ def setupDatabase() {
     }
 }
 
-def setupAuthAPI() {
-    container('auth') {
-        dir('repos/saints-xctf-auth/mock') {
-            withCredentials([
-                usernamePassword(
-                    credentialsId: 'saintsxctf-andy',
-                    passwordVariable: 'password',
-                    usernameVariable: 'username'
-                )
-            ]) {
-                sh """
-                    pipenv install
-                    pipenv run flask --version
-                    export SXCTF_AUTH_ID=$username
-                    export SXCTF_AUTH_SECRET=$password
-                    export FLASK_APP=main.py
-                    pipenv run flask run
-                """
-            }
-        }
-    }
-}
-
 def setupAPI() {
     container('test') {
         sh 'apt-get update'
@@ -97,18 +73,23 @@ def setupAPI() {
 }
 
 def executeTests() {
-    genericsteps.shReturnStatus(
-        """
-            set +e
-            set -x
-            export ENV=test
-            
-            # See all the endpoints exposed by Flask, ensure there are no syntax errors in the Python files.
-            pipenv run flask routes
-                            
-            pipenv run flask test
-        """
-    )
+    container('test') {
+        dir('repos/saints-xctf-api/api/src') {
+            genericsteps.shReturnStatus(
+                """
+                    set +e
+                    set -x
+                    export ENV=test
+                    export AWS_DEFAULT_REGION=us-east-1
+                    
+                    # See all the endpoints exposed by Flask, ensure there are no syntax errors in the Python files.
+                    pipenv run flask routes
+                                    
+                    pipenv run flask test
+                """
+            )
+        }
+    }
 }
 
 def postScript() {

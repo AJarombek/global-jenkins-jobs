@@ -14,7 +14,7 @@ metadata:
 spec:
   containers:
     - name: auth
-      image: ajarombek/pipenv-flask:latest
+      image: ajarombek/mock-saints-xctf-auth:latest
       tty: true
     - name: database
       image: mysql:5.7

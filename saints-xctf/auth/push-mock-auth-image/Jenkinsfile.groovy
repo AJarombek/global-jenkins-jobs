@@ -47,7 +47,7 @@ def checkoutRepo() {
 }
 
 def buildImage() {
-    dir("repos/saints-xctf-auth") {
+    dir("repos/saints-xctf-auth/mock") {
         withCredentials([
             usernamePassword(
                 credentialsId: 'saintsxctf-andy',
@@ -57,10 +57,9 @@ def buildImage() {
         ]) {
             sh """
                 sudo docker image build \
-                    --build-arg SXCTF_AUTH_ID=$username \
-                    --build-arg SXCTF_AUTH_SECRET=$password \
-                    -f mock/Dockerfile \
-                    -t $params.image:latest \
+                    --build-arg ID=$username \
+                    --build-arg SECRET=$password \
+                    -t mock-saints-xctf-auth:latest \
                     --network=host .
             """
         }
@@ -68,29 +67,26 @@ def buildImage() {
 }
 
 def pushImage() {
-    def imageName = params.image
     def imageLabel = params.label
     def isLatest = params.isLatest
 
     dockerhub.auth()
-    dockerhub.pushImage(imageName, imageLabel)
+    dockerhub.pushImage('mock-saints-xctf-auth', imageLabel)
 
     if (isLatest) {
-        dockerhub.pushImage(imageName)
+        dockerhub.pushImage('mock-saints-xctf-auth')
     }
 }
 
 def cleanupDockerEnvironment() {
-    def imageName = params.image
-
     sh """
-        sudo docker image rm $imageName:latest
-        sudo docker image rm ajarombek/$imageName:$params.label
+        sudo docker image rm mock-saints-xctf-auth:latest
+        sudo docker image rm ajarombek/mock-saints-xctf-auth:$params.label
     """
 
     if (params.isLatest) {
         sh """
-            sudo docker image rm ajarombek/$imageName:latest
+            sudo docker image rm ajarombek/mock-saints-xctf-auth:latest
         """
     }
 
