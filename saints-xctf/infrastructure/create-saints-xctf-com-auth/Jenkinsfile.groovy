@@ -34,7 +34,7 @@ spec:
       image: ajarombek/auth-saints-xctf-com-token:latest
       tty: true
     - name: terraform
-      image: hashicorp/terraform:latest
+      image: hashicorp/terraform:0.12.29
       command: ["sleep", "infinity"]
       tty: true
             '''
@@ -55,53 +55,15 @@ spec:
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')
-        buildDiscarder(
-            logRotator(daysToKeepStr: '10', numToKeepStr: '5')
-        )
+        buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '5'))
     }
     stages {
-        stage("Clean Workspace") {
-            steps {
-                script {
-                    cleanWs()
-                }
-            }
-        }
-        stage("Checkout Repositories") {
-            steps {
-                script {
-                    checkoutRepos()
-                }
-            }
-        }
-        stage("Get Lambda Zip Files") {
-            steps {
-                script {
-                    getLambdaZipFiles()
-                }
-            }
-        }
-        stage("Terraform Init") {
-            steps {
-                script {
-                    terraformInit()
-                }
-            }
-        }
-        stage("Terraform Validate") {
-            steps {
-                script {
-                    terraformValidate()
-                }
-            }
-        }
-        stage("Terraform Plan") {
-            steps {
-                script {
-                    terraformPlan()
-                }
-            }
-        }
+        stage("Clean Workspace") { steps { script { cleanWs() } } }
+        stage("Checkout Repositories") { steps { script { checkoutRepos() } } }
+        stage("Get Lambda Zip Files") { steps { script { getLambdaZipFiles() } } }
+        stage("Terraform Init") { steps { script { terraformInit() } } }
+        stage("Terraform Validate") { steps { script { terraformValidate() } } }
+        stage("Terraform Plan") { steps { script { terraformPlan() } } }
         stage("Terraform Apply") {
             when {
                 allOf {
@@ -109,11 +71,7 @@ spec:
                     environment name: 'TERRAFORM_PLAN_ERRORS', value: 'false'
                 }
             }
-            steps {
-                script {
-                    terraformApply()
-                }
-            }
+            steps { script { terraformApply() } }
         }
     }
     post {

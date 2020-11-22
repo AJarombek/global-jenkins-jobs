@@ -43,10 +43,14 @@ pipeline {
                         sudo cp ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
                         
                         # 3) Terraform (via tfenv)
-                        sudo git clone https://github.com/tfutils/tfenv.git /usr/local/bin
+                        sudo rm -r ~/.tfenv
+                        sudo rm /usr/local/bin/terraform
+                        sudo rm /usr/local/bin/tfenv
+                        sudo git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+                        sudo ln -s ~/.tfenv/bin/* /usr/local/bin
                         tfenv --version
-                        tfenv install latest
-                        tfenv use latest
+                        sudo tfenv install latest
+                        sudo tfenv use latest
                         
                         # Installed Libraries
                         docker --version

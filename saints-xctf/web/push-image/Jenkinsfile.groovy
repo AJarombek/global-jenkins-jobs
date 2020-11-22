@@ -13,7 +13,7 @@ pipeline {
     parameters {
         choice(
             name: 'image',
-            choices: ['saints-xctf-web-base', 'saints-xctf-web-nginx'],
+            choices: ['saints-xctf-web-base', 'saints-xctf-web-nginx', 'saints-xctf-web-nginx-dev'],
             description: 'Name of the Docker image and ECR repository to push to.'
         )
         string(
@@ -86,11 +86,15 @@ def checkoutRepo() {
 
 def buildImage() {
     dir("repos/saints-xctf-web") {
-        def dockerfile = params.image == 'saints-xctf-web-base' ? 'base.dockerfile' : 'app.dockerfile'
+        def locationMap = [
+            'saints-xctf-web-base': 'base.dockerfile',
+            'saints-xctf-web-nginx': 'app.dockerfile',
+            'saints-xctf-web-nginx-dev': 'app.dev.dockerfile'
+        ]
 
         sh """
             sudo docker image build \
-                -f $dockerfile \
+                -f ${locationMap[params.image]} \
                 -t $params.image:latest \
                 --network=host .
         """

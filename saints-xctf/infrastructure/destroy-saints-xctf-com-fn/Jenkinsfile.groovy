@@ -1,7 +1,7 @@
 /**
- * Jenkins script for destroying AWS infrastructure for auth.saintsxctf.com.
+ * Jenkins script for destroying AWS infrastructure for fn.saintsxctf.com.
  * @author Andrew Jarombek
- * @since 6/20/2020
+ * @since 11/21/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -59,7 +59,7 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-auth/env/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-fn/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
 }
 
@@ -77,7 +77,7 @@ def terraformDestroy() {
 
 def postScript() {
     email.sendEmail(
-        "Destroy ${$params.environment.toUpperCase()} SaintsXCTF Auth AWS Infrastructure",
+        "Destroy ${$params.environment.toUpperCase()} SaintsXCTF Function AWS Infrastructure",
         "",
         env.JOB_NAME,
         currentBuild.result,
