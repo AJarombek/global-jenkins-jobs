@@ -1,7 +1,7 @@
 /**
- * Jenkins script that creates AWS infrastructure for fn.saintsxctf.com.
+ * Jenkins script that creates Kubernetes Ingress object infrastructure for SaintsXCTF.
  * @author Andrew Jarombek
- * @since 11/21/2020
+ * @since 11/22/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -30,7 +30,6 @@ pipeline {
     stages {
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Checkout Repositories") { steps { script { checkoutRepos() } } }
-        stage("Get Lambda Zip Files") { steps { script { createLambdaZipFiles() } } }
         stage("Terraform Init") { steps { script { terraformInit() } } }
         stage("Terraform Validate") { steps { script { terraformValidate() } } }
         stage("Terraform Plan") { steps { script { terraformPlan() } } }
@@ -55,29 +54,10 @@ pipeline {
 
 def checkoutRepos() {
     genericsteps.checkoutRepo('saints-xctf-infrastructure', 'master')
-    genericsteps.checkoutRepo('saints-xctf-functions', 'main')
-}
-
-def createLambdaZipFiles() {
-    dir('repos/saints-xctf-functions/forgot-password') {
-        sh """
-            yarn install --production=true
-            zip -r9 SaintsXCTFForgotPasswordEmail.zip .
-            cp SaintsXCTFForgotPasswordEmail.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/email-lambda
-        """
-    }
-
-    dir('repos/saints-xctf-functions/upload-profile-picture') {
-        sh """
-            yarn install --production=true
-            zip -r9 SaintsXCTFUassetUser.zip .
-            cp SaintsXCTFUassetUser.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/uasset-lambda
-        """
-    }
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-fn/env/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-ingress/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
 }
 
@@ -95,7 +75,7 @@ def terraformApply() {
 
 def postScript() {
     email.sendEmail(
-        "Create ${params.environment.toUpperCase()} SaintsXCTF Functions AWS Infrastructure",
+        "Create SaintsXCTF ${params.environment.toUpperCase()} Ingress Kubernetes Infrastructure",
         "",
         env.JOB_NAME,
         currentBuild.result,

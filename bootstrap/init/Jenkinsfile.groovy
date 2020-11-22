@@ -52,6 +52,10 @@ pipeline {
                         sudo tfenv install latest
                         sudo tfenv use latest
                         
+                        # 4) Zip
+                        sudo apt-get install zip
+                        zip --version
+                        
                         # Installed Libraries
                         docker --version
                         python --version

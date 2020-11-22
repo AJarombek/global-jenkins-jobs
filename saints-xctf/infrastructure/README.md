@@ -18,6 +18,7 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `create-saints-xctf-com-asset`     | Jenkins job to create the `asset.saintsxctf.com` AWS infrastructure.            |
 | `create-saints-xctf-com-auth`      | Jenkins job to create the `auth.saintsxctf.com` AWS infrastructure.             |
 | `create-saints-xctf-com-fn`        | Jenkins job to create the `fn.saintsxctf.com` AWS infrastructure.               |
+| `create-saints-xctf-com-ingress`   | Jenkins job to create Kubernetes `Ingress` infrastructure for SaintsXCTF.       |
 | `create-saints-xctf-com-uasset`    | Jenkins job to create the `uasset.saintsxctf.com` AWS infrastructure.           |
 | `create-secrets-manager`           | Jenkins job to create secrets in SecretsManager for SaintsXCTF.                 |
 | `database-script-deployment`       | Jenkins job to deploy/execute a database SQL script on an RDS MySQL database.   |
@@ -32,6 +33,7 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `destroy-saints-xctf-com-asset`    | Jenkins job to destroy the `asset.saintsxctf.com` AWS infrastructure.           |
 | `destroy-saints-xctf-com-auth`     | Jenkins job to destroy the `auth.saintsxctf.com` AWS infrastructure.            |
 | `destroy-saints-xctf-com-fn`       | Jenkins job to destroy the `fn.saintsxctf.com` AWS infrastructure.              |
+| `destroy-saints-xctf-com-ingress`  | Jenkins job to destroy Kubernetes `Ingress` infrastructure for SaintsXCTF.      |
 | `destroy-saints-xctf-com-uasset`   | Jenkins job to destroy the `uasset.saintsxctf.com` AWS infrastructure.          |
 | `destroy-secrets-manager`          | Jenkins job to destroy secrets in SecretsManager for SaintsXCTF.                |
 | `restore-database`                 | Jenkins job to restore a database from a backup.                                |
