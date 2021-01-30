@@ -84,7 +84,12 @@ folder('global-aws') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('push-jenkins-ecr-docker-image', 'dockerfiles-push-images')
+                names(
+                    'create-lambda-layer',
+                    'destroy-lambda-layer',
+                    'dockerfiles-push-images',
+                    'push-jenkins-ecr-docker-image'
+                )
             }
             columns() {
                 status()

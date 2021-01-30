@@ -67,11 +67,27 @@ def createLambdaZipFiles() {
         """
     }
 
+    dir('repos/saints-xctf-functions/send-activation') {
+        sh """
+            yarn install --production=true
+            zip -r9 SaintsXCTFActivationCodeEmail.zip .
+            cp SaintsXCTFActivationCodeEmail.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/email-lambda
+        """
+    }
+
     dir('repos/saints-xctf-functions/upload-profile-picture') {
         sh """
             yarn install --production=true
             zip -r9 SaintsXCTFUassetUser.zip .
             cp SaintsXCTFUassetUser.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/uasset-lambda
+        """
+    }
+
+    dir('repos/saints-xctf-functions/upload-group-picture') {
+        sh """
+            yarn install --production=true
+            zip -r9 SaintsXCTFUassetGroup.zip .
+            cp SaintsXCTFUassetGroup.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/uasset-lambda
         """
     }
 }

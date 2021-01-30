@@ -5,7 +5,7 @@
  */
 
 pipelineJob("saints-xctf/infrastructure/create-bastion") {
-    description("Pipeline Job for creating s bastion host in the SaintsXCTF VPC.")
+    description("Pipeline Job for creating a bastion host in the SaintsXCTF VPC.")
     definition {
         cps {
             sandbox()

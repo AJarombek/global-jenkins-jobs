@@ -1,7 +1,7 @@
 /**
- * Jenkins script for destroying AWS infrastructure for fn.saintsxctf.com.
+ * Jenkins script that uses Terraform to destroy a bastion host in the SaintsXCTF VPC.
  * @author Andrew Jarombek
- * @since 11/21/2020
+ * @since 7/19/2020
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -16,21 +16,17 @@ pipeline {
             defaultValue: true,
             description: "Whether the Terraform infrastructure should be automatically destroyed."
         )
-        choice(
-            name: 'environment',
-            choices: ['dev', 'prod'],
-            description: 'Environment to build the infrastructure in.'
-        )
     }
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')
-        buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '5'))
+        buildDiscarder(
+            logRotator(daysToKeepStr: '10', numToKeepStr: '5')
+        )
     }
     stages {
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Checkout Repository") { steps { script { checkoutRepo() } } }
-        stage("Create ZIP Files") { steps { script { mockZipFiles() } } }
         stage("Terraform Init") { steps { script { terraformInit() } } }
         stage("Terraform Plan") { steps { script { terraformPlanDestroy() } } }
         stage("Terraform Destroy") {
@@ -40,7 +36,11 @@ pipeline {
                     environment name: 'TERRAFORM_PLAN_ERRORS', value: 'false'
                 }
             }
-            steps { script { terraformDestroy() } }
+            steps {
+                script {
+                    terraformDestroy()
+                }
+            }
         }
     }
     post {
@@ -52,33 +52,17 @@ pipeline {
     }
 }
 
+// Stage functions
 def checkoutRepo() {
-    genericsteps.checkoutRepo("saints-xctf-infrastructure", "master")
-}
+    def name = "global-aws-infrastructure"
+    def branch = "master"
 
-def mockZipFiles() {
-    dir('repos/saints-xctf-infrastructure/saints-xctf-com-fn/modules/uasset-lambda') {
-        sh '''
-            touch SaintsXCTFUassetUser.zip
-            touch SaintsXCTFUassetGroup.zip
-        '''
-    }
-
-    dir('repos/saints-xctf-infrastructure/saints-xctf-com-fn/modules/email-lambda') {
-        sh '''
-            touch SaintsXCTFActivationCodeEmail.zip
-            touch SaintsXCTFForgotPasswordEmail.zip
-        '''
-    }
+    genericsteps.checkoutRepo(name, branch)
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-fn/env/$params.environment"
+    INFRA_DIR = "repos/global-aws-infrastructure/lambda-layer"
     terraform.terraformInit(INFRA_DIR)
-}
-
-def terraformValidate() {
-    terraform.terraformValidate(INFRA_DIR)
 }
 
 def terraformPlanDestroy() {
@@ -90,14 +74,12 @@ def terraformDestroy() {
 }
 
 def postScript() {
-    email.sendEmail(
-        "Destroy ${params.environment.toUpperCase()} SaintsXCTF Function AWS Infrastructure",
-        "",
-        env.JOB_NAME,
-        currentBuild.result,
-        env.BUILD_NUMBER,
-        env.BUILD_URL
-    )
+    def bodyTitle = "Destroy global-aws-infrastructure Lambda layers."
+    def bodyContent = ""
+    def jobName = env.JOB_NAME
+    def buildStatus = currentBuild.result
+    def buildNumber = env.BUILD_NUMBER
+    def buildUrl = env.BUILD_URL
 
-    cleanWs()
+    genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
 }
