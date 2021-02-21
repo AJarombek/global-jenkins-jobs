@@ -18,7 +18,7 @@ pipeline {
         )
         string(
             name: 'label',
-            defaultValue: '1.0.0',
+            defaultValue: '1.1.0',
             description: 'Label/Version of the Docker image to push to ECR'
         )
         booleanParam(
@@ -137,7 +137,10 @@ def cleanupDockerEnvironment() {
         """
     }
 
-    sh "sudo docker image ls"
+    sh '''
+        sudo docker system prune -f
+        sudo docker image ls
+    '''
 }
 
 def postScript() {

@@ -5,7 +5,7 @@
  */
 
 pipelineJob("global-aws/global-kubernetes-infrastructure-test") {
-    description("Pipeline Job for detecting unexpected AWS costs.")
+    description("Pipeline Job for testing the Kubernetes infrastructure defined in the global-aws-infrastructure repository.")
     definition {
         cps {
             sandbox()

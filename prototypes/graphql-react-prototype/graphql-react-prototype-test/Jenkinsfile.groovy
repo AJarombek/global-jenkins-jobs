@@ -38,27 +38,10 @@ spec:
         )
     }
     stages {
-        stage("Clean Workspace") {
-            steps {
-                script {
-                    cleanWs()
-                }
-            }
-        }
-        stage("Update Docker Image") {
-            steps {
-                script {
-                    updateDockerImage()
-                }
-            }
-        }
-        stage("Execute Tests") {
-            steps {
-                script {
-                    executeTestScript()
-                }
-            }
-        }
+        stage("Clean Workspace") { steps { script { cleanWs() } } }
+        stage("Update Docker Image") { steps { script { updateDockerImage() } } }
+        stage("Execute Tests") { steps { script { executeTestScript() } } }
+        stage("Cleanup Docker Environment") { steps { script { cleanupDockerEnvironment() } } }
     }
     post {
         always {
@@ -100,6 +83,12 @@ def executeTestScript() {
     } else {
         currentBuild.result = "SUCCESS"
     }
+}
+
+def cleanupDockerEnvironment() {
+    sh '''
+        sudo docker system prune -f
+    '''
 }
 
 def postScript() {

@@ -119,6 +119,8 @@ pipeline {
                         'saints-xctf/auth/saints-xctf-auth-test',
                         'saints-xctf/infrastructure/saints-xctf-infrastructure-test-prod',
                         'saints-xctf/infrastructure/saints-xctf-infrastructure-test-dev',
+                        'saints-xctf/infrastructure/saints-xctf-kubernetes-test-prod',
+                        'saints-xctf/infrastructure/saints-xctf-kubernetes-test-dev',
                         'saints-xctf/web/saints-xctf-web-test'
                     ])
                 }

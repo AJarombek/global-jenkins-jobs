@@ -559,7 +559,12 @@ folder('saints-xctf/infrastructure') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('saints-xctf-infrastructure-test')
+                names(
+                    'saints-xctf-infrastructure-test-prod',
+                    'saints-xctf-infrastructure-test-dev',
+                    'saints-xctf-kubernetes-test-prod',
+                    'saints-xctf-kubernetes-test-dev'
+                )
             }
             columns() {
                 status()
