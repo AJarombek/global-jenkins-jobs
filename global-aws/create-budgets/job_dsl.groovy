@@ -4,12 +4,12 @@
  * @since 2/20/2021
  */
 
-pipelineJob("global-aws/create-budget") {
+pipelineJob("global-aws/create-budgets") {
     description("Pipeline Job for creating AWS account budgets and alerts.")
     definition {
         cps {
             sandbox()
-            script(readFileFromWorkspace("global-aws/create-budget/Jenkinsfile.groovy"))
+            script(readFileFromWorkspace("global-aws/create-budgets/Jenkinsfile.groovy"))
         }
     }
 }

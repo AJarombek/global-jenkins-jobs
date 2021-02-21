@@ -85,10 +85,12 @@ folder('global-aws') {
             filterExecutors()
             jobs {
                 names(
+                    'create-acm',
                     'create-budgets',
                     'create-cloud-trail',
                     'create-lambda-layer',
                     'create-route53',
+                    'destroy-acm',
                     'destroy-budgets',
                     'destroy-cloud-trail',
                     'destroy-lambda-layer',
