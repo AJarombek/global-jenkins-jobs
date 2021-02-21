@@ -1,7 +1,7 @@
 /**
- * Jenkins script that uses Terraform to destroy globally shared AWS Lambda layers.
+ * Jenkins script that uses Terraform to destroy AWS account budgets and alerts.
  * @author Andrew Jarombek
- * @since 1/30/2021
+ * @since 2/20/2021
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -61,7 +61,7 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/global-aws-infrastructure/lambda-layer"
+    INFRA_DIR = "repos/global-aws-infrastructure/budgets"
     terraform.terraformInit(INFRA_DIR)
 }
 
@@ -74,7 +74,7 @@ def terraformDestroy() {
 }
 
 def postScript() {
-    def bodyTitle = "Destroy global-aws-infrastructure Lambda layers."
+    def bodyTitle = "Destroy global-aws-infrastructure AWS Account Budgets."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

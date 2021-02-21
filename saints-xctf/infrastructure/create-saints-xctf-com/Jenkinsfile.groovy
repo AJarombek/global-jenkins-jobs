@@ -88,7 +88,7 @@ pipeline {
     }
 }
 
-def checkoutRepos() {
+def checkoutRepo() {
     genericsteps.checkoutRepo('saints-xctf-infrastructure', 'master')
 }
 

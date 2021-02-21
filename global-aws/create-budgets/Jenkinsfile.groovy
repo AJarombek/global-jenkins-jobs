@@ -1,7 +1,7 @@
 /**
- * Jenkins script that uses Terraform to destroy globally shared AWS Lambda layers.
+ * Jenkins script that uses Terraform to create AWS account budgets and alerts.
  * @author Andrew Jarombek
- * @since 1/30/2021
+ * @since 2/20/2021
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -12,9 +12,9 @@ pipeline {
     }
     parameters {
         booleanParam(
-            name: 'autoDestroy',
+            name: 'autoApply',
             defaultValue: true,
-            description: "Whether the Terraform infrastructure should be automatically destroyed."
+            description: "Whether the Terraform infrastructure should be automatically approved."
         )
     }
     options {
@@ -28,19 +28,16 @@ pipeline {
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Checkout Repository") { steps { script { checkoutRepo() } } }
         stage("Terraform Init") { steps { script { terraformInit() } } }
-        stage("Terraform Plan") { steps { script { terraformPlanDestroy() } } }
-        stage("Terraform Destroy") {
+        stage("Terraform Validate") { steps { script { terraformValidate() } } }
+        stage("Terraform Plan") { steps { script { terraformPlan() } } }
+        stage("Terraform Apply") {
             when {
                 allOf {
                     environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
                     environment name: 'TERRAFORM_PLAN_ERRORS', value: 'false'
                 }
             }
-            steps {
-                script {
-                    terraformDestroy()
-                }
-            }
+            steps { script { terraformApply() } }
         }
     }
     post {
@@ -61,20 +58,24 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/global-aws-infrastructure/lambda-layer"
+    INFRA_DIR = "repos/global-aws-infrastructure/budgets"
     terraform.terraformInit(INFRA_DIR)
 }
 
-def terraformPlanDestroy() {
-    terraform.terraformPlanDestroy(INFRA_DIR)
+def terraformValidate() {
+    terraform.terraformValidate(INFRA_DIR)
 }
 
-def terraformDestroy() {
-    terraform.terraformDestroy(INFRA_DIR, params.autoDestroy)
+def terraformPlan() {
+    terraform.terraformPlan(INFRA_DIR)
+}
+
+def terraformApply() {
+    terraform.terraformApply(INFRA_DIR, params.autoApply)
 }
 
 def postScript() {
-    def bodyTitle = "Destroy global-aws-infrastructure Lambda layers."
+    def bodyTitle = "Create global-aws-infrastructure AWS Account Budgets."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

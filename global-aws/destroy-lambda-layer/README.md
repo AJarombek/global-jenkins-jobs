@@ -1,6 +1,6 @@
 ### Overview
 
-Jenkins job that creates AWS Lambda layers that are shared amongst applications.
+Jenkins job that destroys AWS Lambda layers that are shared amongst applications.
 
 ### Files
 

@@ -85,8 +85,14 @@ folder('global-aws') {
             filterExecutors()
             jobs {
                 names(
+                    'create-budgets',
+                    'create-cloud-trail',
                     'create-lambda-layer',
+                    'create-route53',
+                    'destroy-budgets',
+                    'destroy-cloud-trail',
                     'destroy-lambda-layer',
+                    'destroy-route53',
                     'dockerfiles-push-images',
                     'push-jenkins-ecr-docker-image'
                 )
