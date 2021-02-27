@@ -9,22 +9,7 @@
 pipeline {
     agent {
         kubernetes {
-            yaml '''
-apiVersion: v1
-kind: Pod
-metadata:
-  name: graphql-react-prototype-test
-  namespace: jenkins
-  labels:
-    version: v1.0.0
-    environment: development
-    application: graphql-react-prototype-test
-spec:
-  containers:
-    - name: test
-      image: 739088120071.dkr.ecr.us-east-1.amazonaws.com/graphql-react-prototype-base:latest
-      tty: true
-            '''
+            yamlFile 'prototypes/graphql-react-prototype/graphql-react-prototype-test/pod.yaml'
         }
     }
     triggers {
@@ -41,7 +26,6 @@ spec:
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Update Docker Image") { steps { script { updateDockerImage() } } }
         stage("Execute Tests") { steps { script { executeTestScript() } } }
-        stage("Cleanup Docker Environment") { steps { script { cleanupDockerEnvironment() } } }
     }
     post {
         always {
@@ -83,12 +67,6 @@ def executeTestScript() {
     } else {
         currentBuild.result = "SUCCESS"
     }
-}
-
-def cleanupDockerEnvironment() {
-    sh '''
-        sudo docker system prune -f
-    '''
 }
 
 def postScript() {

@@ -375,6 +375,39 @@ folder('prototypes/apollo-client-server-prototype') {
     }
 }
 
+// DevOps Prototype Jobs
+folder('prototypes/devops-prototypes') {
+    displayName('devops-prototypes')
+    description('Folder for the DevOps Prototypes')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Integration') {
+            description('Continuous Integration jobs for the DevOps Prototypes')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('dynamodb-sample-test')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
 // GraphQL React Prototype Jobs
 folder('prototypes/graphql-react-prototype') {
     displayName('graphql-react-prototype')

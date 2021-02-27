@@ -1,16 +1,23 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: saints-xctf-kubernetes-test
+  name: dynamodb-sample-test
   namespace: jenkins
   labels:
     version: v1.0.0
     environment: all
-    application: saints-xctf-kubernetes-test
+    application: dynamodb-sample-test
 spec:
   containers:
     - name: go
       image: golang:1.14.4-buster
+      tty: true
+    - name: python
+      image: python:3.9
+      tty: true
+    - name: terraform
+      image: hashicorp/terraform:0.14.7
+      command: [ "sleep", "infinity" ]
       tty: true
   serviceAccountName: jenkins-kubernetes-test
   automountServiceAccountToken: true
