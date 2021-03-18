@@ -11,6 +11,7 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `create-bastion`                   | Jenkins job to create a bastion host in the `saints-xctf` VPC.                  |
 | `create-database`                  | Jenkins job to create an RDS MySQL database for SaintsXCTF.                     |
 | `create-database-backup`           | Jenkins job to create an S3 bucket that holds RDS MySQL database backups.       |
+| `create-database-client`           | Jenkins job to create a MySQL database client for SaintsXCTF.                   |
 | `create-database-deployment`       | Jenkins job to create an S3 bucket + Lambda function for database deployments.  |
 | `create-database-snapshot`         | Jenkins job to create backup/restore functions for an RDS MySQL database.       |
 | `create-saints-xctf-com`           | Jenkins job to create the `saintsxctf.com` AWS infrastructure.                  |
@@ -26,6 +27,7 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `destroy-bastion`                  | Jenkins job to destroy a bastion host in the `saints-xctf` VPC.                 |
 | `destroy-database`                 | Jenkins job to destroy an RDS MySQL database for SaintsXCTF.                    |
 | `destroy-database-backup`          | Jenkins job to destroy an S3 bucket that holds RDS MySQL database backups.      |
+| `destroy-database-client`          | Jenkins job to create a MySQL database client for SaintsXCTF.                   |
 | `destroy-database-deployment`      | Jenkins job to destroy an S3 bucket + Lambda function for database deployments. |
 | `destroy-database-snapshot`        | Jenkins job to destroy backup/restore functions for an RDS MySQL database.      |
 | `destroy-saints-xctf-com`          | Jenkins job to destroy the `saintsxctf.com` AWS infrastructure.                 |
