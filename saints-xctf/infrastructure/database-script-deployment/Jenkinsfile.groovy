@@ -18,7 +18,7 @@ pipeline {
         )
         string(
             name: 'scriptPath',
-            defaultValue: '',
+            defaultValue: 'staging/<filename>.sql',
             description: 'File path in the saints-xctf-database repository of a SQL script.'
         )
     }

@@ -1,7 +1,7 @@
 /**
- * Jenkins script to push a mock implementation image to Dockerhub for the saints-xctf-auth application.
+ * Jenkins script to push a mock implementation image to Dockerhub for the saints-xctf-function application.
  * @author Andrew Jarombek
- * @since 10/11/2020
+ * @since 3/28/2021
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -43,15 +43,15 @@ pipeline {
 }
 
 def checkoutRepo() {
-    genericsteps.checkoutRepo("saints-xctf-auth", "master")
+    genericsteps.checkoutRepo("saints-xctf-function", "master")
 }
 
 def buildImage() {
-    dir("repos/saints-xctf-auth/mock") {
+    dir("repos/saints-xctf-function/mock") {
         sh """
             sudo docker image build \
                 --build-arg ENV=local \
-                -t mock-saints-xctf-auth:latest \
+                -t mock-saints-xctf-function:latest \
                 --network=host .
         """
     }
@@ -62,22 +62,22 @@ def pushImage() {
     def isLatest = params.isLatest
 
     dockerhub.auth()
-    dockerhub.pushImage('mock-saints-xctf-auth', imageLabel)
+    dockerhub.pushImage('mock-saints-xctf-function', imageLabel)
 
     if (isLatest) {
-        dockerhub.pushImage('mock-saints-xctf-auth')
+        dockerhub.pushImage('mock-saints-xctf-function')
     }
 }
 
 def cleanupDockerEnvironment() {
     sh """
-        sudo docker image rm mock-saints-xctf-auth:latest
-        sudo docker image rm ajarombek/mock-saints-xctf-auth:$params.label
+        sudo docker image rm mock-saints-xctf-function:latest
+        sudo docker image rm ajarombek/mock-saints-xctf-function:$params.label
     """
 
     if (params.isLatest) {
         sh """
-            sudo docker image rm ajarombek/mock-saints-xctf-auth:latest
+            sudo docker image rm ajarombek/mock-saints-xctf-function:latest
         """
     }
 
@@ -85,7 +85,7 @@ def cleanupDockerEnvironment() {
 }
 
 def postScript() {
-    def bodyTitle = "Push SaintsXCTF Auth Mock Docker image to Dockerhub."
+    def bodyTitle = "Push SaintsXCTF Function Mock Docker image to Dockerhub."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

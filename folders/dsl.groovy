@@ -559,8 +559,44 @@ folder('saints-xctf/auth') {
                 names(
                     'push-authenticate-lambda-image',
                     'push-authorizer-lambda-image',
+                    'push-mock-auth-image',
                     'push-rotate-lambda-image',
                     'push-token-lambda-image'
+                )
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
+}
+
+// SaintsXCTF Function Application Jobs
+folder('saints-xctf/function') {
+    displayName('function')
+    description('Folder for the SaintsXCTF Function application')
+    primaryView('All')
+    authorization {
+        permissions('andy', [
+            'hudson.model.Item.Create',
+            'hudson.model.Item.Discover'
+        ])
+        permission('hudson.model.Item.Discover', 'guest')
+    }
+    views {
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the SaintsXCTF Function Application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names(
+                    'push-mock-fn-image'
                 )
             }
             columns() {
