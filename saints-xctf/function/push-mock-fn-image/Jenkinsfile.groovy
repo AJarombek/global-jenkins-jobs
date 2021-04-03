@@ -1,5 +1,5 @@
 /**
- * Jenkins script to push a mock implementation image to Dockerhub for the saints-xctf-function application.
+ * Jenkins script to push a mock implementation image to Dockerhub for the saints-xctf-functions application.
  * @author Andrew Jarombek
  * @since 3/28/2021
  */
@@ -43,15 +43,15 @@ pipeline {
 }
 
 def checkoutRepo() {
-    genericsteps.checkoutRepo("saints-xctf-function", "master")
+    genericsteps.checkoutRepo("saints-xctf-functions", "main")
 }
 
 def buildImage() {
-    dir("repos/saints-xctf-function/mock") {
+    dir("repos/saints-xctf-functions/mock") {
         sh """
             sudo docker image build \
                 --build-arg ENV=local \
-                -t mock-saints-xctf-function:latest \
+                -t mock-saints-xctf-functions:latest \
                 --network=host .
         """
     }
@@ -62,22 +62,22 @@ def pushImage() {
     def isLatest = params.isLatest
 
     dockerhub.auth()
-    dockerhub.pushImage('mock-saints-xctf-function', imageLabel)
+    dockerhub.pushImage('mock-saints-xctf-functions', imageLabel)
 
     if (isLatest) {
-        dockerhub.pushImage('mock-saints-xctf-function')
+        dockerhub.pushImage('mock-saints-xctf-functions')
     }
 }
 
 def cleanupDockerEnvironment() {
     sh """
-        sudo docker image rm mock-saints-xctf-function:latest
-        sudo docker image rm ajarombek/mock-saints-xctf-function:$params.label
+        sudo docker image rm mock-saints-xctf-functions:latest
+        sudo docker image rm ajarombek/mock-saints-xctf-functions:$params.label
     """
 
     if (params.isLatest) {
         sh """
-            sudo docker image rm ajarombek/mock-saints-xctf-function:latest
+            sudo docker image rm ajarombek/mock-saints-xctf-functions:latest
         """
     }
 
@@ -85,7 +85,7 @@ def cleanupDockerEnvironment() {
 }
 
 def postScript() {
-    def bodyTitle = "Push SaintsXCTF Function Mock Docker image to Dockerhub."
+    def bodyTitle = "Push SaintsXCTF Functions Mock Docker image to Dockerhub."
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result

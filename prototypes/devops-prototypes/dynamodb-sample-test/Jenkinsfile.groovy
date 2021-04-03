@@ -9,7 +9,31 @@
 pipeline {
     agent {
         kubernetes {
-            yamlFile 'prototypes/devops-prototypes/dynamodb-sample-test/pod.yaml'
+            yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dynamodb-sample-test
+  namespace: jenkins
+  labels:
+    version: v1.0.0
+    environment: all
+    application: dynamodb-sample-test
+spec:
+  containers:
+    - name: go
+      image: golang:1.14.4-buster
+      tty: true
+    - name: python
+      image: python:3.9
+      tty: true
+    - name: terraform
+      image: hashicorp/terraform:0.14.9
+      command: [ "sleep", "infinity" ]
+      tty: true
+  serviceAccountName: jenkins-kubernetes-test
+  automountServiceAccountToken: true
+            '''
         }
     }
     triggers {
@@ -68,20 +92,28 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/devops-prototypes/samples/dynamodb/infra"
-    terraform.terraformInit(INFRA_DIR)
+    container('terraform') {
+        INFRA_DIR = "repos/devops-prototypes/samples/dynamodb/infra"
+        terraform.terraformInit(INFRA_DIR)
+    }
 }
 
 def terraformValidate() {
-    terraform.terraformValidate(INFRA_DIR)
+    container('terraform') {
+        terraform.terraformValidate(INFRA_DIR)
+    }
 }
 
 def terraformPlan() {
-    terraform.terraformPlan(INFRA_DIR)
+    container('terraform') {
+        terraform.terraformPlan(INFRA_DIR)
+    }
 }
 
 def terraformApply() {
-    terraform.terraformApply(INFRA_DIR, params.autoApply)
+    container('terraform') {
+        terraform.terraformApply(INFRA_DIR, true)
+    }
 }
 
 def executeTerraformChangeTests() {
@@ -92,7 +124,7 @@ def executeTerraformChangeTests() {
             sh """
                 pipenv install
                 export AWS_DEFAULT_REGION=us-east-1
-                pipenv run python testGoSdkInfra.py
+                pipenv run python testTerraformInfra.py
             """
         }
     }
@@ -121,11 +153,15 @@ def executeGoChangeTests() {
 }
 
 def terraformPlanDestroy() {
-    terraform.terraformPlanDestroy(INFRA_DIR)
+    container('terraform') {
+        terraform.terraformPlanDestroy(INFRA_DIR)
+    }
 }
 
 def terraformDestroy() {
-    terraform.terraformDestroy(INFRA_DIR, params.autoDestroy)
+    container('terraform') {
+        terraform.terraformDestroy(INFRA_DIR, true)
+    }
 }
 
 def postScript() {
