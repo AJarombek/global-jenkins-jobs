@@ -14,7 +14,7 @@ pipeline {
     parameters {
         choice(
             name: 'infrastructure',
-            choices: ['asset', 'kubernetes'],
+            choices: ['assets', 'kubernetes'],
             description: 'Infrastructure module to create.'
         )
         booleanParam(
