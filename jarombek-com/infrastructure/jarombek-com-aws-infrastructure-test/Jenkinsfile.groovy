@@ -1,5 +1,5 @@
 /**
- * Jenkins script for testing jarombek-com-infrastructure.
+ * Jenkins script for testing AWS infrastructure in jarombek-com-infrastructure.
  * @author Andrew Jarombek
  * @since 6/2/2019
  */
@@ -82,7 +82,7 @@ def executeTests() {
 
 def postScript() {
     def directory = 'repos/jarombek-com-infrastructure/test'
-    def bodyTitle = "jarombek.com Infrastructure Tests"
+    def bodyTitle = "jarombek.com AWS Infrastructure Tests"
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
     def buildNumber = env.BUILD_NUMBER
@@ -93,6 +93,6 @@ def postScript() {
 
 @NonCPS
 def getTestEnv() {
-    def matches = JOB_NAME =~ /jarombek-com-infrastructure-test-(\w+)/
+    def matches = JOB_NAME =~ /jarombek-com-aws-infrastructure-test-(\w+)/
     return matches[0][1]
 }

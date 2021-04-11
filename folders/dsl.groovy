@@ -219,7 +219,7 @@ folder('jarombek-com/infrastructure') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('jarombek-com-infrastructure-test')
+                names('jarombek-com-aws-infrastructure-test', 'jarombek-com-kubernetes-infrastructure-test')
             }
             columns() {
                 status()

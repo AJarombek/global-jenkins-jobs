@@ -8,8 +8,8 @@
 def environments = ["prod", "dev"]
 
 environments.each { environment ->
-    pipelineJob("jarombek-com/infrastructure/jarombek-com-infrastructure-test-$environment") {
-        description("Pipeline Job for testing the jarombek-com-infrastructure project")
+    pipelineJob("jarombek-com/infrastructure/jarombek-com-aws-infrastructure-test-$environment") {
+        description("Pipeline Job for testing AWS infrastructure in the jarombek-com-infrastructure project")
         parameters {
             stringParam('branch', 'master', 'Branch in the jarombek-com-infrastructure repository to test')
         }
@@ -21,7 +21,7 @@ environments.each { environment ->
                 sandbox()
                 script(
                     readFileFromWorkspace(
-                        "jarombek-com/infrastructure/jarombek-com-infrastructure-test/Jenkinsfile.groovy"
+                        "jarombek-com/infrastructure/jarombek-com-aws-infrastructure-test/Jenkinsfile.groovy"
                     )
                 )
             }

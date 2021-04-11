@@ -1,7 +1,7 @@
 /**
- * Jenkins script for testing the Kubernetes infrastructure defined in the saints-xctf-infrastructure repository.
+ * Jenkins script for testing the Kubernetes infrastructure defined in the jarombek-com-infrastructure repository.
  * @author Andrew Jarombek
- * @since 2/21/2021
+ * @since 4/11/2021
  */
 
 @Library(['global-jenkins-library@master']) _
@@ -13,12 +13,12 @@ pipeline {
 apiVersion: v1
 kind: Pod
 metadata:
-  name: saints-xctf-kubernetes-test
+  name: jarombek-com-kubernetes-infrastructure-test
   namespace: jenkins
   labels:
     version: v1.0.0
-    environment: all
-    application: saints-xctf-kubernetes-test
+    environment: development
+    application: jarombek-com-kubernetes-infrastructure-test
 spec:
   containers:
     - name: go
@@ -40,10 +40,27 @@ spec:
         )
     }
     stages {
-        stage("Clean Workspace") { steps { script { cleanWs() } } }
-        stage("Checkout Repository") { steps { script { checkoutRepo() } } }
-        stage("Execute Kubernetes Tests") { steps { script { executeTestScript() } } }
-        stage("Cleanup Docker Environment") { steps { script { cleanupDockerEnvironment() } } }
+        stage("Clean Workspace") {
+            steps {
+                script {
+                    cleanWs()
+                }
+            }
+        }
+        stage("Checkout Repository") {
+            steps {
+                script {
+                    checkoutRepo()
+                }
+            }
+        }
+        stage("Execute Kubernetes Tests") {
+            steps {
+                script {
+                    executeTestScript()
+                }
+            }
+        }
     }
     post {
         always {
@@ -56,32 +73,26 @@ spec:
 
 def checkoutRepo() {
     container('go') {
-        dir('repos/saints-xctf-infrastructure') {
-            git.basicClone('saints-xctf-infrastructure', 'master')
+        dir('repos/jarombek-com-infrastructure') {
+            git.basicClone('jarombek-com-infrastructure', 'master')
         }
     }
 }
 
 def executeTestScript() {
     container('go') {
-        dir('repos/saints-xctf-infrastructure/test-k8s') {
+        dir('repos/jarombek-com-infrastructure/test-k8s') {
             def testEnv = getEnv()
             sh """
                 export TEST_ENV=$testEnv
-                go test --incluster true -v
+                go test --incluster true
             """
         }
     }
 }
 
-def cleanupDockerEnvironment() {
-    sh '''
-        sudo docker system prune -f
-    '''
-}
-
 def postScript() {
-    def bodyTitle = "SaintsXCTF Kubernetes Infrastructure Tests"
+    def bodyTitle = "jarombek.com Kubernetes Infrastructure Tests"
     def bodyContent = ""
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
@@ -93,6 +104,6 @@ def postScript() {
 
 @NonCPS
 def getEnv() {
-    def matches = JOB_NAME =~ /saints-xctf-kubernetes-test-(\w+)/
+    def matches = JOB_NAME =~ /jarombek-com-kubernetes-test-(\w+)/
     return matches[0][1]
 }

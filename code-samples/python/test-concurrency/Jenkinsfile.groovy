@@ -60,18 +60,16 @@ pipeline {
     }
 }
 
-def checkoutRepo(String branch) {
-    dir('repos/misc-code-samples') {
-        git.basicClone('misc-code-samples', 'master')
-    }
+def checkoutRepo() {
+    genericsteps.checkoutRepo('jarombek-com-sources', 'master')
 }
 
 def setupEnvironment() {
-    infrastructuresteps.setupEnvironment('repos/misc-code-samples/Python/base/concurrency')
+    infrastructuresteps.setupEnvironment('repos/jarombek-com-sources/2020/11-Nov/11-01-python-concurrency')
 }
 
 def executeTests() {
-    dir('repos/misc-code-samples/Python/base/concurrency') {
+    dir('repos/jarombek-com-sources/2020/11-Nov/11-01-python-concurrency') {
         try {
             def status = sh (
                 script: "pipenv run python test.py",
