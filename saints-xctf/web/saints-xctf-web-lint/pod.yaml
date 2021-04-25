@@ -1,0 +1,20 @@
+# Kubernetes Pods for linting the SaintsXCTF Web application.
+# Author: Andrew Jarombek
+# Date: 4/25/2021
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: saints-xctf-web-lint
+  namespace: jenkins
+  labels:
+    version: v1.0.0
+    environment: all
+    application: saints-xctf-web-lint
+spec:
+  containers:
+    - name: nodejs
+      image: node:14.4.0
+      tty: true
+  serviceAccountName: jenkins-kubernetes-test
+  automountServiceAccountToken: true

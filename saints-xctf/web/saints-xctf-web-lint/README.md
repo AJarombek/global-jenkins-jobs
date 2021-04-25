@@ -1,6 +1,6 @@
 ### Overview
 
-Jenkins jobs for executing unit tests, snapshot tests, and integration tests for my SaintsXCTF web application.
+Jenkins jobs for linting TypeScript code in the SaintsXCTF web application.
 
 ### Files
 
@@ -8,3 +8,4 @@ Jenkins jobs for executing unit tests, snapshot tests, and integration tests for
 |---------------------------|---------------------------------------------------------------------------------------|
 | `Jenkinsfile.groovy`      | Jenkinsfile which is executed when the `saints-xctf-web` pipeline job is run.         |
 | `job_dsl.groovy`          | *Job DSL Plugin* script which creates the `saints-xctf-web` Jenkins job.              |
+| `pod.yaml`                | Kubernetes Pod YAML document for the `saints-xctf-web` Jenkins job.                   |

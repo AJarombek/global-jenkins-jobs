@@ -720,7 +720,7 @@ folder('saints-xctf/web') {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                names('saints-xctf-web-test')
+                names('saints-xctf-web-lint')
             }
             columns() {
                 status()
