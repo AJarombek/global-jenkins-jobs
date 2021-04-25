@@ -15,4 +15,7 @@ pipelineJob("prototypes/react-16-3-demo-test") {
             script(readFileFromWorkspace("prototypes/react-16-3-demo-test/Jenkinsfile.groovy"))
         }
     }
+    triggers {
+        cron('H 0 * * *')
+    }
 }

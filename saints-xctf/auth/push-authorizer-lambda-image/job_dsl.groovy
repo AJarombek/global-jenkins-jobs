@@ -12,4 +12,8 @@ pipelineJob("saints-xctf/auth/push-authorizer-lambda-image") {
             script(readFileFromWorkspace("saints-xctf/auth/push-authorizer-lambda-image/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        stringParam('label', '1.0.0', 'Label/Version of the Docker image to push to DockerHub')
+        booleanParam('isLatest', true, "Whether this Docker image should also be pushed with the 'latest' label")
+    }
 }

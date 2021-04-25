@@ -14,4 +14,8 @@ pipelineJob("saints-xctf/infrastructure/destroy-saints-xctf-com-auth") {
             )
         }
     }
+    parameters {
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+        choiceParam('environment', ['dev', 'prod'], 'Environment to build the infrastructure in.')
+    }
 }

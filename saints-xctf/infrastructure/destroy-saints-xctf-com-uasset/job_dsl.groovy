@@ -14,4 +14,7 @@ pipelineJob("saints-xctf/infrastructure/destroy-saints-xctf-com-uasset") {
             )
         }
     }
+    parameters {
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+    }
 }

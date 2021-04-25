@@ -12,4 +12,7 @@ pipelineJob("global-aws/destroy-lambda-layer") {
             script(readFileFromWorkspace("global-aws/destroy-lambda-layer/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+    }
 }

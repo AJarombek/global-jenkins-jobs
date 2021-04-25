@@ -14,4 +14,13 @@ pipelineJob("prototypes/apollo-client-server-prototype/push-images") {
             )
         }
     }
+    parameters {
+        choiceParam(
+            'image',
+            ['apollo-client-server-prototype-web', 'apollo-client-server-prototype-api', 'apollo-client-server-prototype-database'],
+            'Name of the Docker image to push to Dockerhub.'
+        )
+        stringParam('label', '1.0.0', 'Label/Version of the Docker image to push to Dockerhub')
+        booleanParam('isLatest', true, "Whether this Docker image should also be pushed with the 'latest' label")
+    }
 }

@@ -12,4 +12,7 @@ pipelineJob("global-aws/create-cloud-trail") {
             script(readFileFromWorkspace("global-aws/create-cloud-trail/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+    }
 }

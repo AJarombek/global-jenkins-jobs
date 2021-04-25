@@ -10,8 +10,8 @@ def environments = ["prod", "dev"]
 environments.each { environment ->
     pipelineJob("jarombek-com/infrastructure/jarombek-com-aws-infrastructure-test-$environment") {
         description("Pipeline Job for testing AWS infrastructure in the jarombek-com-infrastructure project")
-        parameters {
-            stringParam('branch', 'master', 'Branch in the jarombek-com-infrastructure repository to test')
+        triggers {
+            cron('H 0 * * *')
         }
         environmentVariables {
             env('TEST_ENV', environment)

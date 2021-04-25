@@ -15,5 +15,8 @@ environments.each { env ->
                 script(readFileFromWorkspace("jarombek-com/infrastructure/jarombek-com-kubernetes-infrastructure-test/Jenkinsfile.groovy"))
             }
         }
+        triggers {
+            cron('H 0 * * *')
+        }
     }
 }

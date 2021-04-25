@@ -57,7 +57,7 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/database-client/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/database-client"
     terraform.terraformInit(INFRA_DIR)
 }
 

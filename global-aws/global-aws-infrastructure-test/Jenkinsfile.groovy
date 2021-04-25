@@ -13,13 +13,6 @@ pipeline {
     triggers {
         cron('H 0 * * *')
     }
-    parameters {
-        string(
-            name: 'branch',
-            defaultValue: 'master',
-            description: 'Git branch to execute tests from'
-        )
-    }
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')
@@ -38,7 +31,7 @@ pipeline {
         stage("Checkout Repository") {
             steps {
                 script {
-                    checkoutRepo(params.branch)
+                    checkoutRepo('master')
                 }
             }
         }

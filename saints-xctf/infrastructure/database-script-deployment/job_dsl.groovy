@@ -12,4 +12,8 @@ pipelineJob("saints-xctf/infrastructure/database-script-deployment") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/database-script-deployment/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        choiceParam('environment', ['dev', 'prod'], 'Environment to create the secrets.')
+        stringParam('scriptPath', 'staging/<filename>.sql', 'File path in the saints-xctf-database repository of a SQL script.')
+    }
 }

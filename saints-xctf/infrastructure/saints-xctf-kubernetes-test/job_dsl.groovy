@@ -15,5 +15,8 @@ environments.each { env ->
                 script(readFileFromWorkspace("saints-xctf/infrastructure/saints-xctf-kubernetes-test/Jenkinsfile.groovy"))
             }
         }
+        triggers {
+            cron('H 0 * * *')
+        }
     }
 }

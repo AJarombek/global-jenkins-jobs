@@ -12,4 +12,7 @@ pipelineJob("global-aws/create-budgets") {
             script(readFileFromWorkspace("global-aws/create-budgets/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+    }
 }

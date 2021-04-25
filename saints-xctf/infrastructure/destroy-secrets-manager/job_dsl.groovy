@@ -12,4 +12,8 @@ pipelineJob("saints-xctf/infrastructure/destroy-secrets-manager") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/destroy-secrets-manager/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+        choiceParam('environment', ['dev', 'prod'], 'Environment to destroy the secrets.')
+    }
 }

@@ -104,6 +104,6 @@ def postScript() {
 
 @NonCPS
 def getEnv() {
-    def matches = JOB_NAME =~ /jarombek-com-kubernetes-test-(\w+)/
+    def matches = env.JOB_NAME =~ /jarombek-com-kubernetes-infrastructure-test-(\w+)/
     return matches[0][1]
 }

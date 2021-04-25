@@ -12,4 +12,8 @@ pipelineJob("saints-xctf/infrastructure/create-database-client") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/create-database-client/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+        stringString('cidr', '0.0.0.0/0', 'CIDR block that has access to the SaintsXCTF database client (the db.saintsxctf.com domain).')
+    }
 }

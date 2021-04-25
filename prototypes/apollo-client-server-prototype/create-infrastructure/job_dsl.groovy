@@ -14,4 +14,8 @@ pipelineJob("prototypes/apollo-client-server-prototype/create-infrastructure") {
             )
         }
     }
+    parameters {
+        choiceParam('infrastructure', ['assets', 'kubernetes'], 'Infrastructure module to create.')
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+    }
 }

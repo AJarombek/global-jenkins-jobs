@@ -12,4 +12,9 @@ pipelineJob("saints-xctf/infrastructure/create-secrets-manager") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/create-secrets-manager/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+        choiceParam('environment', ['dev', 'prod'], 'Environment to create the secrets.')
+        stringParam('rdsPasswordSecret', '', 'Password for the RDS database.')
+    }
 }

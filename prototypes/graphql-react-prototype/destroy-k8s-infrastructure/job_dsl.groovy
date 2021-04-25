@@ -15,4 +15,7 @@ pipelineJob("prototypes/graphql-react-prototype/destroy-k8s-infrastructure") {
             )
         }
     }
+    parameters {
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+    }
 }

@@ -12,4 +12,7 @@ pipelineJob("global-aws/destroy-budgets") {
             script(readFileFromWorkspace("global-aws/destroy-budgets/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+    }
 }

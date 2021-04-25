@@ -12,4 +12,7 @@ pipelineJob("code-samples/python/test-concurrency") {
             script(readFileFromWorkspace("code-samples/python/test-concurrency/Jenkinsfile.groovy"))
         }
     }
+    triggers {
+        cron('H 0 1,15 * *')
+    }
 }

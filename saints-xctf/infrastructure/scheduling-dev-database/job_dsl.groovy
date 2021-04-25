@@ -12,4 +12,7 @@ pipelineJob("saints-xctf/infrastructure/scheduling-dev-database") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/scheduling-dev-database/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        choiceParam('action', ['start', 'stop'], 'Whether to start or stop the database.')
+    }
 }

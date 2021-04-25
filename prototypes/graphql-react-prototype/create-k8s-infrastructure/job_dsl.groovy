@@ -15,4 +15,7 @@ pipelineJob("prototypes/graphql-react-prototype/create-k8s-infrastructure") {
             )
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+    }
 }

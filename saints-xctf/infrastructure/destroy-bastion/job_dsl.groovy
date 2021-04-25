@@ -12,4 +12,7 @@ pipelineJob("saints-xctf/infrastructure/destroy-bastion") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/destroy-bastion/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+    }
 }

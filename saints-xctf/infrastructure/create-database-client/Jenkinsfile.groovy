@@ -63,7 +63,7 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/saints-xctf-infrastructure/database-client/$params.environment"
+    INFRA_DIR = "repos/saints-xctf-infrastructure/database-client"
     terraform.terraformInit(INFRA_DIR)
 }
 
@@ -86,7 +86,7 @@ def terraformApply() {
     }
 
     dir(INFRA_DIR) {
-        sh "terraform apply -var 'db_client_access_cidr=$params.cidr' -auto-approve terraform.tfplan"
+        sh "terraform apply -auto-approve terraform.tfplan"
     }
 }
 

@@ -12,4 +12,7 @@ pipelineJob("global-aws/create-lambda-layer") {
             script(readFileFromWorkspace("global-aws/create-lambda-layer/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+    }
 }

@@ -12,4 +12,19 @@ pipelineJob("saints-xctf/infrastructure/destroy-acm") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/destroy-acm/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+        choiceParam(
+            'cert',
+            [
+                '*.asset.saintsxctf.com',
+                '*.auth.saintsxctf.com',
+                '*.dev.saintsxctf.com',
+                '*.fn.saintsxctf.com',
+                '*.saintsxctf.com, saintsxctf.com',
+                '*.uasset.saintsxctf.com'
+            ],
+            'Certificate(s) to destroy.'
+        )
+    }
 }

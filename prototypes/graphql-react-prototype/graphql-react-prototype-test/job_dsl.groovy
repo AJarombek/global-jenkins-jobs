@@ -19,4 +19,7 @@ pipelineJob("prototypes/graphql-react-prototype/graphql-react-prototype-test") {
             )
         }
     }
+    triggers {
+        cron('H 0 * * *')
+    }
 }

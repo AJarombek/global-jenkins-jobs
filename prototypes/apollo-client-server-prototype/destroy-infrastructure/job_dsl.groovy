@@ -14,4 +14,8 @@ pipelineJob("prototypes/apollo-client-server-prototype/destroy-infrastructure") 
             )
         }
     }
+    parameters {
+        choiceParam('infrastructure', ['asset', 'kubernetes'], 'Infrastructure module to destroy.')
+        booleanParam('autoDestroy', true, "Whether the Terraform infrastructure should be automatically destroyed.")
+    }
 }

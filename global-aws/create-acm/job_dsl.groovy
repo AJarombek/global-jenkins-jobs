@@ -12,4 +12,7 @@ pipelineJob("global-aws/create-acm") {
             script(readFileFromWorkspace("global-aws/create-acm/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+    }
 }

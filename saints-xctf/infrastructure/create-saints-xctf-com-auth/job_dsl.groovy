@@ -12,4 +12,8 @@ pipelineJob("saints-xctf/infrastructure/create-saints-xctf-com-auth") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/create-saints-xctf-com-auth/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+        choiceParam('environment', ['dev', 'prod'], 'Environment to build the infrastructure in.')
+    }
 }

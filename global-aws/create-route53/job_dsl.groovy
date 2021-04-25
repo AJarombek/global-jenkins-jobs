@@ -12,4 +12,7 @@ pipelineJob("global-aws/create-route53") {
             script(readFileFromWorkspace("global-aws/create-route53/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+    }
 }

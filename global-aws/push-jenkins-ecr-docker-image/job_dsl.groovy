@@ -12,4 +12,7 @@ pipelineJob("global-aws/push-jenkins-ecr-docker-image") {
             script(readFileFromWorkspace("global-aws/push-jenkins-ecr-docker-image/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        stringParam('label', '1.0.0', 'Label/Version of the Docker image to push to an ECR repository')
+    }
 }

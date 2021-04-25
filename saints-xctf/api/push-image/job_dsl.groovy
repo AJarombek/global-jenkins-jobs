@@ -12,4 +12,9 @@ pipelineJob("saints-xctf/api/push-image") {
             script(readFileFromWorkspace("saints-xctf/api/push-image/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        choiceParam('image', ['saints-xctf-api-flask', 'saints-xctf-api-nginx'], 'Name of the Docker image and ECR repository to push to.')
+        stringParam('label', '1.1.3', 'Label/Version of the Docker image to push to ECR')
+        booleanParam('isLatest', true, "Whether this Docker image should also be pushed with the 'latest' label")
+    }
 }

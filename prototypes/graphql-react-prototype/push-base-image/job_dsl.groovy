@@ -12,4 +12,8 @@ pipelineJob("prototypes/graphql-react-prototype/push-base-image") {
             script(readFileFromWorkspace("prototypes/graphql-react-prototype/push-base-image/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        stringParam('label', '1.0.0', 'Label/Version of the Docker image to push to DockerHub')
+        booleanParam('isLatest', true, "Whether this Docker image should also be pushed with the 'latest' label")
+    }
 }

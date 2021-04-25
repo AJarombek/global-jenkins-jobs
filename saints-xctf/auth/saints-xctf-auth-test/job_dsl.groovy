@@ -12,4 +12,10 @@ pipelineJob("saints-xctf/auth/saints-xctf-auth-test") {
             script(readFileFromWorkspace("saints-xctf/auth/saints-xctf-auth-test/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        choiceParam('environment', ['prod', 'dev'], 'Environment to create the database backup/restore functions.')
+    }
+    triggers {
+        cron('H 0 * * *')
+    }
 }

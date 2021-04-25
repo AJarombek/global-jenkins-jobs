@@ -12,4 +12,7 @@ pipelineJob("saints-xctf/infrastructure/create-bastion") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/create-bastion/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+    }
 }

@@ -102,6 +102,9 @@ pipeline {
             }
         }
         stage("Trigger Initial Scheduled Jobs") {
+            when {
+                expression { false }
+            }
             steps {
                 script {
                     buildJobs([

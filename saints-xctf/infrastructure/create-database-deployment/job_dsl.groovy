@@ -16,4 +16,8 @@ pipelineJob("saints-xctf/infrastructure/create-database-deployment") {
             )
         }
     }
+    parameters {
+        booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
+        choiceParam('environment', ['all', 'dev', 'prod'], 'Environment to build the infrastructure in.')
+    }
 }

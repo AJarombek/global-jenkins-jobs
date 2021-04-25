@@ -12,4 +12,7 @@ pipelineJob("saints-xctf/infrastructure/restore-database") {
             script(readFileFromWorkspace("saints-xctf/infrastructure/restore-database/Jenkinsfile.groovy"))
         }
     }
+    parameters {
+        choiceParam('environment', ['dev'], 'Environment of the database.')
+    }
 }
