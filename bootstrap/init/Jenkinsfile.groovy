@@ -43,9 +43,9 @@ pipeline {
                         sudo cp ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
                         
                         # 3) Terraform (via tfenv)
-                        sudo rm -r ~/.tfenv
-                        sudo rm /usr/local/bin/terraform
-                        sudo rm /usr/local/bin/tfenv
+                        sudo rm -r ~/.tfenv || true
+                        sudo rm /usr/local/bin/terraform || true
+                        sudo rm /usr/local/bin/tfenv || true
                         sudo git clone https://github.com/tfutils/tfenv.git ~/.tfenv
                         sudo ln -s ~/.tfenv/bin/* /usr/local/bin
                         tfenv --version

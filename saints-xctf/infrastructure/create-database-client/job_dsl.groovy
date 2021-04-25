@@ -14,6 +14,6 @@ pipelineJob("saints-xctf/infrastructure/create-database-client") {
     }
     parameters {
         booleanParam('autoApply', true, "Whether the Terraform infrastructure should be automatically approved.")
-        stringString('cidr', '0.0.0.0/0', 'CIDR block that has access to the SaintsXCTF database client (the db.saintsxctf.com domain).')
+        stringParam('cidr', '0.0.0.0/0', 'CIDR block that has access to the SaintsXCTF database client (the db.saintsxctf.com domain).')
     }
 }
