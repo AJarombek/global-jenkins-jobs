@@ -9,7 +9,40 @@
 pipeline {
     agent {
         kubernetes {
-            yamlFile 'saints-xctf/api/saints-xctf-api-test/pod.yaml'
+            yaml """\
+                apiVersion: v1
+                kind: Pod
+                metadata:
+                  name: saints-xctf-api-test
+                  namespace: jenkins
+                  labels:
+                    version: v1.0.0
+                    environment: development
+                    application: saints-xctf-api-test
+                spec:
+                  containers:
+                    - name: auth
+                      image: ajarombek/mock-saints-xctf-auth:latest
+                      tty: true
+                    - name: database
+                      image: mysql:5.7
+                      env:
+                        - name: MYSQL_ROOT_PASSWORD
+                          value: saintsxctftest
+                        - name: MYSQL_DATABASE
+                          value: saintsxctf
+                        - name: MYSQL_USER
+                          value: test
+                        - name: MYSQL_PASSWORD
+                          value: test
+                      tty: true
+                    - name: mysql-aws
+                      image: ajarombek/mysql-aws:latest
+                      tty: true
+                    - name: test
+                      image: python:3.8
+                      tty: true
+            """.stripIndent()
         }
     }
     triggers {

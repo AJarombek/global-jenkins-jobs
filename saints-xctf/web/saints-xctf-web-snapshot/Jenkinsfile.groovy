@@ -1,10 +1,8 @@
 /**
- * Jenkins script for linting saints-xctf-web.
+ * Jenkins script for snapshot testing saints-xctf-web.
  * @author Andrew Jarombek
- * @since 3/14/2020
+ * @since 4/26/2021
  */
-
-// 15 West 64th Street, Begin setting up furniture, Too many IKEA trips
 
 @Library(['global-jenkins-library@master']) _
 
@@ -16,12 +14,12 @@ pipeline {
                 apiVersion: v1
                 kind: Pod
                 metadata:
-                  name: saints-xctf-web-lint
+                  name: saints-xctf-web-snapshot
                   namespace: jenkins
                   labels:
                     version: v1.0.0
                     environment: all
-                    application: saints-xctf-web-lint
+                    application: saints-xctf-web-snapshot
                 spec:
                   containers:
                     - name: nodejs
@@ -33,7 +31,7 @@ pipeline {
         }
     }
     triggers {
-        cron('H 0 * * *')
+        cron('H 2 * * *')
     }
     options {
         ansiColor('xterm')
@@ -46,7 +44,7 @@ pipeline {
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Checkout Repository") { steps { script { checkoutRepo() } } }
         stage("Setup Project") { steps { script { setupProject() } } }
-        stage("Lint Code") { steps { script { lintCode() } } }
+        stage("Snapshot Test Components") { steps { script { runSnapshotTests() } } }
     }
     post {
         always {
@@ -67,15 +65,29 @@ def setupProject() {
     }
 }
 
-def lintCode() {
+def runSnapshotTests() {
     dir('repos/saints-xctf-web') {
-        sh 'yarn lint --max-warnings=5'
+        sh '''
+            yarn test:snapshot --coverage=false 2>&1 | tee test_results.log
+            exit_status=${PIPESTATUS[0]}
+            exit $exit_status
+        '''
     }
 }
 
 def postScript() {
-    def bodyTitle = "SaintsXCTF Web Linting"
     def bodyContent = ""
+    def testResultLog
+
+    dir('repos/saints-xctf-web') {
+        testResultLog = readFile "test_results.log"
+    }
+
+    testResultLog.split('\n').each {
+        bodyContent += "<p style=\"font-family: Consolas,monaco,monospace\">$it</p>"
+    }
+
+    def bodyTitle = "SaintsXCTF Web Snapshot Tests"
     def jobName = env.JOB_NAME
     def buildStatus = currentBuild.result
     def buildNumber = env.BUILD_NUMBER

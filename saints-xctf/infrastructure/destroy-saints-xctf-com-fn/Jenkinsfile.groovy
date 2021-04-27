@@ -68,6 +68,7 @@ def mockZipFiles() {
         sh '''
             touch SaintsXCTFActivationCodeEmail.zip
             touch SaintsXCTFForgotPasswordEmail.zip
+            touch SaintsXCTFReportEmail.zip
             touch SaintsXCTFWelcomeEmail.zip
         '''
     }

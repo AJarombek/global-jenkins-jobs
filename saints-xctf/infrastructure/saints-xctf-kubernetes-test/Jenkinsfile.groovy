@@ -43,7 +43,6 @@ spec:
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Checkout Repository") { steps { script { checkoutRepo() } } }
         stage("Execute Kubernetes Tests") { steps { script { executeTestScript() } } }
-        stage("Cleanup Docker Environment") { steps { script { cleanupDockerEnvironment() } } }
     }
     post {
         always {
@@ -72,12 +71,6 @@ def executeTestScript() {
             """
         }
     }
-}
-
-def cleanupDockerEnvironment() {
-    sh '''
-        sudo docker system prune -f
-    '''
 }
 
 def postScript() {

@@ -75,6 +75,14 @@ def createLambdaZipFiles() {
         """
     }
 
+    dir('repos/saints-xctf-functions/report') {
+        sh """
+            yarn install --production=true
+            zip -r9 SaintsXCTFReportEmail.zip .
+            cp SaintsXCTFReportEmail.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/email-lambda
+        """
+    }
+
     dir('repos/saints-xctf-functions/welcome') {
         sh """
             yarn install --production=true

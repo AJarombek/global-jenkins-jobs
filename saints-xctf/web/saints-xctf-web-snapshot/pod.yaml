@@ -1,0 +1,20 @@
+# Kubernetes Pods for snapshot testing the SaintsXCTF Web application.
+# Author: Andrew Jarombek
+# Date: 4/26/2021
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: saints-xctf-web-snapshot
+  namespace: jenkins
+  labels:
+    version: v1.0.0
+    environment: all
+    application: saints-xctf-web-snapshot
+spec:
+  containers:
+    - name: nodejs
+      image: node:14.4.0
+      tty: true
+  serviceAccountName: jenkins-kubernetes-test
+  automountServiceAccountToken: true
