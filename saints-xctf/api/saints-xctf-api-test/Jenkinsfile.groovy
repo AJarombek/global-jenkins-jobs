@@ -24,6 +24,9 @@ pipeline {
                     - name: auth
                       image: ajarombek/mock-saints-xctf-auth:latest
                       tty: true
+                    - name: functions
+                      image: ajarombek/mock-saints-xctf-functions:latest
+                      tty: true
                     - name: database
                       image: mysql:5.7
                       env:
@@ -70,9 +73,6 @@ pipeline {
 def checkoutRepo() {
     container('test') {
         genericsteps.checkoutRepo('saints-xctf-api', 'master')
-    }
-    container('auth') {
-        genericsteps.checkoutRepo('saints-xctf-auth', 'master')
     }
 }
 

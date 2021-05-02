@@ -94,16 +94,26 @@ def executeTestScript() {
 def postScript() {
     def bodyTitle = "jarombek.com Kubernetes Infrastructure Tests"
     def bodyContent = ""
-    def jobName = env.JOB_NAME
+    def jobName = getJobName()
     def buildStatus = currentBuild.result
-    def buildNumber = env.BUILD_NUMBER
-    def buildUrl = env.BUILD_URL
+    def buildNumber = getBuildNumber()
+    def buildUrl = ''
 
     genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
 }
 
 @NonCPS
 def getEnv() {
-    def matches = env.JOB_NAME =~ /jarombek-com-kubernetes-infrastructure-test-(\w+)/
+    def matches = JOB_NAME =~ /jarombek-com-kubernetes-infrastructure-test-(\w+)/
     return matches[0][1]
+}
+
+@NonCPS
+def getJobName() {
+    return JOB_NAME
+}
+
+@NonCPS
+def getBuildNumber() {
+    return BUILD_NUMBER
 }

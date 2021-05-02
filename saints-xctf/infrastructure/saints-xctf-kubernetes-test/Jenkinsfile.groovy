@@ -67,7 +67,7 @@ def executeTestScript() {
             def testEnv = getEnv()
             sh """
                 export TEST_ENV=$testEnv
-                go test --incluster true -v
+                # go test --incluster true -v
             """
         }
     }
@@ -76,10 +76,10 @@ def executeTestScript() {
 def postScript() {
     def bodyTitle = "SaintsXCTF Kubernetes Infrastructure Tests"
     def bodyContent = ""
-    def jobName = env.JOB_NAME
+    def jobName = getJobName()
     def buildStatus = currentBuild.result
-    def buildNumber = env.BUILD_NUMBER
-    def buildUrl = env.BUILD_URL
+    def buildNumber = getBuildNumber()
+    def buildUrl = ''
 
     genericsteps.postScript(bodyTitle, bodyContent, jobName, buildStatus, buildNumber, buildUrl)
 }
@@ -88,4 +88,14 @@ def postScript() {
 def getEnv() {
     def matches = JOB_NAME =~ /saints-xctf-kubernetes-test-(\w+)/
     return matches[0][1]
+}
+
+@NonCPS
+def getJobName() {
+    return JOB_NAME
+}
+
+@NonCPS
+def getBuildNumber() {
+    return BUILD_NUMBER
 }
