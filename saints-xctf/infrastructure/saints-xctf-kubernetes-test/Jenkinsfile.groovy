@@ -67,7 +67,7 @@ def executeTestScript() {
             def testEnv = getEnv()
             sh """
                 export TEST_ENV=$testEnv
-                # go test --incluster true -v
+                go test --incluster true -v
             """
         }
     }

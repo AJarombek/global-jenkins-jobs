@@ -34,7 +34,7 @@ spec:
       image: ajarombek/auth-saints-xctf-com-token:latest
       tty: true
     - name: terraform
-      image: hashicorp/terraform:0.13.6
+      image: hashicorp/terraform:0.15.0
       command: ["sleep", "infinity"]
       tty: true
             '''

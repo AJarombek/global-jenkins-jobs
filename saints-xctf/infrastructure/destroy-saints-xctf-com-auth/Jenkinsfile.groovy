@@ -30,6 +30,7 @@ pipeline {
     stages {
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Checkout Repository") { steps { script { checkoutRepo() } } }
+        stage("Create ZIP Files") { steps { script { mockZipFiles() } } }
         stage("Terraform Init") { steps { script { terraformInit() } } }
         stage("Terraform Plan") { steps { script { terraformPlanDestroy() } } }
         stage("Terraform Destroy") {
@@ -58,6 +59,17 @@ def checkoutRepo() {
     genericsteps.checkoutRepo(name, branch)
 }
 
+def mockZipFiles() {
+    dir('repos/saints-xctf-infrastructure/saints-xctf-com-auth/modules/lambda') {
+        sh '''
+            touch SaintsXCTFAuthorizer.zip
+            touch SaintsXCTFRotate.zip
+            touch SaintsXCTFAuthenticate.zip
+            touch SaintsXCTFToken.zip
+        '''
+    }
+}
+
 def terraformInit() {
     INFRA_DIR = "repos/saints-xctf-infrastructure/saints-xctf-com-auth/env/$params.environment"
     terraform.terraformInit(INFRA_DIR)
@@ -77,7 +89,7 @@ def terraformDestroy() {
 
 def postScript() {
     email.sendEmail(
-        "Destroy ${$params.environment.toUpperCase()} SaintsXCTF Auth AWS Infrastructure",
+        "Destroy ${params.environment.toUpperCase()} SaintsXCTF Auth AWS Infrastructure",
         "",
         env.JOB_NAME,
         currentBuild.result,
