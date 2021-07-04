@@ -446,8 +446,10 @@ folder('prototypes/graphql-react-prototype') {
                 names(
                     'push-app-image',
                     'push-base-image',
+                    'create-acm-infrastructure',
                     'create-ecr-infrastructure',
                     'create-k8s-infrastructure',
+                    'destroy-acm-infrastructure',
                     'destroy-ecr-infrastructure',
                     'destroy-k8s-infrastructure'
                 )

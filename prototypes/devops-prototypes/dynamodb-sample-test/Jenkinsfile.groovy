@@ -28,7 +28,7 @@ spec:
       image: python:3.9
       tty: true
     - name: terraform
-      image: hashicorp/terraform:0.14.9
+      image: hashicorp/terraform:0.15.0
       command: [ "sleep", "infinity" ]
       tty: true
   serviceAccountName: jenkins-kubernetes-test
@@ -49,6 +49,16 @@ spec:
     stages {
         stage("Clean Workspace") { steps { script { cleanWs() } } }
         stage("Checkout Repository") { steps { script { checkoutRepo() } } }
+        stage("Initial Terraform Plan Destroy") { steps { script { terraformPlanDestroy() } } }
+        stage("Initial Terraform Destroy") {
+            when {
+                allOf {
+                    environment name: 'TERRAFORM_NO_CHANGES', value: 'false'
+                    environment name: 'TERRAFORM_PLAN_ERRORS', value: 'false'
+                }
+            }
+            steps { script { terraformDestroy() } }
+        }
         stage("Terraform Init") { steps { script { terraformInit() } } }
         stage("Terraform Validate") { steps { script { terraformValidate() } } }
         stage("Terraform Plan") { steps { script { terraformPlan() } } }
@@ -74,7 +84,6 @@ spec:
             }
             steps { script { terraformDestroy() } }
         }
-
     }
     post {
         always {

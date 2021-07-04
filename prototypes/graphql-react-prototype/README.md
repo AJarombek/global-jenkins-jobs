@@ -6,8 +6,10 @@ Jenkins jobs for the `graphql-react-prototype`.
 
 | Directory Name                     | Description                                                                      |
 |------------------------------------|----------------------------------------------------------------------------------|
+| `create-acm-infrastructure`        | Create infrastructure for ACM certificates used by the application.              |
 | `create-ecr-infrastructure`        | Create infrastructure for ECR repositories used by the application.              |
 | `create-k8s-infrastructure`        | Create Kubernetes infrastructure for the application.                            |
+| `destroy-acm-infrastructure`       | Destroy infrastructure for ACM certificates used by the application.             |
 | `destroy-ecr-infrastructure`       | Destroy infrastructure for ECR repositories used by the application.             |
 | `destroy-k8s-infrastructure`       | Destroy Kubernetes infrastructure for the application.                           |
 | `graphql-react-prototype-test`     | Jenkins job to run tests in the GraphQL React prototype.                         |
