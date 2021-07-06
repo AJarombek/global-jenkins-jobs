@@ -1,0 +1,19 @@
+# Pod holding containers for use with the create-synthetic-monitoring Jenkins job.
+# Author: Andrew Jarombek
+# Date: 7/5/2021
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: saints-xctf-create-synthetic-monitoring
+  namespace: jenkins
+  labels:
+    version: v1.0.0
+    environment: development
+    application: saints-xctf-create-synthetic-monitoring
+spec:
+  containers:
+    - name: terraform
+      image: hashicorp/terraform:1.0.1
+      command: ["sleep", "infinity"]
+      tty: true

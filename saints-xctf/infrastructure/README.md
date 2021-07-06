@@ -22,6 +22,7 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `create-saints-xctf-com-ingress`   | Jenkins job to create Kubernetes `Ingress` infrastructure for SaintsXCTF.       |
 | `create-saints-xctf-com-uasset`    | Jenkins job to create the `uasset.saintsxctf.com` AWS infrastructure.           |
 | `create-secrets-manager`           | Jenkins job to create secrets in SecretsManager for SaintsXCTF.                 |
+| `create-synthetic-monitoring`      | Jenkins job to create Synthetic Monitoring Canary functions.                    |
 | `database-script-deployment`       | Jenkins job to deploy/execute a database SQL script on an RDS MySQL database.   |
 | `destroy-acm`                      | Jenkins job to destroy ACM certificates for SaintsXCTF.                         |
 | `destroy-bastion`                  | Jenkins job to destroy a bastion host in the `saints-xctf` VPC.                 |
@@ -38,6 +39,7 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `destroy-saints-xctf-com-ingress`  | Jenkins job to destroy Kubernetes `Ingress` infrastructure for SaintsXCTF.      |
 | `destroy-saints-xctf-com-uasset`   | Jenkins job to destroy the `uasset.saintsxctf.com` AWS infrastructure.          |
 | `destroy-secrets-manager`          | Jenkins job to destroy secrets in SecretsManager for SaintsXCTF.                |
+| `destroy-synthetic-monitoring`     | Jenkins job to destroy Synthetic Monitoring Canary functions.                   |
 | `restore-database`                 | Jenkins job to restore a database from a backup.                                |
 | `saints-xctf-infrastructure-test`  | Jenkins jobs to run tests on the SaintsXCTF AWS infrastructure in dev and prod. |
 | `saints-xctf-kubernetes-test`      | Jenkins jobs to run tests on the SaintsXCTF K8s infrastructure in dev and prod. |

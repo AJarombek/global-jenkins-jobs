@@ -671,6 +671,7 @@ folder('saints-xctf/infrastructure') {
                     'create-saints-xctf-com-ingress',
                     'create-saints-xctf-com-uasset',
                     'create-secrets-manager',
+                    'create-synthetic-monitoring',
                     'database-script-deployment',
                     'destroy-acm',
                     'destroy-bastion',
@@ -687,6 +688,7 @@ folder('saints-xctf/infrastructure') {
                     'destroy-saints-xctf-com-ingress',
                     'destroy-saints-xctf-com-uasset',
                     'destroy-secrets-manager',
+                    'destroy-synthetic-monitoring',
                     'restore-database',
                     'scheduling-dev-database'
                 )
