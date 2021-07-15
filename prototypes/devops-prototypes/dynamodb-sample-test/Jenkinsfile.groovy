@@ -101,8 +101,9 @@ def checkoutRepo() {
 }
 
 def terraformInit() {
+    INFRA_DIR = "repos/devops-prototypes/samples/dynamodb/infra"
+
     container('terraform') {
-        INFRA_DIR = "repos/devops-prototypes/samples/dynamodb/infra"
         terraform.terraformInit(INFRA_DIR)
     }
 }
