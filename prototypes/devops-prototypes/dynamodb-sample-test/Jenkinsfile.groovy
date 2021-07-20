@@ -43,7 +43,7 @@ spec:
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')
         buildDiscarder(
-            logRotator(daysToKeepStr: '10', numToKeepStr: '5')
+                logRotator(daysToKeepStr: '10', numToKeepStr: '5')
         )
     }
     stages {
@@ -95,14 +95,14 @@ spec:
 }
 
 def checkoutRepo() {
+    INFRA_DIR = "repos/devops-prototypes/samples/dynamodb/infra"
+
     dir('repos/devops-prototypes') {
         git.basicClone('devops-prototypes', 'master')
     }
 }
 
 def terraformInit() {
-    INFRA_DIR = "repos/devops-prototypes/samples/dynamodb/infra"
-
     container('terraform') {
         terraform.terraformInit(INFRA_DIR)
     }
