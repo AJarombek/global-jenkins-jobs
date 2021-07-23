@@ -91,12 +91,14 @@ folder('global-aws') {
                     'create-lambda',
                     'create-lambda-layer',
                     'create-route53',
+                    'create-s3',
                     'destroy-acm',
                     'destroy-budgets',
                     'destroy-cloud-trail',
                     'destroy-lambda',
                     'destroy-lambda-layer',
                     'destroy-route53',
+                    'destroy-s3',
                     'dockerfiles-push-images',
                     'push-jenkins-ecr-docker-image'
                 )
