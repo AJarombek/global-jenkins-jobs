@@ -13,7 +13,12 @@ pipeline {
     parameters {
         choice(
             name: 'image',
-            choices: ['apollo-client-server-prototype-web', 'apollo-client-server-prototype-api', 'apollo-client-server-prototype-database'],
+            choices: [
+                'apollo-client-server-prototype-web',
+                'apollo-client-server-prototype-api-app',
+                'apollo-client-server-prototype-api-nginx',
+                'apollo-client-server-prototype-database'
+            ],
             description: 'Name of the Docker image to push to Dockerhub.'
         )
         string(
@@ -88,17 +93,27 @@ def checkoutRepo() {
 def buildImage() {
     dir("repos/apollo-client-server-prototype") {
         def locationMap = [
-            'apollo-client-server-prototype-web': 'client/Dockerfile',
-            'apollo-client-server-prototype-api': 'server/Dockerfile',
-            'apollo-client-server-prototype-database': 'database/Dockerfile'
+            'apollo-client-server-prototype-web': 'client',
+            'apollo-client-server-prototype-api-app': 'server',
+            'apollo-client-server-prototype-api-nginx': 'server',
+            'apollo-client-server-prototype-database': 'database'
         ]
 
-        sh """
-            sudo docker image build \
-                -f ${locationMap[params.image]} \
-                -t $params.image:latest \
-                --network=host .
-        """
+        def dockerfileMap = [
+            'apollo-client-server-prototype-web': 'Dockerfile',
+            'apollo-client-server-prototype-api-app': 'app.dockerfile',
+            'apollo-client-server-prototype-api-nginx': 'nginx.dockerfile',
+            'apollo-client-server-prototype-database': 'Dockerfile'
+        ]
+
+        dir(locationMap[params.image]) {
+            sh """
+                sudo docker image build \
+                    -f ${dockerfileMap[params.image]} \
+                    -t $params.image:latest \
+                    --network=host .
+            """
+        }
     }
 }
 
@@ -120,12 +135,12 @@ def cleanupDockerEnvironment() {
 
     sh """
         sudo docker image rm $imageName:latest
-        sudo docker image rm AJarombek/$imageName:$params.label
+        sudo docker image rm ajarombek/$imageName:$params.label
     """
 
     if (params.isLatest) {
         sh """
-            sudo docker image rm AJarombek/$imageName:latest
+            sudo docker image rm ajarombek/$imageName:latest
         """
     }
 
