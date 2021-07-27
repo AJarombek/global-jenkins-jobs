@@ -268,6 +268,23 @@ folder('jarombek-com/web') {
                 buildButton()
             }
         }
+        listView('Continuous Deployment') {
+            description('Continuous Deployment jobs for the jarombek.com web application')
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                names('push-image')
+            }
+            columns() {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
     }
 }
 
