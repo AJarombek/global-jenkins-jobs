@@ -10,5 +10,4 @@ Jenkins jobs for the `apollo-client-server-prototype`.
 | `destroy-infrastructure`           | Destroy AWS and Kubernetes infrastructure for the application.                   |
 | `push-images`                      | Push client, server, and database Docker images to Dockerhub.                    |
 | `test-client`                      | Run unit tests and end to end tests for the client.                              |
-| `test-infrastructure`              | Run tests for the AWS and Kubernetes infrastructure.                             |
 | `test-server`                      | Run integration tests for the server.                                            |

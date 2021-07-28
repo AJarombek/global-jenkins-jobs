@@ -8,7 +8,39 @@
 
 pipeline {
     agent {
-        label 'master'
+        kubernetes {
+            yaml """\
+                apiVersion: v1
+                kind: Pod
+                metadata:
+                  name: apollo-client-server-prototype-test-client
+                  namespace: jenkins
+                  labels:
+                    version: v1.0.0
+                    environment: development
+                    application: apollo-client-server-prototype-test-client
+                spec:
+                  containers:
+                    - name: apollo-prototype-client
+                      image: ajarombek/apollo-client-server-prototype-web:latest
+                      tty: true
+                    - name: apollo-prototype-server-app
+                      image: ajarombek/apollo-client-server-prototype-api-app:latest
+                      tty: true
+                    - name: apollo-prototype-server
+                      image: ajarombek/apollo-client-server-prototype-api-nginx:latest
+                      tty: true
+                    - name: apollo-prototype-database
+                      image: ajarombek/apollo-client-server-prototype-database:latest
+                      tty: true
+                    - name: nodejs
+                      image: node:14.16
+                      tty: true
+                    - name: cypress
+                      image: cypress/included:7.0.1
+                      tty: true
+            """.stripIndent()
+        }
     }
     options {
         ansiColor('xterm')
@@ -40,10 +72,7 @@ pipeline {
 
 // Stage functions
 def checkoutRepo() {
-    def name = "apollo-client-server-prototype"
-    def branch = "master"
-
-    genericsteps.checkoutRepo(name, branch)
+    genericsteps.checkoutRepo("apollo-client-server-prototype", "master")
 }
 
 def setupApplication() {
