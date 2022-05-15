@@ -8,7 +8,26 @@
 
 pipeline {
     agent {
-        label 'master'
+        kubernetes {
+            yaml """\
+                apiVersion: v1
+                kind: Pod
+                metadata:
+                  name: global-aws-create-s3
+                  namespace: jenkins
+                  labels:
+                    version: v1.0.0
+                    environment: development
+                    application: global-aws-create-s3
+                spec:
+                  containers:
+                    - name: terraform
+                      image: hashicorp/terraform:1.0.1
+                      command: ["sleep", "infinity"]
+                      tty: true
+                  restartPolicy: Never
+            """.stripIndent()
+        }
     }
     parameters {
         booleanParam(

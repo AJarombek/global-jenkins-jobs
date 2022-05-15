@@ -106,6 +106,20 @@ def createLambdaZipFiles() {
             cp SaintsXCTFUassetGroup.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/uasset-lambda
         """
     }
+
+    dir('repos/saints-xctf-functions/signed-url-profile-picture') {
+        sh """
+            zip -r9 SaintsXCTFUassetSignedUrlUser.zip .
+            cp SaintsXCTFUassetSignedUrlUser.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/uasset-lambda
+        """
+    }
+
+    dir('repos/saints-xctf-functions/signed-url-group-picture') {
+        sh """
+            zip -r9 SaintsXCTFUassetSignedUrlGroup.zip .
+            cp SaintsXCTFUassetSignedUrlGroup.zip ../../saints-xctf-infrastructure/saints-xctf-com-fn/modules/uasset-lambda
+        """
+    }
 }
 
 def terraformInit() {

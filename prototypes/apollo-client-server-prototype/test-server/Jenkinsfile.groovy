@@ -33,6 +33,7 @@ pipeline {
                     - name: nodejs
                       image: node:14.16
                       tty: true
+                  restartPolicy: Never
             """.stripIndent()
         }
     }

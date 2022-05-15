@@ -39,6 +39,7 @@ pipeline {
                     - name: cypress
                       image: cypress/included:7.0.1
                       tty: true
+                  restartPolicy: Never
             """.stripIndent()
         }
     }

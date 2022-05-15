@@ -25,6 +25,7 @@ pipeline {
                       image: hashicorp/terraform:1.0.1
                       command: ["sleep", "infinity"]
                       tty: true
+                  restartPolicy: Never
             """.stripIndent()
         }
     }

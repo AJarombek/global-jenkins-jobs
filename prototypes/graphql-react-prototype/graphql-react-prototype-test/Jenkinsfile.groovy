@@ -24,6 +24,7 @@ spec:
     - name: test
       image: 739088120071.dkr.ecr.us-east-1.amazonaws.com/graphql-react-prototype-base:latest
       tty: true
+  restartPolicy: Never
             '''
         }
     }
@@ -65,7 +66,7 @@ def executeTestScript() {
         try {
             test_result = sh(
                 script: """#!/bin/bash
-                    cd /src
+                    cd /app
                     npm test 2>&1 | tee test_results.log
                     exit \${PIPESTATUS[0]}
                 """,
@@ -90,7 +91,7 @@ def postScript() {
 
     container('test') {
         testResultLog = sh(
-            script: "cat /src/test_results.log",
+            script: "cat /app/test_results.log",
             returnStdout: true
         )
     }

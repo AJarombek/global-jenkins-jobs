@@ -45,6 +45,7 @@ pipeline {
                     - name: test
                       image: python:3.8
                       tty: true
+                  restartPolicy: Never
             """.stripIndent()
         }
     }

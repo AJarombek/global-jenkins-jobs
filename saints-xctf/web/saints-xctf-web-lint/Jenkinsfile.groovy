@@ -29,6 +29,7 @@ pipeline {
                       tty: true
                   serviceAccountName: jenkins-kubernetes-test
                   automountServiceAccountToken: true
+                  restartPolicy: Never
             """.stripIndent()
         }
     }

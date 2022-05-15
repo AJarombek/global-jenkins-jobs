@@ -61,6 +61,8 @@ def mockZipFiles() {
         sh '''
             touch SaintsXCTFUassetUser.zip
             touch SaintsXCTFUassetGroup.zip
+            touch SaintsXCTFUassetSignedUrlUser.zip
+            touch SaintsXCTFUassetSignedUrlGroup.zip
         '''
     }
 

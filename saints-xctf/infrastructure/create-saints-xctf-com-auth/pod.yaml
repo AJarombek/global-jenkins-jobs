@@ -29,3 +29,4 @@ spec:
       image: hashicorp/terraform:0.13.6
       command: ["sleep", "infinity"]
       tty: true
+  restartPolicy: Never

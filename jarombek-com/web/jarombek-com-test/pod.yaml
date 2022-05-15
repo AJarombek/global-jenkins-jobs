@@ -22,3 +22,4 @@ spec:
     - name: database
       image: ajarombek/jarombek-com-database
       tty: true
+  restartPolicy: Never

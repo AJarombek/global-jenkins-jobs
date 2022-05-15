@@ -12,7 +12,4 @@ pipelineJob("global-aws/cost-detection") {
             script(readFileFromWorkspace("global-aws/cost-detection/Jenkinsfile.groovy"))
         }
     }
-    triggers {
-        cron('H 7 * * *')
-    }
 }
