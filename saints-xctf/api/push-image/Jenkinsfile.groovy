@@ -18,7 +18,7 @@ pipeline {
         )
         string(
             name: 'label',
-            defaultValue: '1.1.3',
+            defaultValue: '2.0.2',
             description: 'Label/Version of the Docker image to push to ECR'
         )
         booleanParam(

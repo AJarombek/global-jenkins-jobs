@@ -10,6 +10,16 @@ The Jenkins Job DSL Plugin is used to automate the task of generating Jenkins jo
 Jenkins jobs are represented as Groovy scripts.  The names of Job DSL Plugin files can only contain letters, digits, and 
 underscores.
 
+### Commands
+
+**Script Console**
+
+> Remove all pending builds from the queue.
+
+```groovy
+Jenkins.instance.queue.clear()
+```
+
 ### Directories
 
 | Directory Name                     | Description                                                                      |
@@ -23,6 +33,14 @@ underscores.
 | `manual`                           | Jenkins jobs that are manually created instead of through a seed job.            |
 | `modules`                          | Groovy modules for creating reusable Job DSL Plugin scripts.                     |
 | `saints-xctf`                      | Jenkins jobs for the SaintsXCTF application.                                     |
+
+### Version History
+
+**[v1.1.0](https://github.com/AJarombek/global-jenkins-jobs/tree/v1.1.0) - Functional Jenkins Jobs**
+
+> Release Date: Sep 21st, 2022
+
+* Removing unused/broken jobs, which may move to a different CI/CD tool like GitHub Actions.
 
 ### Resources
 
