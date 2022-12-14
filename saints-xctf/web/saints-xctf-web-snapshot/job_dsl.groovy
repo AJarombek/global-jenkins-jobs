@@ -6,9 +6,6 @@
 
 pipelineJob("saints-xctf/web/saints-xctf-web-snapshot") {
     description("Pipeline Job for snapshot testing the saints-xctf-web project")
-    triggers {
-        cron('H 2 * * *')
-    }
     definition {
         cps {
             sandbox()

@@ -23,9 +23,6 @@ environments.each { env ->
                 )
             }
         }
-        triggers {
-            cron('H 0 * * *')
-        }
         logRotator {
             daysToKeep(10)
             numToKeep(5)

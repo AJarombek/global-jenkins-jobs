@@ -36,6 +36,12 @@ Jenkins.instance.queue.clear()
 
 ### Version History
 
+**[v1.1.1](https://github.com/AJarombek/global-jenkins-jobs/tree/v1.1.1) - Remove Schedules**
+
+> Release Date: Dec 13th, 2022
+
+* Removing schedules from jobs that will transition to GitHub Actions.
+
 **[v1.1.0](https://github.com/AJarombek/global-jenkins-jobs/tree/v1.1.0) - Functional Jenkins Jobs**
 
 > Release Date: Sep 21st, 2022

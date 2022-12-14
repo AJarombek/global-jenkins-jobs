@@ -12,7 +12,4 @@ pipelineJob("global-aws/global-kubernetes-infrastructure-test") {
             script(readFileFromWorkspace("global-aws/global-kubernetes-infrastructure-test/Jenkinsfile.groovy"))
         }
     }
-    triggers {
-        cron('H 0 * * *')
-    }
 }

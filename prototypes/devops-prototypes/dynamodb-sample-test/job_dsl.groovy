@@ -13,7 +13,4 @@ pipelineJob("prototypes/devops-prototypes/dynamodb-sample-test") {
             script(readFileFromWorkspace("prototypes/devops-prototypes/dynamodb-sample-test/Jenkinsfile.groovy"))
         }
     }
-    triggers {
-        cron('H 0 * * *')
-    }
 }

@@ -34,9 +34,6 @@ pipeline {
             """.stripIndent()
         }
     }
-    triggers {
-        cron('H 0 * * *')
-    }
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')

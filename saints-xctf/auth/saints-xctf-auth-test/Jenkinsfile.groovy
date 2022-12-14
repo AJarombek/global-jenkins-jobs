@@ -17,9 +17,6 @@ pipeline {
             description: 'Environment to create the database backup/restore functions.'
         )
     }
-    triggers {
-        cron('H 0 * * *')
-    }
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')

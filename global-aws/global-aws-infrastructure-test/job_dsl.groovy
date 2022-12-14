@@ -10,9 +10,6 @@ def environments = ["prod", "dev"]
 environments.each { environment ->
     pipelineJob("global-aws/global-aws-infrastructure-test-${environment}") {
         description("Pipeline Job for testing the global-aws-infrastructure project")
-        triggers {
-            cron('H 0 * * *')
-        }
         definition {
             cps {
                 sandbox()

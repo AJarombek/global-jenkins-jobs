@@ -25,12 +25,14 @@ pipeline {
             logRotator(daysToKeepStr: '10', numToKeepStr: '5')
         )
     }
+    /*
     triggers {
         parameterizedCron('''
             15 11 * * * %action=start
             45 1 * * * %action=stop
         ''')
     }
+    */
     stages {
         stage("Clean Workspace") {
             steps {

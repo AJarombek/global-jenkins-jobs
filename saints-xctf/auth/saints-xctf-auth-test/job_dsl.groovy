@@ -15,7 +15,4 @@ pipelineJob("saints-xctf/auth/saints-xctf-auth-test") {
     parameters {
         choiceParam('environment', ['prod', 'dev'], 'Environment to create the database backup/restore functions.')
     }
-    triggers {
-        cron('H 0 * * *')
-    }
 }

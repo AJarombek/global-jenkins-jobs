@@ -9,9 +9,6 @@ pipelineJob("jarombek-com/components/jarombek-react-components-test") {
     parameters {
         stringParam('branch', 'master', 'Branch in the jarombek-react-components repository to test')
     }
-    triggers {
-        cron('H 0 * * *')
-    }
     definition {
         cps {
             sandbox()

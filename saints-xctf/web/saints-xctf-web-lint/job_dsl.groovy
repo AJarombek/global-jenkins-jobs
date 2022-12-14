@@ -6,9 +6,6 @@
 
 pipelineJob("saints-xctf/web/saints-xctf-web-lint") {
     description("Pipeline Job for linting the saints-xctf-web project")
-    triggers {
-        cron('H 0 * * *')
-    }
     definition {
         cps {
             sandbox()

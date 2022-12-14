@@ -71,9 +71,7 @@ def config = [
     agent: [
         label: 'master'
     ],
-    triggers: [
-        cron: 'H 0 * * *'
-    ],
+    triggers: [],
     options: [
         time: 1,
         unit: 'HOURS',

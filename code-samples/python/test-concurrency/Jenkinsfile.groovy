@@ -10,9 +10,6 @@ pipeline {
     agent {
         label 'master'
     }
-    triggers {
-        cron('H 0 1,15 * *')
-    }
     options {
         ansiColor('xterm')
         timeout(time: 1, unit: 'HOURS')
