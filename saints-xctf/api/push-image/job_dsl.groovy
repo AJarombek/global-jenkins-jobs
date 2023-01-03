@@ -13,7 +13,11 @@ pipelineJob("saints-xctf/api/push-image") {
         }
     }
     parameters {
-        choiceParam('image', ['saints-xctf-api-flask', 'saints-xctf-api-nginx'], 'Name of the Docker image and ECR repository to push to.')
+        choiceParam(
+            'image',
+            ['saints-xctf-api-flask', 'saints-xctf-api-nginx', 'saints-xctf-api-cicd'],
+            'Name of the Docker image and ECR repository to push to.'
+        )
         stringParam('label', '2.0.2', 'Label/Version of the Docker image to push to ECR')
         booleanParam('isLatest', true, "Whether this Docker image should also be pushed with the 'latest' label")
     }

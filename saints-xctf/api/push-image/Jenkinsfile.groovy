@@ -13,7 +13,7 @@ pipeline {
     parameters {
         choice(
             name: 'image',
-            choices: ['saints-xctf-api-flask', 'saints-xctf-api-nginx'],
+            choices: ['saints-xctf-api-flask', 'saints-xctf-api-nginx', 'saints-xctf-api-cicd'],
             description: 'Name of the Docker image and ECR repository to push to.'
         )
         string(
@@ -81,14 +81,23 @@ pipeline {
 }
 
 def checkoutRepo() {
-    genericsteps.checkoutRepo("saints-xctf-api", "master")
+    genericsteps.checkoutRepo("saints-xctf-api", "main")
 }
 
 def buildImage() {
     dir("repos/saints-xctf-api/api/src") {
-        def dockerfile = params.image == 'saints-xctf-api-flask' ? 'api.flask.dockerfile' : 'api.nginx.dockerfile'
+        String dockerfile = 'api.flask.dockerfile'
 
-        if (params.image == 'saints-xctf-api-flask') {
+        switch(params.image) {
+            case "saints-xctf-api-nginx":
+                dockerfile = "api.nginx.dockerfile"
+                break
+            case "saints-xctf-api-cicd":
+                dockerfile = "cicd.test.dockerfile"
+                break
+        }
+
+        if (params.image == 'saints-xctf-api-flask' || params.image == 'saints-xctf-api-cicd') {
             withCredentials([
                 string(credentialsId: 'aws-access-key-id', variable: 'aws_access_key_id'),
                 string(credentialsId: 'aws-secret-access-key', variable: 'aws_secret_access_key')
@@ -112,29 +121,38 @@ def buildImage() {
 }
 
 def pushImage() {
-    def repoUrl = "739088120071.dkr.ecr.us-east-1.amazonaws.com"
+    String repoUrl = "739088120071.dkr.ecr.us-east-1.amazonaws.com"
     def imageName = params.image
     def imageLabel = params.label
     def isLatest = params.isLatest
 
-    sh """
-        aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --password-stdin $repoUrl
-    
-        sudo docker image tag $imageName:latest $repoUrl/$imageName:$imageLabel
-        sudo docker push $repoUrl/$imageName:$imageLabel
-    """
+    if (imageName == 'saints-xctf-api-cicd') {
+        dockerhub.auth()
+        dockerhub.pushImage(imageName, imageLabel)
 
-    if (isLatest) {
+        if (isLatest) {
+            dockerhub.pushImage(imageName)
+        }
+    } else {
         sh """
-            sudo docker image tag $imageName:latest $repoUrl/$imageName:latest
-            sudo docker push $repoUrl/$imageName:latest
+            aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --password-stdin $repoUrl
+        
+            sudo docker image tag $imageName:latest $repoUrl/$imageName:$imageLabel
+            sudo docker push $repoUrl/$imageName:$imageLabel
         """
+
+        if (isLatest) {
+            sh """
+                sudo docker image tag $imageName:latest $repoUrl/$imageName:latest
+                sudo docker push $repoUrl/$imageName:latest
+            """
+        }
     }
 }
 
 def cleanupDockerEnvironment() {
     def imageName = params.image
-    def repoUrl = "739088120071.dkr.ecr.us-east-1.amazonaws.com"
+    String repoUrl = imageName == 'saints-xctf-api-cicd' ? "ajarombek" : "739088120071.dkr.ecr.us-east-1.amazonaws.com"
 
     sh """
         sudo docker image rm $imageName:latest
