@@ -101,38 +101,6 @@ pipeline {
                 }
             }
         }
-        stage("Trigger Initial Scheduled Jobs") {
-            when {
-                expression { false }
-            }
-            steps {
-                script {
-                    buildJobs([
-                        'code-samples/python/test-concurrency',
-                        'global-aws/cost-detection',
-                        'global-aws/global-aws-infrastructure-test-prod',
-                        'global-aws/global-aws-infrastructure-test-dev',
-                        'global-aws/global-kubernetes-infrastructure-test',
-                        'jarombek-com/components/jarombek-react-components-test',
-                        'jarombek-com/infrastructure/jarombek-com-aws-infrastructure-test-prod',
-                        'jarombek-com/infrastructure/jarombek-com-aws-infrastructure-test-dev',
-                        'jarombek-com/infrastructure/jarombek-com-kubernetes-infrastructure-test-prod',
-                        'jarombek-com/infrastructure/jarombek-com-kubernetes-infrastructure-test-dev',
-                        'jarombek-com/web/jarombek-com-test',
-                        'prototypes/devops-prototypes/dynamodb-sample-test',
-                        'prototypes/graphql-react-prototype/graphql-react-prototype-test',
-                        'prototypes/react-16-3-demo-test',
-                        'saints-xctf/api/saints-xctf-api-test',
-                        'saints-xctf/auth/saints-xctf-auth-test',
-                        'saints-xctf/infrastructure/saints-xctf-infrastructure-test-prod',
-                        'saints-xctf/infrastructure/saints-xctf-infrastructure-test-dev',
-                        'saints-xctf/infrastructure/saints-xctf-kubernetes-test-prod',
-                        'saints-xctf/infrastructure/saints-xctf-kubernetes-test-dev',
-                        'saints-xctf/web/saints-xctf-web-test'
-                    ])
-                }
-            }
-        }
     }
     post {
         always {
