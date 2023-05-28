@@ -41,6 +41,4 @@ Jenkins jobs for the SaintsXCTF AWS infrastructure.
 | `destroy-secrets-manager`          | Jenkins job to destroy secrets in SecretsManager for SaintsXCTF.                |
 | `destroy-synthetic-monitoring`     | Jenkins job to destroy Synthetic Monitoring Canary functions.                   |
 | `restore-database`                 | Jenkins job to restore a database from a backup.                                |
-| `saints-xctf-infrastructure-test`  | Jenkins jobs to run tests on the SaintsXCTF AWS infrastructure in dev and prod. |
-| `saints-xctf-kubernetes-test`      | Jenkins jobs to run tests on the SaintsXCTF K8s infrastructure in dev and prod. |
 | `scheduling-dev-database`          | Jenkins jobs which schedules start and stop times for the DEV database.         |

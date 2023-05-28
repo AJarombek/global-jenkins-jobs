@@ -65,7 +65,7 @@ pipeline {
 
 def checkoutRepo() {
     dir('repos/global-aws-infrastructure') {
-        git.basicClone('global-aws-infrastructure', 'master')
+        git.basicClone('global-aws-infrastructure', 'main')
     }
 }
 

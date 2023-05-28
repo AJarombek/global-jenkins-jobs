@@ -72,7 +72,7 @@ pipeline {
 // Stage functions
 def checkoutRepo() {
     def name = "global-aws-infrastructure"
-    def branch = "master"
+    def branch = "main"
 
     genericsteps.checkoutRepo(name, branch)
 }

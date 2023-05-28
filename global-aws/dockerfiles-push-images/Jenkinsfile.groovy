@@ -82,7 +82,7 @@ pipeline {
 }
 
 def checkoutRepo() {
-    genericsteps.checkoutRepo("global-aws-infrastructure", "master")
+    genericsteps.checkoutRepo("global-aws-infrastructure", "main")
 }
 
 def buildImage() {
